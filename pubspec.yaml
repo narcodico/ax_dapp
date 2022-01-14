@@ -49,6 +49,7 @@ dependencies:
   flutter_web3: ^2.0.4
   get: ^4.6.1
   postgres: ^2.4.3
+  get_storage: ^2.0.3
   
 
 dependency_overrides:
