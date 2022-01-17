@@ -1,6 +1,5 @@
 // File for getting the price of any APT  from the DEX using Postgres instead of http
-
-import 'package:ax_dapp/service/Athlete.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:postgres/postgres.dart';
 
 // This has to be rewritten into functional paradigm, it's not meant to be an object, instead an instantiable process (querying and returning results)
@@ -46,16 +45,15 @@ void getLatestBookPrice(String name) async {
   }
 }
 
-//   void main() {
-//   final greeting = (String name) {
-//     return 'Hi $name';
-//   };
+void update() async {
+    connection = PostgreSQLConnection("139.99.74.201", 8812, "qdb",
+      username: "admin", password: "quest");
+  await connection.open();
+  List<List<dynamic>> results = await connection.query("SELECT name, last(price) from nfl");
+  for (var aResult in results) {
+    
+  }
 
-//   saySomething(greeting);
-// }
-
-// void saySomething(Function(String) message) {
-//   print(message('Marcos'));
-// }
+}
 
 // // Hi Marcos

@@ -1,7 +1,17 @@
 import 'package:ax_dapp/pages/LandingPage.dart';
+import 'package:ax_dapp/service/AthleteData.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+    // Setup Storage of the data I download
+    await GetStorage.init();
+
+  // Immediately start querying the database for latest stats + prices
+  
+  // Run the app
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
