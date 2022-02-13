@@ -142,7 +142,8 @@ class _AthletePageState extends State<AthletePage> {
                           child: Stack(
                             children: <Widget>[
                               // Graph
-                              buildGraph(athlete.war, athlete.time, context),
+                              buildGraph(
+                                  [athlete.war], [athlete.time], context),
                               // Price
                               Align(
                                   alignment: Alignment(-.85, -.8),
@@ -166,9 +167,7 @@ class _AthletePageState extends State<AthletePage> {
                                                         .spaceBetween,
                                                 children: <Widget>[
                                                   Text(
-                                                      athlete.war[athlete.war
-                                                                      .length -
-                                                                  1]
+                                                      athlete.war
                                                               .toStringAsFixed(
                                                                   4) +
                                                           " AX",
@@ -379,7 +378,7 @@ class _AthletePageState extends State<AthletePage> {
                                                   style: textStyle(Colors.red,
                                                       12, false, false))),
                                         ]),
-                                        Text("4.20 AX",
+                                        Text("${athlete.war} AX",
                                             style: textStyle(Colors.grey[400]!,
                                                 20, false, false))
                                       ]))
@@ -468,7 +467,7 @@ class _AthletePageState extends State<AthletePage> {
                               Text("Team",
                                   style: textStyle(
                                       Colors.grey[400]!, 20, false, false)),
-                              Text("Tampa Bay Buckaneers",
+                              Text("${athlete.team}",
                                   style: textStyle(
                                       Colors.grey[400]!, 20, false, false))
                             ]),
