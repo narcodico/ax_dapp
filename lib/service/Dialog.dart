@@ -242,6 +242,9 @@ Dialog walletDialog(BuildContext context) {
                             builder: (BuildContext context) =>
                                 wrongNetworkDialog(context));
                       } else {
+                        LSPController lspController = Get.put(LSPController());
+                        SwapController swapController =
+                            Get.put(SwapController());
                         Navigator.pop(context);
                         walletController.getTokenMetrics();
                         walletController.getTokenBalance();

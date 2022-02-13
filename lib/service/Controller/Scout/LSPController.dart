@@ -22,6 +22,7 @@ class LSPController extends GetxController {
     final theClient = controller.client.value;
     EthereumAddress address =
         EthereumAddress.fromHex("0xD3E03e36D70F65A00732F9086D994D83A3EaC286");
+    print(controller.publicAddress);
     genericLSP = LongShortPair(address: address, client: theClient);
   }
 
