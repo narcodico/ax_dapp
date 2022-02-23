@@ -62,8 +62,7 @@ class _V1AppState extends State<V1App> {
   void initState() {
     // Init the states of everything needed for the whole dapp
     super.initState();
-    LSPController lspController = Get.put(LSPController());
-    SwapController swapController = Get.put(SwapController());
+
     WalletController walletController = Get.put(WalletController());
   }
 
