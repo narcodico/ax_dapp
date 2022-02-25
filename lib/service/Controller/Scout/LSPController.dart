@@ -26,7 +26,7 @@ class LSPController extends GetxController {
     final tokenClient =
         Web3Client("https://matic-mumbai.chainstacklabs.com", new Client());
     lspAdress =
-        EthereumAddress.fromHex("0x5531370bF547F005334C88A6B6b3Fe4Fe096232e");
+        EthereumAddress.fromHex("0x4533524aE7535050FFe117Aefb63459f06772f8a");
     genericLSP = LongShortPair(address: lspAdress, client: tokenClient);
   }
 
@@ -48,7 +48,7 @@ class LSPController extends GetxController {
 
   Future<void> approve() async {
     print("collaterall amount: ${await genericLSP.collateralPerPair()}");
-    BigInt transferAmount = BigInt.parse("1000000000000000000000");
+    BigInt transferAmount = BigInt.parse("100000000000000000000000000");
     BigInt amount = BigInt.from(createAmt.value) * transferAmount;
     print("[Console] Inside approve()");
     EthereumAddress axtaddress =
@@ -62,7 +62,7 @@ class LSPController extends GetxController {
       print(error);
     }
     EthereumAddress spender =
-        EthereumAddress.fromHex("0x5531370bF547F005334C88A6B6b3Fe4Fe096232e");
+        EthereumAddress.fromHex("0x4533524aE7535050FFe117Aefb63459f06772f8a");
     String txString = await axt.approve(lspAdress, amount,
         credentials: controller.credentials);
   }
