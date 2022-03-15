@@ -3,7 +3,7 @@ import 'package:ax_dapp/service/Athlete.dart';
 import 'package:ax_dapp/service/AthleteList.dart';
 import 'package:ax_dapp/service/Dialog.dart';
 import 'package:flutter/material.dart';
-
+import 'package:graphql_flutter/graphql_flutter.dart';
 
 class DesktopScout extends StatefulWidget {
   const DesktopScout({
@@ -20,6 +20,7 @@ class _DesktopScoutState extends State<DesktopScout> {
   int sportState = 0;
   List<Athlete> nflList = [];
   List<Athlete> nflListFilter = [];
+
   // This will hold all the athletes
   List<Athlete> allList = [];
   List<Athlete> allListFilter = [];
@@ -48,116 +49,142 @@ class _DesktopScoutState extends State<DesktopScout> {
   @override
   Widget build(BuildContext context) {
     double sportFilterTxSz = 18;
-    double _width = MediaQuery.of(context).size.width;
-    double _height = MediaQuery.of(context).size.height;
+    double _width = MediaQuery
+        .of(context)
+        .size
+        .width;
+    double _height = MediaQuery
+        .of(context)
+        .size
+        .height;
+
+    final HttpLink aXDexSubgraphHttpLink = HttpLink(
+      'https://api.thegraph.com/subgraphs/name/graphprotocol/compound-v2',
+    );
+
+    ValueNotifier<GraphQLClient> graphQlClient = ValueNotifier(
+      GraphQLClient(
+        cache: GraphQLCache(),
+        link: aXDexSubgraphHttpLink,
+      ),
+    );
 
     if (athletePage) return AthletePage(athlete: curAthlete);
 
-    return Container(
-        height: _height * 0.85 + 41,
-        width: _width * 0.85,
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              // APT Title & Sport Filter
-              Container(
-                width: _width * 0.85,
-                height: 50,
-                child: Row(
-                    children: [
-                      Text("APT List",
-                          style: textStyle(Colors.white, 18, false, false)),
-                      Text("|",
-                          style: textStyle(Colors.white, 18, false, false)),
-                      Container(
-                          child: TextButton(
-                        onPressed: () {
-                          myController.clear();
-                          if (sportState != 0)
-                            setState(() {
-                              allListFilter = allList;
-                              sportState = 0;
-                            });
-                        },
-                        child: Text("ALL",
-                            style: textSwapState(
-                                sportState == 0,
-                                textStyle(Colors.white, sportFilterTxSz, false,
-                                    false),
-                                textStyle(Colors.amber[400]!, sportFilterTxSz,
-                                    false, true))),
-                      )),
-                      Container(
-                          child: TextButton(
-                        onPressed: () {
-                          myController.clear();
-                          if (sportState != 1)
-                            setState(() {
-                              nflListFilter = nflList;
-                              sportState = 1;
-                            });
-                        },
-                        child: Text("NFL",
-                            style: textSwapState(
-                                sportState == 1,
-                                textStyle(Colors.white, sportFilterTxSz, false,
-                                    false),
-                                textStyle(Colors.amber[400]!, sportFilterTxSz,
-                                    false, true))),
-                      )),
-                      Container(
-                          child: TextButton(
-                        onPressed: () {
-                          if (sportState != 2)
-                            setState(() {
-                              sportState = 2;
-                            });
-                        },
-                        child: Text("NBA",
-                            style: textSwapState(
-                                sportState == 2,
-                                textStyle(Colors.white, sportFilterTxSz, false,
-                                    false),
-                                textStyle(Colors.amber[400]!, sportFilterTxSz,
-                                    false, true))),
-                      )),
-                      Container(
-                          child: TextButton(
-                        onPressed: () {
-                          if (sportState != 3)
-                            setState(() {
-                              sportState = 3;
-                            });
-                        },
-                        child: Text("MMA",
-                            style: textSwapState(
-                                sportState == 3,
-                                textStyle(Colors.white, sportFilterTxSz, false,
-                                    false),
-                                textStyle(Colors.amber[400]!, sportFilterTxSz,
-                                    false, true))),
-                      )),
-                      Container(
-                        child: Expanded(
-                          child: Container(),
-                        ),
+    return GraphQLProvider(
+      client: graphQlClient,
+      child: Container(
+          height: _height * 0.85 + 41,
+          width: _width * 0.85,
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                // APT Title & Sport Filter
+                Container(
+                  width: _width * 0.85,
+                  height: 50,
+                  child: Row(children: [
+                    Text("APT List",
+                        style: textStyle(Colors.white, 18, false, false)),
+                    Text("|", style: textStyle(Colors.white, 18, false, false)),
+                    Container(
+                        child: TextButton(
+                          onPressed: () {
+                            myController.clear();
+                            if (sportState != 0)
+                              setState(() {
+                                allListFilter = allList;
+                                sportState = 0;
+                              });
+                          },
+                          child: Text("ALL",
+                              style: textSwapState(
+                                  sportState == 0,
+                                  textStyle(
+                                      Colors.white, sportFilterTxSz, false,
+                                      false),
+                                  textStyle(Colors.amber[400]!, sportFilterTxSz,
+                                      false, true))),
+                        )),
+                    Container(
+                        child: TextButton(
+                          onPressed: () {
+                            myController.clear();
+                            if (sportState != 1)
+                              setState(() {
+                                nflListFilter = nflList;
+                                sportState = 1;
+                              });
+                          },
+                          child: Text("NFL",
+                              style: textSwapState(
+                                  sportState == 1,
+                                  textStyle(
+                                      Colors.white, sportFilterTxSz, false,
+                                      false),
+                                  textStyle(Colors.amber[400]!, sportFilterTxSz,
+                                      false, true))),
+                        )),
+                    Container(
+                        child: TextButton(
+                          onPressed: () {
+                            if (sportState != 2)
+                              setState(() {
+                                sportState = 2;
+                              });
+                          },
+                          child: Text("NBA",
+                              style: textSwapState(
+                                  sportState == 2,
+                                  textStyle(
+                                      Colors.white, sportFilterTxSz, false,
+                                      false),
+                                  textStyle(Colors.amber[400]!, sportFilterTxSz,
+                                      false, true))),
+                        )),
+                    Container(
+                        child: TextButton(
+                          onPressed: () {
+                            if (sportState != 3)
+                              setState(() {
+                                sportState = 3;
+                              });
+                          },
+                          child: Text("MMA",
+                              style: textSwapState(
+                                  sportState == 3,
+                                  textStyle(
+                                      Colors.white, sportFilterTxSz, false,
+                                      false),
+                                  textStyle(Colors.amber[400]!, sportFilterTxSz,
+                                      false, true))),
+                        )),
+                    Container(
+                      child: Expanded(
+                        child: Container(),
                       ),
-                      Container(
-                        child: createSearchBar(),
-                      ),
-                    ]),
-              ),
-              //Container(height: _height*0.03),
-              // List Headers
-              buildListviewHeaders(),
-              // ListView of Athletes
-              buildListview()
-            ]));
+                    ),
+                    Container(
+                      child: createSearchBar(),
+                    ),
+                  ]),
+                ),
+                //Container(height: _height*0.03),
+                // List Headers
+                buildListviewHeaders(),
+                // ListView of Athletes
+                buildListview()
+              ])),
+
+    );
   }
 
   Widget buildListviewHeaders() {
-    double _width = MediaQuery.of(context).size.width;
+    double _width = MediaQuery
+        .of(context)
+        .size
+        .width;
 
     bool team = true;
     bool bookVal = true;
@@ -191,7 +218,10 @@ class _DesktopScoutState extends State<DesktopScout> {
   }
 
   Widget buildListview() {
-    double _height = MediaQuery.of(context).size.height;
+    double _height = MediaQuery
+        .of(context)
+        .size
+        .height;
     double hgt = _height * 0.8 - 120;
 
     if (nflList.length == 0) {
@@ -246,7 +276,10 @@ class _DesktopScoutState extends State<DesktopScout> {
 
   // Athlete Cards
   Widget createListCards(Athlete athlete) {
-    double _width = MediaQuery.of(context).size.width;
+    double _width = MediaQuery
+        .of(context)
+        .size
+        .width;
 
     bool view = true;
     bool team = true;
@@ -274,6 +307,31 @@ class _DesktopScoutState extends State<DesktopScout> {
       }
       return "B";
     }
+
+    final readRepositories = '''
+    {
+      markets(orderBy: name, orderDirection: desc) {
+        borrowRate
+        cash
+        collateralFactor
+        exchangeRate
+        interestRateModelAddress
+        name
+        reserves
+        supplyRate
+        symbol
+        id
+        totalBorrows
+        totalSupply
+        underlyingAddress
+        underlyingName
+        underlyingPrice
+        underlyingSymbol
+        reserveFactor
+        underlyingPriceUSD
+      }
+    }
+    ''';
 
     return Container(
         height: 70,
@@ -324,24 +382,78 @@ class _DesktopScoutState extends State<DesktopScout> {
                               ])),
                     // Market Price / Change
                     Container(
-                        child: Row(children: <Widget>[
-                      Text(athlete.war.toStringAsFixed(4) + ' AX',
-                          style: textStyle(Colors.white, 16, false, false)),
-                      Container(width: 10),
-                      Text("+4%",
-                          style: textStyle(Colors.green, 12, false, false))
-                    ])),
+                        child: Query(
+                          options: QueryOptions(
+                            document: gql(readRepositories),
+                            // this is the query string you just created
+                            variables: {
+                              'nRepositories': 50,
+                            },
+                            pollInterval: const Duration(seconds: 10),
+                          ),
+                          // Just like in apollo refetch() could be used to manually trigger a refetch
+                          // while fetchMore() can be used for pagination purpose
+                          builder: (QueryResult result,
+                              { VoidCallback? refetch, FetchMore? fetchMore }) {
+                            if (result.hasException) {
+                              debugPrint(result.exception.toString());
+
+                              return Text("Hueston we have a problem");
+                              //return Text(result.exception.toString());
+                            }
+
+                            if (result.isLoading) {
+                              return const Text('Loading');
+                            }
+
+                            //List? repositories = result.data?['markets'];
+
+
+                            List? repositories = result
+                                .data?['markets'];
+                            //
+                            if (repositories == null) {
+                              return const Text('No repositories');
+                            }
+                            //
+                            return Row(children: <Widget>[
+                              Text(
+                                  repositories[1]['name'] + ' AX',
+                                  style: textStyle(Colors.white, 16, false, false)),
+                              Container(width: 10),
+                              Text("+4%",
+                                  style: textStyle(Colors.green, 12, false, false))
+                            ]);
+                            // return ListView.builder(
+                            //     itemCount: repositories.length,
+                            //     itemBuilder: (context, index) {
+                            //       final repository = repositories[index];
+                            //
+                            //       return Text(repository['name'] ?? '');
+                            //     });
+                          },
+                        )
+
+                      // Row(children: <Widget>[
+                      //   Text(athlete.war.toStringAsFixed(4) + ' AX',
+                      //       style: textStyle(Colors.white, 16, false, false)),
+                      //   Container(width: 10),
+                      //   Text("+4%",
+                      //       style: textStyle(Colors.green, 12, false, false))
+                      // ])
+                    ),
                     if (bookVal) ...[
                       Container(width: 41),
                       // Book Price
                       Container(
                           child: Row(children: <Widget>[
-                        Text(athlete.war.toStringAsFixed(4) + ' AX',
-                            style: textStyle(Colors.white, 16, false, false)),
-                        Container(width: 10),
-                        Text("-2%",
-                            style: textStyle(Colors.red, 12, false, false))
-                      ])),
+                            Text(athlete.war.toStringAsFixed(4) + ' AX',
+                                style: textStyle(Colors.white, 16, false,
+                                    false)),
+                            Container(width: 10),
+                            Text("-2%",
+                                style: textStyle(Colors.red, 12, false, false))
+                          ])),
                     ]
                   ]),
                   Row(children: <Widget>[
@@ -352,10 +464,11 @@ class _DesktopScoutState extends State<DesktopScout> {
                         decoration: boxDecoration(
                             Colors.amber[400]!, 100, 0, Colors.amber[400]!),
                         child: TextButton(
-                            onPressed: () => showDialog(
-                                context: context,
-                                builder: (BuildContext context) =>
-                                    buyDialog(context, athlete)),
+                            onPressed: () =>
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) =>
+                                        buyDialog(context, athlete)),
                             child: Text("Buy",
                                 style: textStyle(
                                     Colors.black, 16, false, false)))),
@@ -378,7 +491,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                                   width: 90,
                                   child: Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
+                                    MainAxisAlignment.spaceEvenly,
                                     children: <Widget>[
                                       Text("View",
                                           style: textStyle(
@@ -415,7 +528,8 @@ class _DesktopScoutState extends State<DesktopScout> {
                     // Filter all athletes
                     if (sportState == 0) {
                       allListFilter = allList
-                          .where((athlete) => athlete.name
+                          .where((athlete) =>
+                          athlete.name
                               .toUpperCase()
                               .contains(value.toUpperCase()))
                           .toList();
@@ -423,7 +537,8 @@ class _DesktopScoutState extends State<DesktopScout> {
                     // Filter NFL athletes
                     else {
                       nflListFilter = nflList
-                          .where((athlete) => athlete.name
+                          .where((athlete) =>
+                          athlete.name
                               .toUpperCase()
                               .contains(value.toUpperCase()))
                           .toList();
@@ -445,20 +560,21 @@ class _DesktopScoutState extends State<DesktopScout> {
   }
 
   TextStyle textStyle(Color color, double size, bool isBold, bool isUline) {
-    if (isBold) if (isUline)
-      return TextStyle(
+    if (isBold)
+      if (isUline)
+        return TextStyle(
+            color: color,
+            fontFamily: 'OpenSans',
+            fontSize: size,
+            fontWeight: FontWeight.w400,
+            decoration: TextDecoration.underline);
+      else
+        return TextStyle(
           color: color,
           fontFamily: 'OpenSans',
           fontSize: size,
           fontWeight: FontWeight.w400,
-          decoration: TextDecoration.underline);
-    else
-      return TextStyle(
-        color: color,
-        fontFamily: 'OpenSans',
-        fontSize: size,
-        fontWeight: FontWeight.w400,
-      );
+        );
     else if (isUline)
       return TextStyle(
           color: color,
@@ -478,8 +594,8 @@ class _DesktopScoutState extends State<DesktopScout> {
     return fls;
   }
 
-  BoxDecoration boxDecoration(
-      Color col, double rad, double borWid, Color borCol) {
+  BoxDecoration boxDecoration(Color col, double rad, double borWid,
+      Color borCol) {
     return BoxDecoration(
         color: col,
         borderRadius: BorderRadius.circular(rad),
