@@ -251,6 +251,8 @@ class _DesktopScoutState extends State<DesktopScout> {
               itemBuilder: (context, index) {
                 return createListCards(allListFilter[index]);
               }));
+
+
     // NFL athletes only
     else if (sportState == 1)
       return Container(
@@ -418,7 +420,8 @@ class _DesktopScoutState extends State<DesktopScout> {
                             //
                             return Row(children: <Widget>[
                               Text(
-                                  repositories[1]['name'] + ' AX',
+
+                                  repositories[1]['underlyingPriceUSD'] + ' AX',
                                   style: textStyle(Colors.white, 16, false, false)),
                               Container(width: 10),
                               Text("+4%",
