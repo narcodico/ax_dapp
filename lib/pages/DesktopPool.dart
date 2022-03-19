@@ -9,6 +9,7 @@ import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:ax_dapp/service/Dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class DesktopPool extends StatefulWidget {
@@ -228,15 +229,17 @@ class _DesktopPoolState extends State<DesktopPool> {
                       width: wid / 2 - 95,
                       height: 45,
                       decoration: boxDecoration(
-                          Colors.transparent, 100, 0, Colors.amber[400]!),
+                          Colors.amber[400]!, 100, 0, Colors.amber[400]!),
                       child: TextButton(
                           onPressed: () => showDialog(
                               context: context,
                               builder: (BuildContext context) =>
                                   poolAddLiquidity(context, tkn2!.name)),
                           child: Text(
-                            "Approve",
-                            style: textStyle(Colors.amber[500]!, 16, true),
+                            "Add Liquidity",
+                            style: TextStyle(fontWeight: FontWeight.bold,fontSize: 14,color: Colors.black),
+                           
+                             
                           )))
                   : Container(
                       width: wid / 2 - 95,
