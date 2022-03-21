@@ -3064,7 +3064,7 @@ Dialog swapDialog(BuildContext context) {
                       ),
                       Container(
                         child: Text(
-                          "0.5 AX",
+                          "${swapController.fee}" + " AX",
                           style: TextStyle(
                             fontSize: 15,
                             color: Colors.grey[600],
@@ -3110,7 +3110,7 @@ Dialog swapDialog(BuildContext context) {
                       ),
                       Container(
                         child: Text(
-                          "8.2 " + swapController.activeTkn2.value.ticker,
+                          "${swapController.minimumReceived} " + swapController.activeTkn2.value.ticker,
                           style: TextStyle(
                             fontSize: 15,
                             color: Colors.grey[600],

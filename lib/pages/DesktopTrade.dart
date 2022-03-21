@@ -28,6 +28,12 @@ class _DesktopTradeState extends State<DesktopTrade> {
   List<Token> tokenListFilter = [];
   bool isWeb = true;
 
+  final _rate = 1.12;
+  final _tokenAmountOneController = TextEditingController();
+  final _tokenAmountTwoController = TextEditingController();
+  final _tokenAmountOneFocusNode = FocusNode();
+  final _tokenAmountTwoFocusNode = FocusNode();
+
   List<Token> tokens = [
     AXT("AthleteX", "AX", AssetImage('assets/images/X_Logo_Black_BR.png')),
     SXT("SportX", "SX", AssetImage('assets/images/SX_Small.png')),
@@ -45,6 +51,40 @@ class _DesktopTradeState extends State<DesktopTrade> {
     }      
 
     tokenListFilter = tokens;
+
+    _tokenAmountOneController.addListener(onTokenOneChange);
+    _tokenAmountTwoController.addListener(onTokenTwoChange);
+  }
+
+  onTokenOneChange() {
+    if (_tokenAmountOneFocusNode.hasFocus) {
+      final tokenOne = double.tryParse(_tokenAmountOneController.text);
+
+      if (tokenOne != null) {
+        final tokenTwo = tokenOne * _rate;
+        _tokenAmountTwoController.value = TextEditingValue(text: tokenTwo.toStringAsFixed(2));
+      }
+    }
+  }
+
+  onTokenTwoChange() {
+    if (_tokenAmountTwoFocusNode.hasFocus) {
+      final tokenTwo = double.tryParse(_tokenAmountTwoController.text);
+
+      if (tokenTwo != null) {
+        final tokenOne = tokenTwo / _rate;
+        _tokenAmountOneController.value = TextEditingValue(text: tokenOne.toStringAsFixed(2));
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _tokenAmountOneController.dispose();
+    _tokenAmountOneFocusNode.dispose();
+    _tokenAmountTwoController.dispose();
+    _tokenAmountTwoFocusNode.dispose();
+    super.dispose();
   }
 
   @override
@@ -75,11 +115,14 @@ class _DesktopTradeState extends State<DesktopTrade> {
               onPressed: () {
                 if (tkn1 != null && tkn2 != null)
                   swapController.updateToken1(tkn1!);
-                swapController.updateAmount1(fromAmount);
-                swapController.updateAmount2(toAmount);
-                swapController.updateAddress1(tkn1!.address.value);
-                swapController.updateAddress2(tkn2!.address.value);
-                swapController.updateToken2(tkn2!);
+                  swapController.updateAmount1(double.parse(_tokenAmountOneController.text));
+                  swapController.updateAmount2(double.parse(_tokenAmountTwoController.text));
+                  swapController.updateAddress1(tkn1!.address.value);
+                  swapController.updateAddress2(tkn2!.address.value);
+                  swapController.updateToken2(tkn2!);
+                  swapController.updatePrice();
+                  swapController.updateFee();
+                  swapController.updateMinimumReceived();
                 showDialog(
                     context: context,
                     builder: (BuildContext context) => swapDialog(context));
@@ -143,6 +186,8 @@ class _DesktopTradeState extends State<DesktopTrade> {
                                         SizedBox(
                                           width: 70,
                                           child: TextFormField(
+                                            controller: _tokenAmountOneController,
+                                            focusNode: _tokenAmountOneFocusNode,
                                             onChanged: (value) {
                                               fromAmount = double.parse(value);
                                             },
@@ -218,8 +263,10 @@ class _DesktopTradeState extends State<DesktopTrade> {
                                       SizedBox(
                                         width: 70,
                                         child: TextFormField(
+                                          controller: _tokenAmountTwoController,
+                                          focusNode: _tokenAmountTwoFocusNode,
                                           onChanged: (value) {
-                                            fromAmount = double.parse(value);
+                                            toAmount = double.parse(value);
                                           },
                                           style: textStyle(Colors.grey[400]!, 22, false),
                                           decoration: InputDecoration(

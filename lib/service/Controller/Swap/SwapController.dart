@@ -13,6 +13,8 @@ class SwapController extends GetxController {
   var address1 = "".obs, address2 = "".obs;
   var amount1 = 0.0.obs, amount2 = 0.0.obs;
   var price = 0.0.obs;
+  var fee = 0.0.obs;
+  var minimumReceived = 0.0.obs;
   final EthereumAddress dexAddress =
       EthereumAddress.fromHex("0x778EF52b9c18dBCbc6B4A8a58B424eA6cEa5a551");
   final EthereumAddress dexPolygonAddress =
@@ -145,7 +147,7 @@ class SwapController extends GetxController {
   }
 
   void updatePrice() {
-    price.value = amount1.value * amount2.value;
+    price.value = double.parse((amount1.value * amount2.value).toStringAsFixed(3));
     update();
   }
 
@@ -156,6 +158,16 @@ class SwapController extends GetxController {
 
   void updateToken2(Token tkn2) {
     activeTkn2.value = tkn2;
+    update();
+  }
+
+  void updateFee() {
+    fee.value = double.parse((0.003 * amount1.value).toStringAsFixed(3));
+    update();
+  }
+
+  void updateMinimumReceived() {
+    minimumReceived.value = double.parse((amount2.value * (0.95)).toStringAsFixed(3));
     update();
   }
 }
