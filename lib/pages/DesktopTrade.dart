@@ -37,7 +37,8 @@ class _DesktopTradeState extends State<DesktopTrade> {
   List<Token> tokens = [
     AXT("AthleteX", "AX", AssetImage('assets/images/X_Logo_Black_BR.png')),
     SXT("SportX", "SX", AssetImage('assets/images/SX_Small.png')),
-    MATIC("Matic/Polygon", "Matic", AssetImage('assets/images/Polygon_Small.png')),
+    MATIC("Matic/Polygon", "Matic",
+        AssetImage('assets/images/Polygon_Small.png')),
   ];
 
   @override
@@ -47,33 +48,37 @@ class _DesktopTradeState extends State<DesktopTrade> {
     tkn2 = tokens[1];
 
     for (Athlete ath in AthleteList.list) {
-      tokens.add(Token(ath.name + " APT", ath.name + " APT", AssetImage('assets/images/apt.png')));
-    }      
+      tokens.add(Token(ath.name + " APT", ath.name + " APT",
+          AssetImage('assets/images/apt.png')));
+    }
 
     tokenListFilter = tokens;
 
-    _tokenAmountOneController.addListener(onTokenOneChange);
-    _tokenAmountTwoController.addListener(onTokenTwoChange);
+    _tokenAmountOneController.addListener(onTokenAmountChange);
+    _tokenAmountTwoController.addListener(onTokenAmountChange);
   }
 
-  onTokenOneChange() {
+  onTokenAmountChange() {
+    //if from amount changed, autocomplete to amount
     if (_tokenAmountOneFocusNode.hasFocus) {
       final tokenOne = double.tryParse(_tokenAmountOneController.text);
 
       if (tokenOne != null) {
         final tokenTwo = tokenOne * _rate;
-        _tokenAmountTwoController.value = TextEditingValue(text: tokenTwo.toStringAsFixed(2));
+        _tokenAmountTwoController.value =
+            TextEditingValue(text: tokenTwo.toStringAsFixed(2));
+        toAmount = double.parse(_tokenAmountTwoController.text);
       }
     }
-  }
-
-  onTokenTwoChange() {
+    //if to amount changed, autocomplete from amount
     if (_tokenAmountTwoFocusNode.hasFocus) {
       final tokenTwo = double.tryParse(_tokenAmountTwoController.text);
 
       if (tokenTwo != null) {
         final tokenOne = tokenTwo / _rate;
-        _tokenAmountOneController.value = TextEditingValue(text: tokenOne.toStringAsFixed(2));
+        _tokenAmountOneController.value =
+            TextEditingValue(text: tokenOne.toStringAsFixed(2));
+        fromAmount = double.parse(_tokenAmountOneController.text);
       }
     }
   }
@@ -89,9 +94,9 @@ class _DesktopTradeState extends State<DesktopTrade> {
 
   @override
   Widget build(BuildContext context) {
-    isWeb = kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
+    isWeb =
+        kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
     double _height = MediaQuery.of(context).size.height;
-    double fromAmount = 0, toAmount = 0;
     double wid = 550;
 
     Widget swapButton = Container(
@@ -107,105 +112,140 @@ class _DesktopTradeState extends State<DesktopTrade> {
 
     if (tkn1 != null && tkn2 != null)
       swapButton = Container(
-          margin: isWeb ? EdgeInsets.only(top: 30.0) :EdgeInsets.only(top: 20.0),
-          height: isWeb? _height * 0.05 : _height * 0.06,
+          margin:
+              isWeb ? EdgeInsets.only(top: 30.0) : EdgeInsets.only(top: 20.0),
+          height: isWeb ? _height * 0.05 : _height * 0.06,
           width: wid - 50,
-          decoration: isWeb? boxDecoration(Colors.transparent, 500, 1, Colors.amber[600]!) : boxDecoration(Colors.amber[500]!.withOpacity(0.20), 500, 1, Colors.transparent),
+          decoration: isWeb
+              ? boxDecoration(Colors.transparent, 500, 1, Colors.amber[600]!)
+              : boxDecoration(Colors.amber[500]!.withOpacity(0.20), 500, 1,
+                  Colors.transparent),
           child: TextButton(
               onPressed: () {
                 if (tkn1 != null && tkn2 != null)
                   swapController.updateToken1(tkn1!);
-                  swapController.updateAmount1(double.parse(_tokenAmountOneController.text));
-                  swapController.updateAmount2(double.parse(_tokenAmountTwoController.text));
-                  swapController.updateAddress1(tkn1!.address.value);
-                  swapController.updateAddress2(tkn2!.address.value);
-                  swapController.updateToken2(tkn2!);
-                  swapController.updatePrice();
-                  swapController.updateFee();
-                  swapController.updateMinimumReceived();
+                swapController.updateAmount1(fromAmount);
+                swapController.updateAmount2(toAmount);
+                swapController.updateAddress1(tkn1!.address.value);
+                swapController.updateAddress2(tkn2!.address.value);
+                swapController.updateToken2(tkn2!);
+                swapController.updatePrice();
+                swapController.updateFee();
+                swapController.updateMinimumReceived();
                 showDialog(
                     context: context,
                     builder: (BuildContext context) => swapDialog(context));
               },
-              child: Text(isWeb ? "Approve" : "Swap", style: isWeb ? textStyle(Colors.amber[500]!, 16, true) : textStyle(Colors.amber[500]!, 16, true))));
+              child: Text(isWeb ? "Approve" : "Swap",
+                  style: isWeb
+                      ? textStyle(Colors.amber[500]!, 16, true)
+                      : textStyle(Colors.amber[500]!, 16, true))));
 
     return SafeArea(
       bottom: false,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20),
+          padding: EdgeInsets.symmetric(horizontal: 20),
           height: _height - 114,
           alignment: Alignment.center,
           child: Container(
               height: _height * 0.475,
               width: wid,
-              decoration: boxDecoration(Colors.grey[800]!.withOpacity(0.6), 30, 0.5, Colors.grey[400]!),
+              decoration: boxDecoration(Colors.grey[800]!.withOpacity(0.6), 30,
+                  0.5, Colors.grey[400]!),
               padding: EdgeInsets.symmetric(horizontal: 10),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  Column(children: <Widget>[  
+                  Column(children: <Widget>[
                     Container(
-                      padding: isWeb ? EdgeInsets.only(left: 20) : EdgeInsets.all(0),
-                      width: wid - 50,
-                      alignment: isWeb ? Alignment.centerLeft : Alignment.center,
-                      child: Text(isWeb ? "Swap" : "Token Swap", style: textStyle(Colors.white, 16, false))), 
+                        padding: isWeb
+                            ? EdgeInsets.only(left: 20)
+                            : EdgeInsets.all(0),
+                        width: wid - 50,
+                        alignment:
+                            isWeb ? Alignment.centerLeft : Alignment.center,
+                        child: Text(isWeb ? "Swap" : "Token Swap",
+                            style: textStyle(Colors.white, 16, false))),
                     Container(
                       padding: EdgeInsets.only(left: 20.0),
                       width: wid - 50,
                       alignment: Alignment.centerLeft,
-                      child: Text("From", style: textStyle(Colors.grey[400]!, 12, false)),
+                      child: Text("From",
+                          style: textStyle(Colors.grey[400]!, 12, false)),
                     ),
                     Container(
                         width: wid - 50,
                         height: _height * 0.1,
                         alignment: Alignment.center,
-                        decoration: boxDecoration(Colors.transparent, 20, 0.5, Colors.grey[400]!),
+                        decoration: boxDecoration(
+                            Colors.transparent, 20, 0.5, Colors.grey[400]!),
                         padding: EdgeInsets.symmetric(horizontal: 15),
                         child: Container(
-                          width: wid - 100,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              createTokenButton(1),
-                              // Amount box
-                              Container(
-                                  width: 110,
-                                  child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Container(
-                                            height: 24,
-                                            width: 40,
-                                            decoration: boxDecoration(Colors.transparent, 100, 0.5, Colors.grey[400]!),
-                                            child: TextButton(
-                                              onPressed: () {
-                                                swapController.activeTkn1.value;
-                                                print(swapController.amount1);
+                            width: wid - 100,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                createTokenButton(1),
+                                // Amount box
+                                Container(
+                                    width: 110,
+                                    child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          Container(
+                                              height: 24,
+                                              width: 40,
+                                              decoration: boxDecoration(
+                                                  Colors.transparent,
+                                                  100,
+                                                  0.5,
+                                                  Colors.grey[400]!),
+                                              child: TextButton(
+                                                  onPressed: () {
+                                                    swapController
+                                                        .activeTkn1.value;
+                                                    print(
+                                                        swapController.amount1);
+                                                  },
+                                                  child: Text("MAX",
+                                                      style: textStyle(
+                                                          Colors.grey[400]!,
+                                                          8,
+                                                          false)))),
+                                          SizedBox(
+                                            width: 70,
+                                            child: TextFormField(
+                                              controller:
+                                                  _tokenAmountOneController,
+                                              focusNode:
+                                                  _tokenAmountOneFocusNode,
+                                              onChanged: (value) {
+                                                fromAmount =
+                                                    double.parse(value);
                                               },
-                                              child: Text("MAX",style: textStyle(Colors.grey[400]!, 8, false)))),
-                                        SizedBox(
-                                          width: 70,
-                                          child: TextFormField(
-                                            controller: _tokenAmountOneController,
-                                            focusNode: _tokenAmountOneFocusNode,
-                                            onChanged: (value) {
-                                              fromAmount = double.parse(value);
-                                            },
-                                            style: textStyle(Colors.grey[400]!, 22, false),
-                                            decoration: InputDecoration(
-                                              hintText: '0.00',
-                                              hintStyle: textStyle(Colors.grey[400]!, 22, false),
-                                              contentPadding:const EdgeInsets.all(9),
-                                              border: InputBorder.none,
+                                              style: textStyle(
+                                                  Colors.grey[400]!, 22, false),
+                                              decoration: InputDecoration(
+                                                hintText: '0.00',
+                                                hintStyle: textStyle(
+                                                    Colors.grey[400]!,
+                                                    22,
+                                                    false),
+                                                contentPadding:
+                                                    const EdgeInsets.all(9),
+                                                border: InputBorder.none,
+                                              ),
+                                              inputFormatters: [
+                                                FilteringTextInputFormatter
+                                                    .allow((RegExp(
+                                                        r'^(\d+)?\.?\d{0,2}'))),
+                                              ],
                                             ),
-                                            inputFormatters: [
-                                              FilteringTextInputFormatter.allow((RegExp(r'^(\d+)?\.?\d{0,2}'))),
-                                            ],
                                           ),
-                                        ),
-                                      ]))
-                            ],
-                          ))),
+                                        ]))
+                              ],
+                            ))),
                   ]),
                   Column(children: <Widget>[
                     Container(
@@ -229,62 +269,85 @@ class _DesktopTradeState extends State<DesktopTrade> {
                       padding: EdgeInsets.only(left: 20.0),
                       width: wid - 50,
                       alignment: Alignment.centerLeft,
-                      child: Text("To", style: textStyle(Colors.grey[400]!, 12, false),
+                      child: Text(
+                        "To",
+                        style: textStyle(Colors.grey[400]!, 12, false),
                       ),
                     ),
                     Container(
-                      width: wid - 50,
-                      height: _height * 0.1,
-                      alignment: Alignment.center,
-                      decoration: boxDecoration(Colors.transparent, 20, 0.5, Colors.grey[400]!),
-                      padding: EdgeInsets.symmetric(horizontal: 15),
-                      child: Container(
-                          width: wid - 100,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              createTokenButton(2),
-                              // Amount box
-                              Container(
-                                width: 110,
-                                child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Container(
-                                          height: 24,
-                                          width: 40,
-                                          decoration: boxDecoration(Colors.transparent, 100, 0.5, Colors.grey[400]!),
-                                          child: TextButton(
-                                            onPressed: () {
-                                              swapController.activeTkn2.value;
-                                              print(swapController.amount2);
-                                            },
-                                            child: Text("MAX", style: textStyle(Colors.grey[400]!, 8, false)))),
-                                      SizedBox(
-                                        width: 70,
-                                        child: TextFormField(
-                                          controller: _tokenAmountTwoController,
-                                          focusNode: _tokenAmountTwoFocusNode,
-                                          onChanged: (value) {
-                                            toAmount = double.parse(value);
-                                          },
-                                          style: textStyle(Colors.grey[400]!, 22, false),
-                                          decoration: InputDecoration(
-                                            hintText: '0.00',
-                                            hintStyle: textStyle(Colors.grey[400]!, 22, false),
-                                            contentPadding: const EdgeInsets.all(9),
-                                            border: InputBorder.none,
+                        width: wid - 50,
+                        height: _height * 0.1,
+                        alignment: Alignment.center,
+                        decoration: boxDecoration(
+                            Colors.transparent, 20, 0.5, Colors.grey[400]!),
+                        padding: EdgeInsets.symmetric(horizontal: 15),
+                        child: Container(
+                            width: wid - 100,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                createTokenButton(2),
+                                // Amount box
+                                Container(
+                                    width: 110,
+                                    child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          Container(
+                                              height: 24,
+                                              width: 40,
+                                              decoration: boxDecoration(
+                                                  Colors.transparent,
+                                                  100,
+                                                  0.5,
+                                                  Colors.grey[400]!),
+                                              child: TextButton(
+                                                  onPressed: () {
+                                                    swapController
+                                                        .activeTkn2.value;
+                                                    print(
+                                                        swapController.amount2);
+                                                  },
+                                                  child: Text("MAX",
+                                                      style: textStyle(
+                                                          Colors.grey[400]!,
+                                                          8,
+                                                          false)))),
+                                          SizedBox(
+                                            width: 70,
+                                            child: TextFormField(
+                                              controller:
+                                                  _tokenAmountTwoController,
+                                              focusNode:
+                                                  _tokenAmountTwoFocusNode,
+                                              onChanged: (value) {
+                                                toAmount = double.parse(value);
+                                              },
+                                              style: textStyle(
+                                                  Colors.grey[400]!, 22, false),
+                                              decoration: InputDecoration(
+                                                hintText: '0.00',
+                                                hintStyle: textStyle(
+                                                    Colors.grey[400]!,
+                                                    22,
+                                                    false),
+                                                contentPadding:
+                                                    const EdgeInsets.all(9),
+                                                border: InputBorder.none,
+                                              ),
+                                              inputFormatters: [
+                                                FilteringTextInputFormatter
+                                                    .allow((RegExp(
+                                                        r'^(\d+)?\.?\d{0,2}'))),
+                                              ],
+                                            ),
                                           ),
-                                          inputFormatters: [
-                                            FilteringTextInputFormatter.allow((RegExp(r'^(\d+)?\.?\d{0,2}'))),
-                                          ],
-                                        ),
-                                      ),
-                                    ]))
-                            ],
-                          ))),
+                                        ]))
+                              ],
+                            ))),
                   ]),
-                  swapButton 
+                  swapButton
                 ],
               ))),
     );
@@ -378,42 +441,41 @@ class _DesktopTradeState extends State<DesktopTrade> {
     }
 
     return Container(
-      constraints: BoxConstraints(
-        maxWidth: (_width < 350.0) ? 115 : 150,
-        maxHeight: 100,
-      ),
-      height: 40,
-      decoration: decor,
-      child: TextButton(
-        onPressed: () => showDialog(
-            context: context,
-            builder: (BuildContext context) =>
-                AthleteTokenList(context, tknNum, createTokenElement)),
-        child: Container(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Container(
-                width: 30,
-                height: 30,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    image: tokenImage!,
-                    fit: BoxFit.fill,
+        constraints: BoxConstraints(
+          maxWidth: (_width < 350.0) ? 115 : 150,
+          maxHeight: 100,
+        ),
+        height: 40,
+        decoration: decor,
+        child: TextButton(
+            onPressed: () => showDialog(
+                context: context,
+                builder: (BuildContext context) =>
+                    AthleteTokenList(context, tknNum, createTokenElement)),
+            child: Container(
+                child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Container(
+                  width: 30,
+                  height: 30,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      image: tokenImage!,
+                      fit: BoxFit.fill,
+                    ),
                   ),
                 ),
-              ),
-              Container(width: 10),
-              Expanded(
-                child: Text(tkr, overflow: TextOverflow.ellipsis, style: textStyle(Colors.white, tkrTextSize, true)),
-              ),
-              Icon(Icons.keyboard_arrow_down, color: Colors.white, size: 25)
-            ],
-          )
-        )
-      )
-    );
+                Container(width: 10),
+                Expanded(
+                  child: Text(tkr,
+                      overflow: TextOverflow.ellipsis,
+                      style: textStyle(Colors.white, tkrTextSize, true)),
+                ),
+                Icon(Icons.keyboard_arrow_down, color: Colors.white, size: 25)
+              ],
+            ))));
   }
 
   void dialog(BuildContext context, double _height, double _width,
