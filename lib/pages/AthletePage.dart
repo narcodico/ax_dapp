@@ -86,7 +86,7 @@ class _AthletePageState extends State<AthletePage> {
     if (_width < 1160) wid = _width * 0.95;
 
     return Container(
-        height: 650,
+        height: 600,
         child: Column(
           children: <Widget>[
             // title
@@ -136,7 +136,7 @@ class _AthletePageState extends State<AthletePage> {
                     children: <Widget>[
                       Container(
                           width: wid * .875,
-                          height: _height * .4,
+                          height: _height * .45,
                           decoration: boxDecoration(
                               Colors.transparent, 10, 1, Colors.grey[400]!),
                           child: Stack(
@@ -159,7 +159,7 @@ class _AthletePageState extends State<AthletePage> {
                                               style: textStyle(Colors.white, 9,
                                                   false, false)),
                                           Container(
-                                              width: 130,
+                                              width: 250,
                                               height: 25,
                                               child: Row(
                                                 mainAxisAlignment:
@@ -193,7 +193,7 @@ class _AthletePageState extends State<AthletePage> {
                           )),
                       Container(
                           width: wid * .875,
-                          height: 150,
+                          height: 140,
                           child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: <Widget>[
@@ -202,7 +202,7 @@ class _AthletePageState extends State<AthletePage> {
                                         MainAxisAlignment.spaceAround,
                                     children: <Widget>[
                                       Container(
-                                          width: 175,
+                                          width: 250,
                                           height: 50,
                                           decoration: boxDecoration(
                                               Colors.amber[400]!,
@@ -220,7 +220,7 @@ class _AthletePageState extends State<AthletePage> {
                                                   style: textStyle(Colors.black,
                                                       20, false, false)))),
                                       Container(
-                                          width: 175,
+                                          width: 250,
                                           height: 50,
                                           decoration: boxDecoration(
                                               Colors.white,
@@ -243,7 +243,7 @@ class _AthletePageState extends State<AthletePage> {
                                         MainAxisAlignment.spaceAround,
                                     children: <Widget>[
                                       Container(
-                                          width: 175,
+                                          width: 250,
                                           height: 50,
                                           decoration: boxDecoration(
                                               Colors.transparent,
@@ -261,7 +261,7 @@ class _AthletePageState extends State<AthletePage> {
                                                   style: textStyle(Colors.white,
                                                       20, false, false)))),
                                       Container(
-                                          width: 175,
+                                          width: 250,
                                           height: 50,
                                           decoration: boxDecoration(
                                               Colors.transparent,
@@ -567,9 +567,9 @@ class _AthletePageState extends State<AthletePage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Container(
-                                child: Text("Current season Stats",
+                                child: Text("Current Season Stats",
                                     style: textStyle(
-                                        Colors.grey[400]!, 16, false, false)),
+                                        Colors.grey[400]!, 20, false, false)),
                               ),
                               Container(
                                   width: 260,
