@@ -1,8 +1,10 @@
-import 'package:ax_dapp/service/AthleteApi.dart';
+import 'package:ax_dapp/repositories/NFLRepo.dart';
+import 'package:ax_dapp/service/athlete_api/NFLAthleteAPI.dart';
 import 'package:ax_dapp/service/AthleteList.dart';
 import 'package:ax_dapp/pages/V1App.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:dio/dio.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({Key? key}) : super(key: key);
@@ -56,7 +58,7 @@ class _LandingPageState extends State<LandingPage> {
               margin: EdgeInsets.only(bottom: 130.0),
               child: FutureBuilder<dynamic>(
                 // future: AthleteApi.getAthletesLocally(context),
-                future: AthleteApi.getAthletesFromIdsDict(context),
+                future: NFLRepo(NFLAthleteAPI(Dio())).getPlayersById(),
                 builder: (context, snapshot) {
                   //Check API response data
                   if (snapshot.hasError) {

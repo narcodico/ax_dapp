@@ -1,4 +1,4 @@
-import 'package:ax_dapp/service/Athlete.dart';
+import 'package:ax_dapp/service/athleteModels/NFLAthlete.dart';
 import 'package:ax_dapp/service/AthleteApi.dart';
 import 'package:ax_dapp/style/Style.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +17,7 @@ class _ExplorePageState extends State<ExplorePage> {
   late String name;
   late List war;
   late List time;
-  late List<Athlete> athleteList;
+  late List<NFLAthlete> athleteList;
   Widget filler = Text("Filler Text");
 
   // reset the name for the state when list item on tap
@@ -177,8 +177,16 @@ class _ExplorePageState extends State<ExplorePage> {
                                             child: ListTile(
                                                 onTap: () => setState(() => {
                                                       name = athlete.name,
-                                                      war = [athlete.war, athlete.war, athlete.war],
-                                                      time = [athlete.time, athlete.time, athlete.time]
+                                                      war = [
+                                                        athlete.price,
+                                                        athlete.price,
+                                                        athlete.price
+                                                      ],
+                                                      time = [
+                                                        athlete.timeStamp,
+                                                        athlete.timeStamp,
+                                                        athlete.timeStamp
+                                                      ]
                                                     }),
                                                 title: Text(athlete.name)));
                                       }))),

@@ -1,9 +1,14 @@
 import 'package:ax_dapp/pages/AthletePage.dart';
-import 'package:ax_dapp/service/Athlete.dart';
+import 'package:ax_dapp/repositories/MlbRepo.dart';
+import 'package:ax_dapp/repositories/NFLRepo.dart';
+import 'package:ax_dapp/service/athlete_api/MLBAthleteAPI.dart';
+import 'package:ax_dapp/service/athleteModels/NFLAthlete.dart';
 import 'package:ax_dapp/service/AthleteList.dart';
 import 'package:ax_dapp/service/Dialog.dart';
+import 'package:ax_dapp/service/athlete_api/NFLAthleteAPI.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
 
 class DesktopScout extends StatefulWidget {
   const DesktopScout({
@@ -18,15 +23,15 @@ class _DesktopScoutState extends State<DesktopScout> {
   final myController = TextEditingController();
   bool athletePage = false;
   int sportState = 0;
-  List<Athlete> nflList = [];
-  List<Athlete> nflListFilter = [];
+  List<NFLAthlete> nflList = [];
+  List<NFLAthlete> nflListFilter = [];
   String allSportsTitle = "All Sports";
   String longTitle = "Long";
 
   // This will hold all the athletes
-  List<Athlete> allList = [];
-  List<Athlete> allListFilter = [];
-  Athlete curAthlete = Athlete(
+  List<NFLAthlete> allList = [];
+  List<NFLAthlete> allListFilter = [];
+  NFLAthlete curAthlete = NFLAthlete(
       name: "",
       id: 0,
       team: "",
@@ -37,8 +42,8 @@ class _DesktopScoutState extends State<DesktopScout> {
       receiveYards: 0,
       receiveTouch: 0,
       rushingYards: 0,
-      war: 0,
-      time: "");
+      price: 0,
+      timeStamp: "");
   int _widgetIndex = 0;
   int _marketVsBookPriceIndex = 0;
 
@@ -56,6 +61,12 @@ class _DesktopScoutState extends State<DesktopScout> {
     double sportFilterIconSz = 14;
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
+    final mlbRepo = MLBRepo(MLBAthleteAPI(Dio()));
+    mlbRepo.getAllPlayers().then((response) =>
+        {print("First MLB player retrieved: ${response.first.name}")});
+    final nflRepo = NFLRepo(NFLAthleteAPI(Dio()));
+    nflRepo.getAllPlayers().then((response) =>
+        {print("First NFL player retrieved: ${response.first.name}")});
 
     if (athletePage) return AthletePage(athlete: curAthlete);
 
@@ -602,7 +613,7 @@ class _DesktopScoutState extends State<DesktopScout> {
   }
 
   // Athlete Cards
-  Widget createListCards(Athlete athlete) {
+  Widget createListCards(NFLAthlete athlete) {
     double _width = MediaQuery.of(context).size.width;
 
     bool view = true;
@@ -682,7 +693,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                       children: [
                         Container(
                             child: Row(children: <Widget>[
-                          Text(athlete.war.toStringAsFixed(4) + ' AX',
+                          Text(athlete.price.toStringAsFixed(4) + ' AX',
                               style: textStyle(Colors.white, 16, false, false)),
                           Container(width: 10),
                           Text("+4%",
@@ -690,7 +701,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                         ])),
                         Container(
                             child: Row(children: <Widget>[
-                          Text(athlete.war.toStringAsFixed(4) + ' AX',
+                          Text(athlete.price.toStringAsFixed(4) + ' AX',
                               style: textStyle(Colors.white, 16, false, false)),
                           Container(width: 10),
                           Text("-2%",
@@ -710,12 +721,13 @@ class _DesktopScoutState extends State<DesktopScout> {
                             0,
                             Color.fromRGBO(254, 197, 0, 0.2)),
                         child: TextButton(
-                            onPressed: (){
-                              if (kIsWeb){
-                                 showDialog(
+                            onPressed: () {
+                              if (kIsWeb) {
+                                showDialog(
                                     context: context,
-                                    builder: (BuildContext context) => buyDialog(context, athlete));
-                              }else {
+                                    builder: (BuildContext context) =>
+                                        buyDialog(context, athlete));
+                              } else {
                                 setState(() {
                                   curAthlete = athlete;
                                   athletePage = true;

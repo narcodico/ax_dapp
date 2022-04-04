@@ -34,6 +34,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
   @override
   void initState() {
     super.initState();
+    print("This is token list: ${TokenList.tokenList}");
     try {
       tknFrom = TokenList.tokenList[0];
       tknTo = TokenList.tokenList[1];

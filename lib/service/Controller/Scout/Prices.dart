@@ -1,10 +1,8 @@
 // File for getting the price of any APT  from the DEX using Postgres instead of http
 
-import 'package:ax_dapp/service/Athlete.dart';
 import 'package:postgres/postgres.dart';
 
 class Prices {
-  late Athlete athlete;
   late PostgreSQLConnection connection;
   var databaseUrl;
   var firstPrice, lastPrice;

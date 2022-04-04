@@ -1,4 +1,4 @@
-import 'package:ax_dapp/service/Athlete.dart';
+import 'package:ax_dapp/service/athleteModels/NFLAthlete.dart';
 import 'package:ax_dapp/service/AthleteTokenList.dart';
 import 'package:ax_dapp/service/Controller/Pool/PoolController.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
@@ -871,7 +871,7 @@ class _DesktopPoolState extends State<DesktopPool> {
 
 class Farm {
   final String name;
-  Athlete? athlete;
+  NFLAthlete? athlete;
 
   Farm(this.name, [this.athlete]);
 }

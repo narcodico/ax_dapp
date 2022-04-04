@@ -13,7 +13,7 @@ import 'package:ax_dapp/service/Controller/Token.dart';
 import 'package:ax_dapp/service/Dialog.dart';
 import 'package:ax_dapp/service/widgets_mobile/DropdownMenu.dart';
 import 'package:flutter/material.dart';
-import 'package:ax_dapp/service/Athlete.dart';
+import 'package:ax_dapp/service/athleteModels/NFLAthlete.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -57,7 +57,7 @@ class _V1AppState extends State<V1App> {
   bool walletConnected =
       false; //flag to check if user has connected their wallet
   bool allFarms = true;
-  List<Athlete> athleteList = [];
+  List<NFLAthlete> athleteList = [];
   Controller controller =
       Get.put(Controller()); // Rather Controller controller = Controller();
   AXT axt = AXT("AthleteX", "AX");

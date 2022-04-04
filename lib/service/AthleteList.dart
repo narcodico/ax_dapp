@@ -1,5 +1,5 @@
-import 'package:ax_dapp/service/Athlete.dart';
+import 'package:ax_dapp/service/athleteModels/NFLAthlete.dart';
 
 class AthleteList {
-  static List<Athlete> list = [];
+  static List<NFLAthlete> list = [];
 }

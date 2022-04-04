@@ -1,4 +1,4 @@
-import 'package:ax_dapp/service/Athlete.dart';
+import 'package:ax_dapp/service/athleteModels/NFLAthlete.dart';
 import 'package:ax_dapp/service/AthleteList.dart';
 import 'package:ax_dapp/service/Dialog.dart';
 import 'package:flutter/gestures.dart';
@@ -26,7 +26,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
     allFarmsList.add(Farm("AX Farm"));
     myFarmsList.add(Farm("AX Farm"));
 
-    for (Athlete ath in AthleteList.list) {
+    for (NFLAthlete ath in AthleteList.list) {
       allFarmsList.add(Farm("AX - " + ath.name + " APT", ath));
       myFarmsList.add(Farm("AX - " + ath.name + " APT", ath));
     }
@@ -623,7 +623,7 @@ class _DesktopFarmState extends State<DesktopFarm> {
 
 class Farm {
   final String name;
-  Athlete? athlete;
+  NFLAthlete? athlete;
 
   Farm(this.name, [this.athlete]);
 }

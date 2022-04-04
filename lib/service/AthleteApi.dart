@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ax_dapp/service/Athlete.dart';
+import 'package:ax_dapp/service/athleteModels/NFLAthlete.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
@@ -11,20 +11,23 @@ class AthleteApi {
   static final int jChaseId = 22564;
   static final int jBurrowId = 21693;
   static final int cKuppId = 18882;
-  static Future<List<Athlete>> getAthletesLocally(BuildContext context) async {
+  static Future<List<NFLAthlete>> getAthletesLocally(
+      BuildContext context) async {
     final assetBundle = DefaultAssetBundle.of(context);
     final data = await assetBundle.loadString('assets/data.json');
     final body = json.decode(data);
     //print(body);
-    return body.map<Athlete>(Athlete.fromJson).toList();
+    return body.map<NFLAthlete>(NFLAthlete.fromJsonStatic).toList();
   }
 
-  static List<Athlete> parseAthletes(var athleteResponse) {
+  static List<NFLAthlete> parseAthletes(var athleteResponse) {
     final parsed = json.decode(athleteResponse).cast<Map<String, dynamic>>();
-    return parsed.map<Athlete>((json) => Athlete.fromJson(json)).toList();
+    return parsed
+        .map<NFLAthlete>((json) => NFLAthlete.fromJsonStatic(json))
+        .toList();
   }
 
-  static Future<List<Athlete>> getAthletesFromIdList(
+  static Future<List<NFLAthlete>> getAthletesFromIdList(
       BuildContext context) async {
     List<String> athleteIDs = [
       mStaffordId.toString(),
@@ -32,7 +35,7 @@ class AthleteApi {
       jBurrowId.toString(),
       cKuppId.toString()
     ];
-    final List<Athlete> athletesList = [];
+    final List<NFLAthlete> athletesList = [];
     for (String id in athleteIDs) {
       final athleteResponse =
           await http.get(Uri.parse('$_baseURL/nfl/players/$id'));
@@ -40,7 +43,8 @@ class AthleteApi {
       print(athleteResponse.statusCode);
 
       if (athleteResponse.statusCode == 200) {
-        var athlete = Athlete.fromJson(jsonDecode(athleteResponse.body));
+        var athlete =
+            NFLAthlete.fromJsonStatic(jsonDecode(athleteResponse.body));
         athletesList.add(athlete);
       } else {
         throw Exception("Failed to load athlete");
@@ -50,7 +54,7 @@ class AthleteApi {
     return athletesList;
   }
 
-  static Future<List<Athlete>> getAthletesFromIdsDict(
+  static Future<List<NFLAthlete>> getAthletesFromIdsDict(
       BuildContext context) async {
     Map<String, List<int>> athleteIdDict = {
       "ids": [mStaffordId, jChaseId, jBurrowId, cKuppId],
@@ -66,7 +70,7 @@ class AthleteApi {
     if (athleteResponse.statusCode == 200) {
       var athleteResponseList = jsonDecode(athleteResponse.body) as List;
       return athleteResponseList
-          .map((athlete) => Athlete.fromJson(athlete))
+          .map((athlete) => NFLAthlete.fromJsonStatic(athlete))
           .toList();
     } else {
       throw Exception("Failed to load athlete");

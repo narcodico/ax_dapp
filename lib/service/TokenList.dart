@@ -15,11 +15,11 @@ class TokenList {
     ...AthleteList.list.map((ath) {
       return APT(ath.name + " Long", ath.name + " Long",
           AssetImage('../assets/images/apt.png'), AXT.idToAddress[ath.id]![1]);
-    }),
+    }).toList(),
     ...AthleteList.list.map((ath) {
       return APT(ath.name + " Short", ath.name + " Short",
           AssetImage('../assets/images/apt.png'), AXT.idToAddress[ath.id]![2]);
-    }),
+    }).toList(),
   ];
 
   // TokenList() {
