@@ -36,12 +36,12 @@ class _MLBAthleteAPI implements MLBAthleteAPI {
   }
 
   @override
-  Future<List<MLBAthlete>> getPlayersById(idsDict) async {
+  Future<List<MLBAthlete>> getPlayersById(playerIds) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(idsDict);
+    _data.addAll(playerIds.toJson());
     final _result = await _dio.fetch<List<dynamic>>(
         _setStreamType<List<MLBAthlete>>(
             Options(method: 'POST', headers: _headers, extra: _extra)

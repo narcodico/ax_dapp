@@ -1,4 +1,5 @@
 import 'package:ax_dapp/service/athleteModels/MLBAthlete.dart';
+import 'package:ax_dapp/service/athlete_api/models/PlayerIds.dart';
 import 'package:retrofit/http.dart';
 import 'package:dio/dio.dart';
 part 'MLBAthleteAPI.g.dart';
@@ -12,5 +13,5 @@ abstract class MLBAthleteAPI {
 
   @POST("/players")
   Future<List<MLBAthlete>> getPlayersById(
-      @Body() Map<String, List<int>> idsDict);
+      @Body() PlayerIds playerIds);
 }
