@@ -55,6 +55,7 @@ dependencies:
   equatable: ^2.0.3
   mockito: ^5.0.17
   graphql_flutter: ^5.0.1
+  gql: '>=0.12.3 <1.0.0'
 
 dependency_overrides:
   charts_flutter:

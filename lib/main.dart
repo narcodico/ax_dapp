@@ -1,6 +1,6 @@
 import 'package:ax_dapp/pages/LandingPage.dart';
 import 'package:ax_dapp/repositories/MlbRepo.dart';
-import 'package:ax_dapp/service/GraphApi/GraphQLClientHelper.dart';
+import 'package:ax_dapp/service/GraphQL/GraphQLClientHelper.dart';
 import 'package:ax_dapp/service/athleteAPI/MLBAthleteAPI.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

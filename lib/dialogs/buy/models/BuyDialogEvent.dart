@@ -1,3 +1,4 @@
+import 'package:ax_dapp/service/TokenList.dart';
 import 'package:equatable/equatable.dart';
 
 class BuyDialogEvent extends Equatable {
@@ -6,8 +7,10 @@ class BuyDialogEvent extends Equatable {
 }
 
 class OnLoadDialog extends BuyDialogEvent {
+  final String initialTokenAddress;
   @override
   List<Object?> get props => [];
+  OnLoadDialog({required this.initialTokenAddress});
 }
 
 class OnMaxBuyTap extends BuyDialogEvent {
