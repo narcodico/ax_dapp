@@ -1,6 +1,6 @@
+import 'package:ax_dapp/service/athleteAPI/models/PlayerIds.dart';
 import 'package:ax_dapp/service/athleteModels/mlb/MLBAthlete.dart';
 import 'package:ax_dapp/service/athleteModels/mlb/MLBPAthleteStats.dart';
-import 'package:ax_dapp/service/athlete_api/models/PlayerIds.dart';
 import 'package:retrofit/http.dart';
 import 'package:dio/dio.dart';
 
