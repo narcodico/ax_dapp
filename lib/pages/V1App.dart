@@ -160,7 +160,7 @@ class _V1AppState extends State<V1App> {
                   repo: GetScoutAthletesDataUseCase([
                     RepositoryProvider.of<MLBRepo>(context),
                     //NFLRepo
-                    //MLBRepo
+                    //NBARepo
                   ])),
               child: DesktopScout()),
           DesktopTrade(),
