@@ -11,7 +11,7 @@ import 'package:get/get.dart';
 class WalletController extends GetxController {
   var axPrice = "-".obs;
   var axCirculation = "-".obs;
-  var axTotalSupply = "-".obs;
+  var axTotalSupply = "100,000,000".obs;
   var yourBalance = "-".obs;
 
   void getYourAXBalance() async {
