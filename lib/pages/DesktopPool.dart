@@ -19,8 +19,8 @@ class DesktopPool extends StatefulWidget {
 class _DesktopPoolState extends State<DesktopPool> {
   PoolController poolController = Get.find();
   bool isAllLiquidity = true;
-  double token1Amount = 0.0;
-  double token2Amount = 0.0;
+  late double token1Amount;
+  late double token2Amount;
   Token? tkn1;
   Token? tkn2;
   bool isWeb = true;
@@ -254,7 +254,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                 onChanged: (value) {
                   setState(() {
                     tokenListFilter = TokenList.tokenList
-                        .where((token) => token.name
+                        .where((token) => (token.ticker + " " + token.name )
                             .toUpperCase()
                             .contains(value.toUpperCase()))
                         .toList();
@@ -351,7 +351,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                   Container(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      "AX / " + athleteToken.name,
+                      "AX / " + (athleteToken.ticker + " " + athleteToken.name),
                       style: textStyle(Colors.white, 24, true),
                     ),
                   ),
@@ -401,7 +401,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text(
-                          "Pooled " + athleteToken.name + " APT:",
+                          "Pooled " + (athleteToken.ticker + " " + athleteToken.name) + " APT:",
                           style: TextStyle(
                               color: Colors.grey[600],
                               fontWeight: FontWeight.bold),
@@ -465,7 +465,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                           onPressed: () => showDialog(
                               context: context,
                               builder: (BuildContext context) =>
-                                  poolAddLiquidity(context, tkn2!.name)),
+                                  poolAddLiquidity(context, (tkn2!.ticker + " " + tkn2!.name))),
                           child: Text(
                             "Add",
                             style: textStyle(Colors.black, 20, true),
@@ -480,7 +480,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                           onPressed: () => showDialog(
                               context: context,
                               builder: (BuildContext context) =>
-                                  poolRemoveLiquidity(context, tkn2!.name)),
+                                  poolRemoveLiquidity(context, (tkn2!.ticker + " " + tkn2!.name))),
                           child: Text(
                             "Remove",
                             style: textStyle(Colors.amber[400]!, 18, true),
@@ -605,7 +605,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                   ),
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(
-                        (RegExp(r'^(\d+)?\.?\d{0,2}'))),
+                        (RegExp(r'^(\d+)?\.?\d{0,6}'))),
                   ],
                 ),
               ),
@@ -755,7 +755,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                     onPressed: () => showDialog(
                         context: context,
                         builder: (BuildContext context) =>
-                            poolAddLiquidity(context, tkn2!.name)),
+                            poolAddLiquidity(context, (tkn2!.ticker + " " + tkn2!.name))),
                     child: Text(
                       "Add Liquidity",
                       style: textStyle(Colors.black, 16, true),
@@ -835,7 +835,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                             width: 125,
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              token.name,
+                              (token.ticker + " " + token.name),
                               style: textStyle(Colors.grey[100]!, 9, false),
                             )),
                       ],

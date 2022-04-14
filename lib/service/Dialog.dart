@@ -1,18 +1,17 @@
 // ignore_for_file: non_constant_identifier_names
-
+import 'package:ax_dapp/pages/scout/models/AthleteScoutModel.dart';
 import 'package:ax_dapp/service/ApproveButton.dart';
 import 'package:ax_dapp/service/Controller/Controller.dart';
 import 'package:ax_dapp/service/Controller/Farms/FarmController.dart';
 import 'package:ax_dapp/service/Controller/Pool/PoolController.dart';
-import 'package:ax_dapp/service/Controller/WalletController.dart';
 import 'package:ax_dapp/service/Controller/Scout/LSPController.dart';
 import 'package:ax_dapp/service/Controller/Swap/SwapController.dart';
+import 'package:ax_dapp/service/Controller/WalletController.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
-import 'package:ax_dapp/service/Athlete.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 
 Future<void> testFunction() async {
   FarmController farmController = Get.find();
@@ -403,7 +402,7 @@ Dialog depositDialog(BuildContext context, double layoutWdt, bool isWeb) {
                         ),
                         inputFormatters: [
                           FilteringTextInputFormatter.allow(
-                              (RegExp(r'^(\d+)?\.?\d{0,2}'))),
+                              (RegExp(r'^(\d+)?\.?\d{0,6}'))),
                         ],
                       ),
                     ),
@@ -477,7 +476,7 @@ Dialog depositDialog(BuildContext context, double layoutWdt, bool isWeb) {
 
 // dynamic
 Dialog dualDepositDialog(
-    BuildContext context, Athlete athlete, double layoutWdt, bool isWeb) {
+    BuildContext context, String athlete, double layoutWdt, bool isWeb) {
   TextEditingController stakeAxInput = TextEditingController();
   WalletController walletController = Get.find();
   double _height = MediaQuery.of(context).size.height;
@@ -597,7 +596,7 @@ Dialog dualDepositDialog(
                         ),
                         inputFormatters: [
                           FilteringTextInputFormatter.allow(
-                              (RegExp(r'^(\d+)?\.?\d{0,2}'))),
+                              (RegExp(r'^(\d+)?\.?\d{0,6}'))),
                         ],
                       ),
                     ),
@@ -630,7 +629,7 @@ Dialog dualDepositDialog(
                       Container(width: 15),
                       Expanded(
                         child: Text(
-                          athlete.name + " APT",
+                          athlete + " APT",
                           style: textStyle(Colors.white, 15, false),
                         ),
                       ),
@@ -662,7 +661,7 @@ Dialog dualDepositDialog(
                           ),
                           inputFormatters: [
                             FilteringTextInputFormatter.allow(
-                                (RegExp(r'^(\d+)?\.?\d{0,2}'))),
+                                (RegExp(r'^(\d+)?\.?\d{0,6}'))),
                           ],
                         ),
                       ),
@@ -713,7 +712,7 @@ Dialog dualDepositDialog(
 }
 
 // dynamic
-Dialog buyDialog(BuildContext context, Athlete athlete) {
+Dialog buyDialog(BuildContext context, AthleteScoutModel athlete) {
   bool isWeb = true;
   isWeb =
       kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
@@ -865,7 +864,7 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
                               ),
                               inputFormatters: [
                                 FilteringTextInputFormatter.allow(
-                                    (RegExp(r'^(\d+)?\.?\d{0,2}'))),
+                                    (RegExp(r'^(\d+)?\.?\d{0,6}'))),
                               ],
                             ),
                           ),
@@ -1049,7 +1048,7 @@ Dialog buyDialog(BuildContext context, Athlete athlete) {
 }
 
 // dynamic
-Dialog sellDialog(BuildContext context, Athlete athlete) {
+Dialog sellDialog(BuildContext context, AthleteScoutModel athlete) {
   bool isWeb = true;
   isWeb =
       kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
@@ -1190,7 +1189,7 @@ Dialog sellDialog(BuildContext context, Athlete athlete) {
                               ),
                               inputFormatters: [
                                 FilteringTextInputFormatter.allow(
-                                    (RegExp(r'^(\d+)?\.?\d{0,2}'))),
+                                    (RegExp(r'^(\d+)?\.?\d{0,6}'))),
                               ],
                             ),
                           ),
@@ -1361,7 +1360,7 @@ Dialog sellDialog(BuildContext context, Athlete athlete) {
 }
 
 // dynamic
-Dialog redeemDialog(BuildContext context, Athlete athlete) {
+Dialog redeemDialog(BuildContext context, AthleteScoutModel athlete) {
   bool isWeb = true;
   isWeb =
       kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
@@ -1500,7 +1499,7 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
                           ),
                           inputFormatters: [
                             FilteringTextInputFormatter.allow(
-                                (RegExp(r'^(\d+)?\.?\d{0,2}'))),
+                                (RegExp(r'^(\d+)?\.?\d{0,6}'))),
                           ],
                           onChanged: (value) {
                             double newAmount = double.parse(value);
@@ -1572,7 +1571,7 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
                           ),
                           inputFormatters: [
                             FilteringTextInputFormatter.allow(
-                                (RegExp(r'^(\d+)?\.?\d{0,2}'))),
+                                (RegExp(r'^(\d+)?\.?\d{0,6}'))),
                           ],
                           onChanged: (value) {
                             double newAmount = double.parse(value);
@@ -1646,7 +1645,7 @@ Dialog redeemDialog(BuildContext context, Athlete athlete) {
 }
 
 // dynamic
-Dialog mintDialog(BuildContext context, Athlete athlete) {
+Dialog mintDialog(BuildContext context, AthleteScoutModel athlete) {
   bool isWeb = true;
   isWeb =
       kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
@@ -1784,7 +1783,7 @@ Dialog mintDialog(BuildContext context, Athlete athlete) {
                           ),
                           inputFormatters: [
                             FilteringTextInputFormatter.allow(
-                                (RegExp(r'^(\d+)?\.?\d{0,2}'))),
+                                (RegExp(r'^(\d+)?\.?\d{0,6}'))),
                           ],
                           onChanged: (value) {
                             double newAmount = double.parse(value);
@@ -2756,7 +2755,7 @@ Dialog removeDialog(BuildContext context, double layoutWdt, bool isWeb) {
                         ),
                         inputFormatters: [
                           FilteringTextInputFormatter.allow(
-                              (RegExp(r'^(\d+)?\.?\d{0,2}'))),
+                              (RegExp(r'^(\d+)?\.?\d{0,6}'))),
                         ],
                       ),
                     ),
@@ -3506,7 +3505,7 @@ Dialog poolRemoveLiquidity(BuildContext context, String name) {
                                       ),
                                       inputFormatters: [
                                         FilteringTextInputFormatter.allow(
-                                            (RegExp(r'^(\d+)?\.?\d{0,2}'))),
+                                            (RegExp(r'^(\d+)?\.?\d{0,6}'))),
                                       ],
                                     ),
                                   ),
