@@ -46,23 +46,19 @@ class _DesktopTradeState extends State<DesktopTrade> {
       builder: (context, state) {
         print("Trying to read TradePageBloc");
         final bloc = context.read<TradePageBloc>();
-        if (state.tokenTo == null)
-          bloc.add(SetTokenTo(tokenTo: TokenList.tokenList[0]));
-
-        if (state.tokenFrom == null)
-          bloc.add(SetTokenFrom(tokenFrom: TokenList.tokenList[1]));
         print("Read TradePageBloc");
         print("TradePage price: ${state.price}");
         final price = state.price.toStringAsFixed(6);
-        final balance = state.balance;
+        final tokenToBalance = state.tokenToBalance.toStringAsFixed(6);
+        final tokenFromBalance = state.tokenFromBalance.toStringAsFixed(6);
         final minReceived = state.minimumReceived.toStringAsFixed(6);
         final priceImpact = state.priceImpact.toStringAsFixed(6);
         final receiveAmount = state.receiveAmount.toStringAsFixed(6);
-        final lpFee = state.lpFee;
-        final estimatedSlippage = state.estimatedSlippage;
+        final lpFee = state.lpFee.toStringAsFixed(6);
+        final slippageTolerance = 1;
         // print("TradePage tokenFrom: ${state.tokenFrom!.address.value}");
         final Token? tokenFrom = state.tokenFrom ?? TokenList.tokenList[0];
-        final Token? tokenTo = state.tokenTo ?? TokenList.tokenList[1];
+        final Token? tokenTo = state.tokenTo ?? TokenList.tokenList[3];
         final tokenInputFromAmount = state.tokenInputFromAmount;
         final tokenInputToAmount = state.tokenInputToAmount;
         // print("Trade TokenFromAddress: ${state.tokenFrom!.address.value}");
@@ -71,6 +67,12 @@ class _DesktopTradeState extends State<DesktopTrade> {
         // print("Trade minReceived: ${state.minimumReceived}");
         // print("Trade PriceImpact: ${state.priceImpact}");
         // print("Trade ReceiveAmount: ${state.receiveAmount}");
+
+        if (state.status == Status.initial) {
+          bloc.add(SetTokenFrom(tokenFrom: TokenList.tokenList[0]));
+          bloc.add(SetTokenTo(tokenTo: TokenList.tokenList[3]));
+          bloc.add(PageRefreshEvent());
+        }
 
         TextStyle textStyle(Color color, double size, bool isBold) {
           if (isBold)
@@ -103,10 +105,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
             decoration:
                 boxDecoration(Colors.transparent, 100, 0.5, Colors.grey[400]!),
             child: TextButton(
-              onPressed: () {
-                swapController.activeTkn1.value;
-                print(swapController.amount1);
-              },
+              onPressed: () {},
               child: Text(
                 "MAX",
                 style: textStyle(Colors.grey[400]!, 8, false),
@@ -138,22 +137,22 @@ class _DesktopTradeState extends State<DesktopTrade> {
               onPressed: isTokenSelected(token, tknNum)
                   ? null
                   : () {
-                      setState(() {
-                        if (tknNum == 1) {
-                          if (token == tokenTo) {
-                            // If the user changes the top token and it is the same as the bottom token, then swap the top and bottom
-                            bloc.add(SwapTokens());
-                          } else {
-                            bloc.add(SetTokenFrom(tokenFrom: token));
-                          }
+                      if (tknNum == 1) {
+                        if (token == tokenTo) {
+                          // If the user changes the top token and it is the same as the bottom token, then swap the top and bottom
+                          bloc.add(SwapTokens());
                         } else {
-                          if (token == tokenFrom) {
-                            bloc.add(SwapTokens());
-                          } else {
-                            bloc.add(SetTokenTo(tokenTo: token));
-                          }
+                          bloc.add(SetTokenFrom(tokenFrom: token));
                         }
-                        bloc.add(PageRefreshEvent());
+                      } else {
+                        if (token == tokenFrom) {
+                          bloc.add(SwapTokens());
+                        } else {
+                          bloc.add(SetTokenTo(tokenTo: token));
+                        }
+                      }
+                      bloc.add(PageRefreshEvent());
+                      setState(() {
                         Navigator.pop(context);
                       });
                     },
@@ -286,8 +285,12 @@ class _DesktopTradeState extends State<DesktopTrade> {
                 child: TextFormField(
                   controller: _tokenFromInputController,
                   onChanged: (value) {
+                    if (value == '') {
+                      value = '0';
+                    }
                     bloc.add(NewTokenFromInputEvent(
                         tokenInputFromAmount: double.parse(value)));
+                    _tokenToInputController.text = receiveAmount;
                   },
                   style: textStyle(Colors.grey[400]!, 22, false),
                   decoration: InputDecoration(
@@ -312,11 +315,8 @@ class _DesktopTradeState extends State<DesktopTrade> {
               constraints: BoxConstraints(maxWidth: amountBoxAndMaxButtonWid),
               child: IntrinsicWidth(
                 child: TextFormField(
+                  readOnly: true,
                   controller: _tokenToInputController,
-                  onChanged: (value) {
-                    bloc.add(NewTokenToInputEvent(
-                        tokenInputToAmount: double.parse(value)));
-                  },
                   style: textStyle(Colors.grey[400]!, 22, false),
                   decoration: InputDecoration(
                     hintText: '0.00',
@@ -340,7 +340,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  "Price",
+                  "Price:",
                   style: TextStyle(
                     fontSize: 15,
                     color: Colors.white,
@@ -364,14 +364,14 @@ class _DesktopTradeState extends State<DesktopTrade> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  "LP Fee",
+                  "Total Fees",
                   style: TextStyle(
                     fontSize: 15,
                     color: Colors.grey[600],
                   ),
                 ),
                 Text(
-                  "$lpFee",
+                  "$lpFee ${tokenFrom!.ticker}",
                   style: TextStyle(
                     fontSize: 15,
                     color: Colors.grey[600],
@@ -388,14 +388,14 @@ class _DesktopTradeState extends State<DesktopTrade> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  "Market Price Impact",
+                  "Market Price Impact:",
                   style: TextStyle(
                     fontSize: 15,
                     color: Colors.grey[600],
                   ),
                 ),
                 Text(
-                  "$priceImpact",
+                  "$priceImpact %",
                   style: TextStyle(
                     fontSize: 15,
                     color: Colors.grey[600],
@@ -412,7 +412,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  "Minimum Received",
+                  "Minimum Received:",
                   style: TextStyle(
                     fontSize: 15,
                     color: Colors.grey[600],
@@ -430,20 +430,20 @@ class _DesktopTradeState extends State<DesktopTrade> {
           );
         }
 
-        Widget showSlippage(estimatedSlippage) {
+        Widget showSlippageTolerance(slippageTolerance) {
           return Flexible(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  "Estimated Slippage",
+                  "Slippage Tolerance:",
                   style: TextStyle(
                     fontSize: 15,
                     color: Colors.grey[600],
                   ),
                 ),
                 Text(
-                  "$estimatedSlippage",
+                  "$slippageTolerance %",
                   style: TextStyle(
                     fontSize: 15,
                     color: Colors.grey[600],
@@ -551,32 +551,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              FutureBuilder<String>(
-                                future: walletController.getTokenBalance(
-                                    swapController.address1.value),
-                                builder: (context, snapshot) {
-                                  //Check API response data
-                                  if (snapshot.hasError) {
-                                    // can't get balance
-                                    return showBalance('---');
-                                  } else if (snapshot.hasData) {
-                                    // got the balance
-                                    return showBalance(snapshot.data!);
-                                  } else {
-                                    // loading
-                                    return Center(
-                                      child: SizedBox(
-                                        child: CircularProgressIndicator(
-                                            color: Colors.amber),
-                                        height: 10.0,
-                                        width: 10.0,
-                                      ),
-                                    );
-                                  }
-                                },
-                              ),
-                            ],
+                            children: [showBalance(tokenFromBalance)],
                           )
                         ],
                       ),
@@ -588,6 +563,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                         child: TextButton(
                             onPressed: () {
                               bloc.add(SwapTokens());
+                              bloc.add(PageRefreshEvent());
                             },
                             child: Icon(
                               Icons.arrow_downward,
@@ -628,32 +604,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                FutureBuilder<String>(
-                                  future: walletController.getTokenBalance(
-                                      swapController.address2.value),
-                                  builder: (context, snapshot) {
-                                    //Check API response data
-                                    if (snapshot.hasError) {
-                                      // can't get balance
-                                      return showBalance('---');
-                                    } else if (snapshot.hasData) {
-                                      // got the balance
-                                      return showBalance(snapshot.data!);
-                                    } else {
-                                      // loading
-                                      return Center(
-                                        child: SizedBox(
-                                          child: CircularProgressIndicator(
-                                              color: Colors.amber),
-                                          height: 10.0,
-                                          width: 10.0,
-                                        ),
-                                      );
-                                    }
-                                  },
-                                ),
-                              ],
+                              children: [showBalance(tokenToBalance)],
                             ),
                           ],
                         ),
@@ -670,14 +621,14 @@ class _DesktopTradeState extends State<DesktopTrade> {
                         showLPFee(lpFee),
                         showMarketPriceImpact(priceImpact),
                         showMinimumReceived(minReceived),
-                        showSlippage(estimatedSlippage),
+                        showSlippageTolerance(slippageTolerance),
                         Spacer(),
                         showYouReceived(receiveAmount)
                       ],
                     ),
                   ),
-                  ApproveButton(175, 40, "Approve", bloc.swapController.approve,
-                      bloc.swapController.swap, transactionConfirmed),
+                  ApproveButton(175, 40, "Approve", swapController.approve,
+                      swapController.swap, transactionConfirmed),
                 ],
               ),
             ),

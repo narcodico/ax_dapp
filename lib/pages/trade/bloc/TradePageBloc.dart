@@ -45,11 +45,14 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
         final swapInfo = response.getLeft().toNullable()!.swapInfo;
         final transactionInfo =
             calculateTransactionInfo(swapInfo, state.tokenInputFromAmount);
-        final balance = await walletController
+        final tokenFromBalance = await walletController
             .getTokenBalance(state.tokenFrom!.address.value);
+        final tokenToBalance = await walletController
+            .getTokenBalance(state.tokenTo!.address.value);
         //do some math
         emit(state.copyWith(
-          balance: double.parse(balance),
+          tokenFromBalance: double.parse(tokenFromBalance),
+          tokenToBalance: double.parse(tokenToBalance),
           status: Status.success,
           minimumReceived: transactionInfo.minimumReceived!.toDouble(),
           priceImpact: transactionInfo.priceImpact!.toDouble(),
@@ -136,10 +139,10 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
       MaxSwapTapEvent event, Emitter<TradePageState> emit) async {
     emit(state.copyWith(status: Status.loading));
     try {
-      final balance = await walletController
+      final tokenFromBalance = await walletController
           .getTokenBalance(state.tokenFrom!.address.value);
-      final maxInput = double.parse(balance);
-      emit(state.copyWith(tokenInputFromAmount: maxInput, balance: maxInput));
+      final maxInput = double.parse(tokenFromBalance);
+      emit(state.copyWith(tokenInputFromAmount: maxInput, tokenFromBalance: maxInput));
     } catch (e) {
       //TODO Create User facing error messages https://athletex.atlassian.net/browse/AX-466
       print(e);

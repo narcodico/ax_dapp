@@ -1,12 +1,12 @@
 import 'package:ax_dapp/service/Controller/Token.dart';
-import 'package:ax_dapp/service/TokenList.dart';
 import 'package:equatable/equatable.dart';
 
 enum Status { initial, success, error, loading }
 
 class TradePageState extends Equatable {
   final double price;
-  final double balance;
+  final double tokenToBalance;
+  final double tokenFromBalance;
   final double priceImpact;
   final double tokenInputFromAmount;
   final double tokenInputToAmount;
@@ -23,7 +23,8 @@ class TradePageState extends Equatable {
     double? tokenInputFromAmount,
     double? tokenInputToAmount,
     double? price,
-    double? balance,
+    double? tokenToBalance,
+    double? tokenFromBalance,
     double? priceImpact,
     double? minimumReceived,
     double? estimatedSlippage,
@@ -34,10 +35,11 @@ class TradePageState extends Equatable {
   })  : tokenInputFromAmount = tokenInputFromAmount ?? 0.0,
         tokenInputToAmount = tokenInputToAmount ?? 0.0,
         price = price ?? 0.0,
-        balance = balance ?? 0.0,
+        tokenToBalance = tokenToBalance ?? 0.0,
+        tokenFromBalance = tokenFromBalance ?? 0.0,
         priceImpact = priceImpact ?? 0.0,
         minimumReceived = minimumReceived ?? 0.0,
-        lpFee = lpFee ?? 0.003,
+        lpFee = lpFee ?? 0.0,
         estimatedSlippage = estimatedSlippage ?? 0.0,
         receiveAmount = receiveAmount ?? 0.0,
         tokenFrom = tokenFrom ?? tokenFrom,
@@ -47,7 +49,8 @@ class TradePageState extends Equatable {
   List<Object?> get props {
     return [
       price,
-      balance,
+      tokenToBalance,
+      tokenFromBalance,
       priceImpact,
       tokenInputFromAmount,
       tokenInputToAmount,
@@ -63,7 +66,8 @@ class TradePageState extends Equatable {
 
   TradePageState copyWith({
     double? price,
-    double? balance,
+    double? tokenToBalance,
+    double? tokenFromBalance,
     double? priceImpact,
     double? tokenInputFromAmount,
     double? tokenInputToAmount,
@@ -77,7 +81,8 @@ class TradePageState extends Equatable {
   }) {
     return TradePageState(
       price: price ?? this.price,
-      balance: balance ?? this.balance,
+      tokenToBalance: tokenToBalance ?? this.tokenToBalance,
+      tokenFromBalance: tokenFromBalance ?? this.tokenFromBalance,
       priceImpact: priceImpact ?? this.priceImpact,
       tokenInputFromAmount: tokenInputFromAmount ?? this.tokenInputFromAmount,
       tokenInputToAmount: tokenInputToAmount ?? this.tokenInputToAmount,

@@ -77,7 +77,6 @@ class _ApproveButtonState extends State<ApproveButton> {
           if (isApproved) {
             //Confirm button pressed
             widget.confirmCallback().then((value) {
-              Navigator.pop(context);
               showDialog(
                   context: context,
                   builder: (BuildContext context) =>
