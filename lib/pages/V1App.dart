@@ -136,7 +136,7 @@ class _V1AppState extends State<V1App> {
           if (pageNumber == 0)
             BlocProvider(
                 create: (BuildContext context) => ScoutPageBloc(
-                    repo: GetScoutAthletesDataUseCase([
+                        repo: GetScoutAthletesDataUseCase([
                       RepositoryProvider.of<MLBRepo>(context),
                       //NFLRepo
                       //MLBRepo
@@ -157,7 +157,7 @@ class _V1AppState extends State<V1App> {
         children: <Widget>[
           BlocProvider(
               create: (BuildContext context) => ScoutPageBloc(
-                  repo: GetScoutAthletesDataUseCase([
+                      repo: GetScoutAthletesDataUseCase([
                     RepositoryProvider.of<MLBRepo>(context),
                     //NFLRepo
                     //NBARepo
@@ -179,8 +179,9 @@ class _V1AppState extends State<V1App> {
     if (tabBxSz < 350) tabBxSz = 350;
 
     return Container(
+      padding: EdgeInsets.only(top: 10),
       width: _width * .95,
-      height: 100,
+      height: 125,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
@@ -348,23 +349,24 @@ class _V1AppState extends State<V1App> {
                     IconButton(
                         onPressed: () =>
                             //Discord button
-                            launchUrl(Uri.parse('https://discord.com/invite/WFsyAuzp9V')),
+                            launchUrl(Uri.parse(
+                                'https://discord.com/invite/WFsyAuzp9V')),
                         icon: FaIcon(
                           FontAwesomeIcons.discord,
                           size: 25,
                           color: Colors.grey[400],
                         )),
                     IconButton(
-                        onPressed: () =>
-                            launchUrl(Uri.parse('https://twitter.com/athletex_dao?s=20')),
+                        onPressed: () => launchUrl(
+                            Uri.parse('https://twitter.com/athletex_dao?s=20')),
                         icon: FaIcon(
                           FontAwesomeIcons.twitter,
                           size: 25,
                           color: Colors.grey[400],
                         )),
                     IconButton(
-                        onPressed: () =>
-                            launchUrl(Uri.parse('https://github.com/SportsToken')),
+                        onPressed: () => launchUrl(
+                            Uri.parse('https://github.com/SportsToken')),
                         icon: FaIcon(
                           FontAwesomeIcons.github,
                           size: 25,
