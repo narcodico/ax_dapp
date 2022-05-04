@@ -6,9 +6,15 @@ import 'package:ax_dapp/service/Dialog.dart';
 import 'package:ax_dapp/service/TokenList.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+enum TokenType {
+  Short,
+  Long,
+}
 
 class BuyDialog extends StatefulWidget {
   final String athleteName;
@@ -25,7 +31,9 @@ class _BuyDialogState extends State<BuyDialog> {
   double paddingHorizontal = 20;
   double hgt = 500;
   TextEditingController _aptAmountController = TextEditingController();
-  bool _isLongApt = true;
+
+  TokenType _currentTokenTypeSelection = TokenType.Long;
+  double slippageTolerance = 1; // in percents, slippage tolerance determines the upper bound of the receive amount, below which transaction gets reverted
 
   Widget toggleLongShortToken(double wid, double hgt) {
     return Container(
@@ -44,17 +52,17 @@ class _BuyDialogState extends State<BuyDialog> {
                       borderRadius: BorderRadius.circular(20)),
                   padding: EdgeInsets.zero,
                   minimumSize: Size(50, 30),
-                  primary: _isLongApt ? Colors.amber : Colors.transparent,
+                  primary: (_currentTokenTypeSelection == TokenType.Long) ? Colors.amber : Colors.transparent,
                 ),
                 onPressed: () {
                   setState(() {
-                    _isLongApt = !_isLongApt;
+                    _currentTokenTypeSelection = TokenType.Long;
                   });
                 },
                 child: Text(
                   "Long",
                   style: TextStyle(
-                      color: _isLongApt
+                      color: (_currentTokenTypeSelection == TokenType.Long)
                           ? Colors.black
                           : Color.fromRGBO(154, 154, 154, 1),
                       fontSize: 11),
@@ -69,16 +77,16 @@ class _BuyDialogState extends State<BuyDialog> {
                         borderRadius: BorderRadius.circular(20)),
                     padding: EdgeInsets.zero,
                     minimumSize: Size(50, 30),
-                    primary: _isLongApt ? Colors.transparent : Colors.black),
+                    primary: (_currentTokenTypeSelection == TokenType.Long) ? Colors.transparent : Colors.black),
                 onPressed: () {
                   setState(() {
-                    _isLongApt = !_isLongApt;
+                    _currentTokenTypeSelection = TokenType.Short;
                   });
                 },
                 child: Text(
                   "Short",
                   style: TextStyle(
-                      color: _isLongApt
+                      color: (_currentTokenTypeSelection == TokenType.Long)
                           ? Color.fromRGBO(154, 154, 154, 1)
                           : Colors.amber,
                       fontSize: 11),
@@ -92,17 +100,16 @@ class _BuyDialogState extends State<BuyDialog> {
   }
 
   Widget showPrice(price) {
-    String tokenType = _isLongApt ? "Long" : "Short";
     return Flexible(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text("Price", style: textStyle(Colors.white, 15, false)),
+          Text("Price:", style: textStyle(Colors.white, 15, false)),
           Text(
             "$price " +
                 widget.athleteName +
                 " " +
-                tokenType +
+                _currentTokenTypeSelection.name +
                 " APT" +
                 " per AX",
             style: textStyle(Colors.white, 15, false),
@@ -112,14 +119,14 @@ class _BuyDialogState extends State<BuyDialog> {
     );
   }
 
-  Widget showLpFee(lpFee) {
+  Widget showTotalFee(totalFee) {
     return Flexible(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text("LP Fee:", style: textStyle(Colors.grey[600]!, 15, false)),
+          Text("Total Fees:", style: textStyle(Colors.grey[600]!, 15, false)),
           Text(
-            "LP Fee: $lpFee APT(5%)",
+            "$totalFee AX(0.3%)",
             style: textStyle(Colors.grey[600]!, 15, false),
           ),
         ],
@@ -146,7 +153,7 @@ class _BuyDialogState extends State<BuyDialog> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text("Market Price Impact",
+          Text("Market Price Impact:",
               style: textStyle(Colors.grey[600]!, 15, false)),
           Text(
             "$marketPriceImpact %",
@@ -175,17 +182,17 @@ class _BuyDialogState extends State<BuyDialog> {
     );
   }
 
-  Widget showSlippage(estimatedSlippage) {
+  Widget showSlippage(slipageTolerance) {
     return Flexible(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            "Slippage:",
+            "Slippage Tolerance:",
             style: textStyle(Colors.grey[600]!, 15, false),
           ),
           Text(
-            "$estimatedSlippage AX",
+            "$slipageTolerance %",
             style: textStyle(Colors.grey[600]!, 15, false),
           ),
         ],
@@ -194,7 +201,6 @@ class _BuyDialogState extends State<BuyDialog> {
   }
 
   Widget showYouReceived(amountToReceive) {
-    String tokenType = _isLongApt ? "Long" : "Short";
     return Flexible(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -204,7 +210,7 @@ class _BuyDialogState extends State<BuyDialog> {
             style: textStyle(Colors.white, 15, false),
           ),
           Text(
-            "$amountToReceive " + widget.athleteName + " " + tokenType + " APT",
+            "$amountToReceive " + widget.athleteName + " " + _currentTokenTypeSelection.name + " APT",
             style: textStyle(Colors.white, 15, false),
           ),
         ],
@@ -231,18 +237,15 @@ class _BuyDialogState extends State<BuyDialog> {
           final minReceived = state.minimumReceived.toStringAsFixed(6);
           final priceImpact = state.priceImpact.toStringAsFixed(6);
           final receiveAmount = state.receiveAmount.toStringAsFixed(6);
-          final lpFee = 0.3;
-          final estimatedSlippage = 0.00;
+          final totalFee = state.totalFee;
           print("BuyDialog TokenAddress: ${state.tokenAddress}");
           print("BuyDialog price: $price");
           print("BuyDialog minReceived: ${state.minimumReceived}");
           print("BuyDialog PriceImpact: ${state.priceImpact}");
           print("BuyDialog ReceiveAmount: ${state.receiveAmount}");
-          if (state.tokenAddress == null) {
-            bloc.add(OnLoadDialog(
-                currentTokenAddress: _isLongApt
-                    ? getLongAptAddress(widget.athleteId)
-                    : getShortAptAddress(widget.athleteId)));
+          if (state.tokenAddress == null ||
+              state.tokenAddress != _getCurrentTokenAddress()) {
+            reloadBuyDialog(bloc);
           }
 
           return Dialog(
@@ -393,8 +396,8 @@ class _BuyDialogState extends State<BuyDialog> {
                                     border: InputBorder.none,
                                   ),
                                   onChanged: (value) {
-                                    bloc.add(OnNewAptInput(
-                                        aptInputAmount: double.parse(value)));
+                                    bloc.add(OnNewAxInput(
+                                        axInputAmount: double.parse(value)));
                                   },
                                   inputFormatters: [
                                     FilteringTextInputFormatter.allow(
@@ -433,7 +436,7 @@ class _BuyDialogState extends State<BuyDialog> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              showLpFee(lpFee.toString()),
+                              showTotalFee(totalFee.toStringAsFixed(6)),
                             ],
                           ),
                           Row(
@@ -449,7 +452,7 @@ class _BuyDialogState extends State<BuyDialog> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              showSlippage(estimatedSlippage),
+                              showSlippage(slippageTolerance),
                             ],
                           ),
                         ],
@@ -483,5 +486,16 @@ class _BuyDialogState extends State<BuyDialog> {
             ),
           );
         });
+  }
+
+  void reloadBuyDialog(BuyDialogBloc bloc) {
+    bloc.add(OnLoadDialog(
+        currentTokenAddress: _getCurrentTokenAddress()));
+  }
+
+  String _getCurrentTokenAddress() {
+    return (_currentTokenTypeSelection == TokenType.Long)
+        ? getLongAptAddress(widget.athleteId)
+        : getShortAptAddress(widget.athleteId);
   }
 }
