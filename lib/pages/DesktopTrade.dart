@@ -70,7 +70,8 @@ class _DesktopTradeState extends State<DesktopTrade> {
           height: isWeb ? _height * 0.07 : _height * 0.06,
           width: wid - 30,
           decoration: isWeb
-              ? boxDecoration(Colors.amber[500]!.withOpacity(0.20), 500, 1, Colors.transparent)
+              ? boxDecoration(Colors.amber[500]!.withOpacity(0.20), 500, 1,
+                  Colors.transparent)
               : boxDecoration(Colors.amber[500]!.withOpacity(0.20), 500, 1,
                   Colors.transparent),
           child: TextButton(
@@ -144,8 +145,8 @@ class _DesktopTradeState extends State<DesktopTrade> {
                               maxButton(),
                               //Amount box
                               ConstrainedBox(
-                                constraints: BoxConstraints(
-                                    maxWidth: amountBoxAndMaxButtonWid),
+                                constraints:
+                                    BoxConstraints(maxWidth: wid * 0.2),
                                 child: IntrinsicWidth(
                                   // width: amountBoxAndMaxButtonWid * 0.8,
                                   child: TextFormField(
@@ -260,8 +261,8 @@ class _DesktopTradeState extends State<DesktopTrade> {
                               children: <Widget>[
                                 maxButton(),
                                 ConstrainedBox(
-                                  constraints: BoxConstraints(
-                                      maxWidth: amountBoxAndMaxButtonWid),
+                                  constraints:
+                                      BoxConstraints(maxWidth: wid * 0.2),
                                   child: IntrinsicWidth(
                                     child: TextFormField(
                                       onChanged: (value) {
