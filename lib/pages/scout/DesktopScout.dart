@@ -5,7 +5,7 @@ import 'package:ax_dapp/pages/scout/models/ScoutPageState.dart';
 import 'package:ax_dapp/service/Dialog.dart';
 import 'package:ax_dapp/util/AbbreviationMappingsHelper.dart';
 import 'package:ax_dapp/util/SupportedSports.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -29,6 +29,7 @@ class _DesktopScoutState extends State<DesktopScout> {
   AthleteScoutModel? curAthlete;
   int _widgetIndex = 0;
   int _marketVsBookPriceIndex = 0;
+  bool isWeb = true;
 
   @override
   void dispose() {
@@ -49,6 +50,8 @@ class _DesktopScoutState extends State<DesktopScout> {
     double sportFilterIconSz = 14;
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
+    bool isWeb =
+        kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
     // breaks the code, will come back to it later(probably)
 
     return BlocBuilder<ScoutPageBloc, ScoutPageState>(
@@ -82,7 +85,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                             EdgeInsets.only(left: 20, right: 20, bottom: 10),
                         width: _width * 1,
                         height: 40,
-                        child: kIsWeb
+                        child: isWeb
                             ? buildFilterMenuWeb(sportFilterTxSz, _width)
                             : buildFilterMenu(
                                 sportFilterTxSz, sportFilterIconSz),
@@ -487,7 +490,7 @@ class _DesktopScoutState extends State<DesktopScout> {
     if (_width < 685) athNameBx = 107;
 
     return Container(
-      child: kIsWeb
+      child: isWeb
           ? Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -614,7 +617,7 @@ class _DesktopScoutState extends State<DesktopScout> {
               physics: BouncingScrollPhysics(),
               itemCount: athletesList.length,
               itemBuilder: (context, index) {
-                return kIsWeb
+                return isWeb
                     ? createListCardsForWeb(athletesList[index])
                     : createListCardsForMobile(athletesList[index]);
               }));
@@ -627,7 +630,7 @@ class _DesktopScoutState extends State<DesktopScout> {
               physics: BouncingScrollPhysics(),
               itemCount: 0,
               itemBuilder: (context, index) {
-                return kIsWeb
+                return isWeb
                     ? createListCardsForWeb(this.curAthlete!)
                     : createListCardsForMobile(this.curAthlete!);
               }));
@@ -739,7 +742,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                             Color.fromRGBO(254, 197, 0, 0.2)),
                         child: TextButton(
                             onPressed: () {
-                              if (kIsWeb) {
+                              if (isWeb) {
                                 showDialog(
                                     context: context,
                                     builder: (BuildContext context) =>
@@ -877,7 +880,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                             Color.fromRGBO(254, 197, 0, 0.2)),
                         child: TextButton(
                             onPressed: () {
-                              if (kIsWeb) {
+                              if (isWeb) {
                                 showDialog(
                                     context: context,
                                     builder: (BuildContext context) =>
@@ -927,7 +930,7 @@ class _DesktopScoutState extends State<DesktopScout> {
 
   Widget buyText() {
     Widget textWidget;
-    if (kIsWeb) {
+    if (isWeb) {
       textWidget = Text("Buy",
           style: textStyle(Color.fromRGBO(254, 197, 0, 1.0), 12, false, false));
     } else {
@@ -986,7 +989,7 @@ class _DesktopScoutState extends State<DesktopScout> {
 
   double searchWidth(double widthSize) {
     double _width;
-    if (kIsWeb) {
+    if (isWeb) {
       _width = widthSize * 0.26;
     } else {
       _width = widthSize * 0.66;
