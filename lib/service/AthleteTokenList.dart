@@ -128,7 +128,7 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
                   onChanged: (value) {
                     setState(() {
                       tokenListFilter = TokenList.tokenList
-                          .where((token) => token.ticker
+                          .where((token) => token.name
                               .toUpperCase()
                               .contains(value.toUpperCase()))
                           .toList();

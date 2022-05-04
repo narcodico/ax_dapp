@@ -27,7 +27,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
   WalletController walletController = Get.find();
   bool isWeb = true;
   TextEditingController _tokenFromInputController = TextEditingController();
-  TextEditingController _tokenToInputController = TextEditingController();
+  TextEditingController _tokenToInputController = TextEditingController();  
 
   @override
   Widget build(BuildContext context) {
@@ -68,11 +68,12 @@ class _DesktopTradeState extends State<DesktopTrade> {
         // print("Trade PriceImpact: ${state.priceImpact}");
         // print("Trade ReceiveAmount: ${state.receiveAmount}");
 
+
         if (state.status == Status.initial) {
           bloc.add(SetTokenFrom(tokenFrom: TokenList.tokenList[0]));
           bloc.add(SetTokenTo(tokenTo: TokenList.tokenList[3]));
           bloc.add(PageRefreshEvent());
-        }
+        }      
 
         TextStyle textStyle(Color color, double size, bool isBold) {
           if (isBold)
@@ -238,49 +239,54 @@ class _DesktopTradeState extends State<DesktopTrade> {
             }
           }
 
-          return Container(
-              constraints: BoxConstraints(
-                maxWidth: (_width < 350.0) ? 115 : 150,
-                maxHeight: 100,
-              ),
-              height: 40,
-              decoration: decor,
-              child: TextButton(
+          return ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: _width * 0.15),
+            child: IntrinsicWidth(
+              child: Container(
+                height: 60,
+                decoration: decor,
+                child: TextButton(
                   onPressed: () => showDialog(
                       context: context,
                       builder: (BuildContext context) => AthleteTokenList(
                           context, tknNum, createTokenElement)),
                   child: Container(
-                      child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Container(
-                        width: 30,
-                        height: 30,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                            image: tokenImage!,
-                            fit: BoxFit.contain,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Container(
+                          width: 30,
+                          height: 30,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              image: tokenImage!,
+                              fit: BoxFit.contain,
+                            ),
                           ),
                         ),
-                      ),
-                      Container(width: 10),
-                      Expanded(
-                        child: Text(tkr,
-                            overflow: TextOverflow.ellipsis,
-                            style: textStyle(Colors.white, tkrTextSize, true)),
-                      ),
-                      Icon(Icons.keyboard_arrow_down,
-                          color: Colors.white, size: 25)
-                    ],
-                  ))));
+                        Container(width: 10),
+                        Expanded(
+                          child: Text(tkr,
+                              overflow: TextOverflow.ellipsis,
+                              style:
+                                  textStyle(Colors.white, tkrTextSize, true)),
+                        ),
+                        Icon(Icons.keyboard_arrow_down,
+                            color: Colors.white, size: 25)
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          );
         }
 
         Widget fromAmountBox(amountBoxAndMaxButtonWid) {
           return Container(
             child: ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: amountBoxAndMaxButtonWid),
+              constraints: BoxConstraints(maxWidth: wid * 0.2),
               child: IntrinsicWidth(
                 child: TextFormField(
                   controller: _tokenFromInputController,
@@ -290,7 +296,6 @@ class _DesktopTradeState extends State<DesktopTrade> {
                     }
                     bloc.add(NewTokenFromInputEvent(
                         tokenInputFromAmount: double.parse(value)));
-                    _tokenToInputController.text = receiveAmount;
                   },
                   style: textStyle(Colors.grey[400]!, 22, false),
                   decoration: InputDecoration(
@@ -312,23 +317,13 @@ class _DesktopTradeState extends State<DesktopTrade> {
         Widget toAmountBox(amountBoxAndMaxButtonWid) {
           return Container(
             child: ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: amountBoxAndMaxButtonWid),
-              child: IntrinsicWidth(
-                child: TextFormField(
-                  readOnly: true,
-                  controller: _tokenToInputController,
+              constraints: BoxConstraints(maxWidth: wid * 0.2),
+              child: Flexible(
+                child: Text(
+                  receiveAmount,
                   style: textStyle(Colors.grey[400]!, 22, false),
-                  decoration: InputDecoration(
-                    hintText: '0.00',
-                    hintStyle: textStyle(Colors.grey[400]!, 22, false),
-                    contentPadding: const EdgeInsets.all(9),
-                    border: InputBorder.none,
-                  ),
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(
-                        (RegExp(r'^(\d+)?\.?\d{0,6}'))),
-                  ],
                 ),
+                // padding: EdgeInsets.only(right: 14),
               ),
             ),
           );
@@ -617,13 +612,41 @@ class _DesktopTradeState extends State<DesktopTrade> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
-                        showPrice(price),
-                        showLPFee(lpFee),
-                        showMarketPriceImpact(priceImpact),
-                        showMinimumReceived(minReceived),
-                        showSlippageTolerance(slippageTolerance),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            showPrice(price),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            showLPFee(lpFee),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [showMarketPriceImpact(priceImpact)],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            showMinimumReceived(minReceived),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            showSlippageTolerance(slippageTolerance),
+                          ],
+                        ),
                         Spacer(),
-                        showYouReceived(receiveAmount)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            showYouReceived(receiveAmount),
+                          ],
+                        ),
                       ],
                     ),
                   ),

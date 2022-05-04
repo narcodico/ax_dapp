@@ -99,7 +99,7 @@ class _LandingPageState extends State<LandingPage> {
 
   Widget desktopLandingPage(BuildContext context, textSize) {
     return Container(
-        height: 246,
+        height: 252,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

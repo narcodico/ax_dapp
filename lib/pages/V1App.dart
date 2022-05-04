@@ -108,6 +108,7 @@ class _V1AppState extends State<V1App> {
         title: isWeb ? topNavBar(context) : topNavBarAndroid(context),
         backgroundColor: Colors.transparent,
         elevation: 0.0,
+        toolbarHeight: 100,
       ),
       body: Container(
         width: MediaQuery.of(context).size.width,
@@ -199,9 +200,9 @@ class _V1AppState extends State<V1App> {
     if (tabBxSz < 350) tabBxSz = 350;
 
     return Container(
-      padding: EdgeInsets.only(top: 10),
+      padding: EdgeInsets.only(top: 40),
       width: _width * .95,
-      height: 125,
+      height: 200,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
