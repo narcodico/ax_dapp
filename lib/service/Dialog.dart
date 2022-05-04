@@ -180,38 +180,42 @@ Dialog walletDialog(BuildContext context) {
       borderRadius: BorderRadius.circular(12.0),
     ),
     child: Container(
-      height: _height*0.43,
-      width: _width*0.8,
+      height: _height*0.20,
+      width: _width*0.20,
       padding: EdgeInsets.all(20),
       decoration: boxDecoration(Colors.grey[900]!, 30, 0, Colors.black),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Choose Wallet",
-                style: textStyle(Colors.white, 18, true),
-              ),
-              Container(
-                  child: TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Icon(
-                        Icons.close,
-                        size: 30,
-                        color: Colors.white,
-                      )))
-            ],
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 40),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Choose Wallet",
+                  style: textStyle(Colors.white, 18, true),
+                  textAlign: TextAlign.center,
+                ),
+                Container(
+                    child: TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Icon(
+                          Icons.close,
+                          size: 30,
+                          color: Colors.white,
+                        )))
+              ],
+            ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 40),
-                width: _width*0.6,
+                width: _width*0.17,
                 height: 45,
                 decoration: boxDecoration(
                     Colors.transparent, 100, 2, Colors.grey[400]!),
@@ -271,7 +275,7 @@ Dialog walletDialog(BuildContext context) {
           ),
           Container(
             margin: const EdgeInsets.symmetric(vertical: 4),
-            width: _width*0.6,
+            width: _width*0.17,
             height: 45,
             decoration: boxDecoration(
                 Colors.transparent, 100, 2, Colors.grey[400]!),
