@@ -199,8 +199,9 @@ class _V1AppState extends State<V1App> {
     if (tabBxSz < 350) tabBxSz = 350;
 
     return Container(
+      padding: EdgeInsets.only(top: 10),
       width: _width * .95,
-      height: 100,
+      height: 125,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[

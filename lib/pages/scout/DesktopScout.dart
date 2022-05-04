@@ -78,12 +78,6 @@ class _DesktopScoutState extends State<DesktopScout> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.only(top: 20),
-                        child: Divider(
-                          color: Colors.grey,
-                        ),
-                      ),
                       // APT Title & Sport Filter
                       Container(
                         margin:
