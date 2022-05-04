@@ -465,42 +465,44 @@ class _DesktopTradeState extends State<DesktopTrade> {
       }
     }
 
-    return Container(
-        constraints: BoxConstraints(
-          maxWidth: (_width < 350.0) ? 115 : 150,
-          maxHeight: 100,
-        ),
-        height: 40,
-        decoration: decor,
-        child: TextButton(
-            onPressed: () => showDialog(
-                context: context,
-                builder: (BuildContext context) =>
-                    AthleteTokenList(context, tknNum, createTokenElement)),
-            child: Container(
-                child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Container(
-                  width: 30,
-                  height: 30,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      image: tokenImage!,
-                      fit: BoxFit.contain,
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxWidth: _width * 0.15),
+      child: IntrinsicWidth(
+        child: Container(
+            height: 40,
+            decoration: decor,
+            child: TextButton(
+                onPressed: () => showDialog(
+                    context: context,
+                    builder: (BuildContext context) =>
+                        AthleteTokenList(context, tknNum, createTokenElement)),
+                child: Container(
+                    child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Container(
+                      width: 30,
+                      height: 30,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: tokenImage!,
+                          fit: BoxFit.contain,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                Container(width: 10),
-                Expanded(
-                  child: Text(tkr,
-                      overflow: TextOverflow.ellipsis,
-                      style: textStyle(Colors.white, tkrTextSize, true)),
-                ),
-                Icon(Icons.keyboard_arrow_down, color: Colors.white, size: 25)
-              ],
-            ))));
+                    Container(width: 10),
+                    Expanded(
+                      child: Text(tkr,
+                          overflow: TextOverflow.ellipsis,
+                          style: textStyle(Colors.white, tkrTextSize, true)),
+                    ),
+                    Icon(Icons.keyboard_arrow_down,
+                        color: Colors.white, size: 25)
+                  ],
+                )))),
+      ),
+    );
   }
 
   void dialog(BuildContext context, double _height, double _width,
