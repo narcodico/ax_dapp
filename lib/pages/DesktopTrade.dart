@@ -98,7 +98,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
         height: _height - 114,
         alignment: Alignment.center,
         child: Container(
-          height: _height * 0.475,
+          height: _height * 0.575,
           width: wid,
           decoration: boxDecoration(
               Colors.grey[800]!.withOpacity(0.6), 30, 0.5, Colors.grey[400]!),
@@ -412,7 +412,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                   ),
                 ),
                 Container(
-                    height: 45,
+                    height: 60,
                     // ticker/name column "AX/AthleteX"
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,

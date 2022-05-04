@@ -72,10 +72,12 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
                               child: Icon(Icons.close,color: Colors.grey[400], size: 30),
                             ))
                           ]),
+                        Spacer(),
                         Container(
                           alignment: Alignment.centerLeft,
                           child: createSearchBar(),
                         ),
+                        Spacer(),
                         Container(
                           alignment: Alignment.centerLeft,
                           child: Text("Token Name", style: textStyle(Colors.grey[400]!, 12, false),),
@@ -107,41 +109,42 @@ class _AthleteTokenListState extends State<AthleteTokenList> {
     double textSize = _height * 0.05;
     double searchBarHintTextSize = textSize * 0.30;
     if (!isWeb) searchBarHintTextSize = textSize * 0.40;
-    return Container(
-      width: 300,
-      height: 40,
-      decoration: boxDecoration(Colors.grey[900]!, 100, 1, Colors.grey[300]!),
-      child: Row(
-        // crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Container(width: 8),
-          Container(
-            child: Icon(Icons.search, color: Colors.white),
-          ),
-          Container(width: 10),
-          Expanded(
-            child: Container(
-              child: TextFormField(
-                onChanged: (value) {
-                  setState(() {
-                    tokenListFilter = TokenList.tokenList
-                        .where((token) => token.ticker
-                            .toUpperCase()
-                            .contains(value.toUpperCase()))
-                        .toList();
-                  });
-                },
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.only(bottom: 10),
-                  hintText: "Search a name or paste an address",
-                  hintStyle: TextStyle(color: Colors.white, fontSize: searchBarHintTextSize, height: 1.5),
+    return Flexible(
+      child: Container(
+        height: 40,
+        decoration: boxDecoration(Colors.grey[900]!, 100, 1, Colors.grey[300]!),
+        child: Row(
+          // crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Container(width: 8),
+            Container(
+              child: Icon(Icons.search, color: Colors.white),
+            ),
+            Container(width: 10),
+            Expanded(
+              child: Container(
+                child: TextFormField(
+                  onChanged: (value) {
+                    setState(() {
+                      tokenListFilter = TokenList.tokenList
+                          .where((token) => token.ticker
+                              .toUpperCase()
+                              .contains(value.toUpperCase()))
+                          .toList();
+                    });
+                  },
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.only(bottom: 10),
+                    hintText: "Search a name or paste an address",
+                    hintStyle: TextStyle(color: Colors.white, fontSize: searchBarHintTextSize, height: 1.5),
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
