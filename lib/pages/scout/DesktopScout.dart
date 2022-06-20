@@ -29,8 +29,7 @@ class DesktopScout extends StatefulWidget {
 }
 
 class _DesktopScoutState extends State<DesktopScout> {
-  final myController = TextEditingController(text: input);
-  static String input = "";
+  static final myController = TextEditingController();
   bool athletePage = false;
   static bool isLongToken = true;
   static int sportState = 0;
@@ -46,7 +45,6 @@ class _DesktopScoutState extends State<DesktopScout> {
     // Clean up the controller when the widget is removed from the
     // widget tree.
     myController.dispose();
-    input = "";
     super.dispose();
   }
 
@@ -98,10 +96,9 @@ class _DesktopScoutState extends State<DesktopScout> {
                         width: _width * 1,
                         height: 40,
                         child: kIsWeb
-                            ? buildFilterMenuWeb(
-                                state, bloc, sportFilterTxSz, _width)
-                            : buildFilterMenu(state, bloc, sportFilterTxSz,
-                                sportFilterIconSz),
+                            ? buildFilterMenuWeb(state, bloc, sportFilterTxSz, _width)
+                            : buildFilterMenu(
+                                state, bloc, sportFilterTxSz, sportFilterIconSz),
                       ),
                       // List Headers
                       buildListviewHeaders(),
@@ -109,7 +106,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                         scoutLoading(),
                       ] else if (state.status == BlocStatus.error) ...[
                         scoutLoadingError(),
-                      ] else if (state.status == BlocStatus.no_data) ...[
+                      ] else if (state.status == BlocStatus.no_data)...[
                         filterMenuError(),
                       ],
                       buildListview(state, filteredAthletes)
@@ -119,8 +116,7 @@ class _DesktopScoutState extends State<DesktopScout> {
         });
   }
 
-  Row buildFilterMenuWeb(ScoutPageState state, ScoutPageBloc bloc,
-      double sportFilterTxSz, double _width) {
+  Row buildFilterMenuWeb(ScoutPageState state, ScoutPageBloc bloc, double sportFilterTxSz, double _width) {
     return Row(children: [
       Text("APT List", style: textStyle(Colors.white, 18, false, false)),
       Text("|", style: textStyle(Colors.white, 18, false, false)),
@@ -143,9 +139,9 @@ class _DesktopScoutState extends State<DesktopScout> {
           child: TextButton(
         onPressed: () {
           myController.clear();
-          setState(() {
-            supportedSport = SupportedSport.MLB;
-          });
+            setState(() {
+              supportedSport = SupportedSport.MLB;
+            });
           bloc.add(SelectSport(selectedSport: SupportedSport.MLB));
         },
         child: Text("MLB",
@@ -163,8 +159,8 @@ class _DesktopScoutState extends State<DesktopScout> {
     ]);
   }
 
-  IndexedStack buildFilterMenu(ScoutPageState state, ScoutPageBloc bloc,
-      double sportFilterTxSz, double sportFilterIconSz) {
+  IndexedStack buildFilterMenu(
+      ScoutPageState state, ScoutPageBloc bloc, double sportFilterTxSz, double sportFilterIconSz) {
     return IndexedStack(
       index: _widgetIndex,
       children: [
@@ -514,7 +510,7 @@ class _DesktopScoutState extends State<DesktopScout> {
               return kIsWeb
                   ? createListCardsForWeb(filteredAthletes[index])
                   : createListCardsForMobile(filteredAthletes[index]);
-            }));
+          }));
   }
 
   Widget filterMenuError() {
@@ -522,10 +518,7 @@ class _DesktopScoutState extends State<DesktopScout> {
       child: SizedBox(
         height: 70,
         width: 400,
-        child: Text(
-          'Athletes not supported yet',
-          style: TextStyle(color: Colors.red, fontSize: 30),
-        ),
+        child: Text('Athletes not supported yet', style: TextStyle(color: Colors.red, fontSize: 30),),
       ),
     );
   }
@@ -553,8 +546,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Row(children: <Widget>[
-                    AthleteDetailsWidget(athlete)
-                        .athleteDetailsCardsForMobile(team, _width, athNameBx),
+                    AthleteDetailsWidget(athlete).athleteDetailsCardsForMobile(team, _width, athNameBx),
                     // Market Price / Change
                     IndexedStack(
                       index: _marketVsBookPriceIndex,
@@ -723,8 +715,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-                      AthleteDetailsWidget(athlete)
-                          .athleteDetailsCardsForWeb(team, _width, athNameBx),
+                      AthleteDetailsWidget(athlete).athleteDetailsCardsForWeb(team, _width, athNameBx),
                       // Market Price / Change
                       Container(
                         width: _width * 0.18,
@@ -924,11 +915,7 @@ class _DesktopScoutState extends State<DesktopScout> {
               child: TextFormField(
                 controller: myController,
                 onChanged: (value) {
-                  setState(() {
-                    input = value;
-                  });
-                  bloc.add(OnAthleteSearch(
-                      searchedName: value, selectedSport: selectedSport));
+                  bloc.add(OnAthleteSearch(searchedName: value, selectedSport: selectedSport));
                 },
                 decoration: InputDecoration(
                   border: InputBorder.none,
@@ -937,9 +924,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                   hintStyle:
                       TextStyle(color: Color.fromRGBO(235, 235, 245, 0.6)),
                 ),
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp('[a-zA-z. ]'))
-                ],
+                inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[a-zA-z. ]'))],
               ),
             ),
           ),
