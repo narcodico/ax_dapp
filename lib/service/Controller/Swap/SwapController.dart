@@ -1,7 +1,9 @@
 import 'package:ax_dapp/contracts/APTRouter.g.dart';
 import 'package:ax_dapp/contracts/Dex.g.dart';
 import 'package:ax_dapp/service/Controller/Controller.dart';
+import 'package:ax_dapp/service/Controller/Swap/SupportedChain.dart';
 import 'package:ax_dapp/service/Controller/Token.dart';
+import 'package:ax_dapp/util/ChainManager.dart';
 import 'package:ax_dapp/util/UserInputNorm.dart';
 import 'package:get/get.dart';
 import 'package:ax_dapp/contracts/ERC20.g.dart';
@@ -49,7 +51,7 @@ class SwapController extends GetxController {
   }
 
   Future<void> approve() async {
-    print("Inside approve");
+    print("Inside approve: ${address1.value}");
     String txString = "";
     EthereumAddress tokenAAddress = EthereumAddress.fromHex(address1.value);
     //EthereumAddress tokenBAddress = EthereumAddress.fromHex("$address2");
@@ -61,7 +63,7 @@ class SwapController extends GetxController {
     //ERC20(address: tokenBAddress, client: controller.client.value);
     try {
       print("Before approve");
-      txString = await tokenA.approve(routerMainnetAddress, tokenAAmount,
+      txString = await tokenA.approve(ChainManager.getSelectedChain() == SupportedChain.MATIC ? routerMainnetAddress : routerTestnetAddress, tokenAAmount,
           credentials: controller.credentials);
       print("Approved");
       //txString = await tokenB.approve(dexAddress, tokenBAmount,
@@ -85,9 +87,12 @@ class SwapController extends GetxController {
     List<EthereumAddress> path = [tokenAAddress, tokenBAddress];
     EthereumAddress to = await controller.credentials.extractAddress();
     String txString = "";
-
+    APTRouter aptRouter = APTRouter(
+        address: ChainManager.getSelectedChain() == SupportedChain.MATIC ? routerMainnetAddress : routerTestnetAddress, client: controller.client.value);
     try {
-      txString = await _aptRouter.swapExactTokensForTokens(
+      print(
+          "[Console] Trying to swap [$tokenAAmount of $tokenAAddress for $tokenBAddress], $amountOutMin ");
+      txString = await aptRouter.swapExactTokensForTokens(
           tokenAAmount, amountOutMin, path, to, deadline.value,
           credentials: controller.credentials);
     } catch (e) {

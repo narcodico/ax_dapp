@@ -45,9 +45,9 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
           tokenTo: state.tokenTo.address.value);
       final isSuccess = response.isLeft();
       print("isSuccess - $isSuccess");
+      swapController.updateFromAddress(state.tokenFrom.address.value);
+      swapController.updateToAddress(state.tokenTo.address.value);
       if (isSuccess) {
-        swapController.updateFromAddress(state.tokenFrom.address.value);
-        swapController.updateToAddress(state.tokenTo.address.value);
         final swapInfo = response.getLeft().toNullable()!.swapInfo;
 
         //do some math
@@ -76,12 +76,11 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
           tokenFrom: state.tokenFrom.address.value,
           tokenTo: state.tokenTo.address.value, fromInput: tokenInputFromAmount);
       final isSuccess = response.isLeft();
-
+      if (swapController.amount1.value != tokenInputFromAmount) {
+        swapController.updateFromAmount(tokenInputFromAmount);
+      }
       if (isSuccess) {
         print("On New Apt Input: Success");
-        if (swapController.amount1.value != tokenInputFromAmount) {
-          swapController.updateFromAmount(tokenInputFromAmount);
-        }
         final swapInfo = response.getLeft().toNullable()!.swapInfo;
         //do some math
         emit(state.copyWith(

@@ -49,7 +49,7 @@ class WebWallet extends DappWallet {
     // get the ticker and get the decimals
     Web3Dart.EthereumAddress tokenEthAddress =
         Web3Dart.EthereumAddress.fromHex(tokenAddress);
-    Web3Dart.Web3Client rpcClient = Web3Dart.Web3Client(rpcUrl, Client());
+    Web3Dart.Web3Client rpcClient = Web3Dart.Web3Client(ChainManager.getChainRpcUrl(), Client());
     ERC20 token = ERC20(address: tokenEthAddress, client: rpcClient);
     String symbol = await token.symbol();
     print('[Console] - $symbol');

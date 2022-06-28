@@ -57,10 +57,10 @@ class PoolController extends GetxController {
     print("Before try");
     try {
       print("[Console] Pool Controller -> Before approve");
-      txStringA = await tokenA.approve(routerMainnetAddress, transferAmountA,
+      txStringA = await tokenA.approve(ChainManager.getSelectedChain() == SupportedChain.MATIC ? routerMainnetAddress : routerTestnetAddress, transferAmountA,
           credentials: controller.credentials);
       controller.updateTxString(txStringA);
-      txStringB = await tokenB.approve(routerMainnetAddress, transferAmountB,
+      txStringB = await tokenB.approve(ChainManager.getSelectedChain() == SupportedChain.MATIC ? routerMainnetAddress : routerTestnetAddress, transferAmountB,
           credentials: controller.credentials);
       controller.updateTxString(txStringB);
       print("[Console] Pool Controller -> Approved");
