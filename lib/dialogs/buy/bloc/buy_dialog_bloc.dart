@@ -21,7 +21,7 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
     required this.swapController,
   })  : _tokensRepository = tokensRepository,
         super(const BuyDialogState()) {
-    on<WatchAptsStarted>(_onWatchAptsStarted);
+    on<WatchApTokensStarted>(_onWatchApTokensStarted);
     on<TokenTypeSelectionChanged>(_onTokenTypeSelectionChanged);
     on<OnLoadDialog>(_mapLoadDialogEventToState);
     on<OnMaxBuyTap>(_mapMaxBuyTapEventToState);
@@ -34,8 +34,8 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
   final GetTotalTokenBalanceUseCase wallet;
   final SwapController swapController;
 
-  FutureOr<void> _onWatchAptsStarted(
-    WatchAptsStarted event,
+  FutureOr<void> _onWatchApTokensStarted(
+    WatchApTokensStarted event,
     Emitter<BuyDialogState> emit,
   ) async {
     await emit.forEach<List<AthletePerformanceToken>>(

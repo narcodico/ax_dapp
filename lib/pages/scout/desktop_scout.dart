@@ -733,6 +733,8 @@ class _DesktopScoutState extends State<DesktopScout> {
                           context: context,
                           builder: (BuildContext context) => BlocProvider(
                             create: (BuildContext context) => BuyDialogBloc(
+                              tokensRepository:
+                                  context.read<TokensRepository>(),
                               repo: RepositoryProvider.of<GetBuyInfoUseCase>(
                                 context,
                               ),
@@ -740,7 +742,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                                 Get.find(),
                               ),
                               swapController: Get.find(),
-                            ),
+                            )..add(WatchApTokensStarted(athlete.id)),
                             child: BuyDialog(
                               athlete.name,
                               athlete.longTokenBookPrice!,
@@ -961,6 +963,8 @@ class _DesktopScoutState extends State<DesktopScout> {
                           context: context,
                           builder: (BuildContext context) => BlocProvider(
                             create: (BuildContext context) => BuyDialogBloc(
+                              tokensRepository:
+                                  context.read<TokensRepository>(),
                               repo: RepositoryProvider.of<GetBuyInfoUseCase>(
                                 context,
                               ),
@@ -968,7 +972,7 @@ class _DesktopScoutState extends State<DesktopScout> {
                                 Get.find(),
                               ),
                               swapController: Get.find(),
-                            ),
+                            )..add(WatchApTokensStarted(athlete.id)),
                             child: BuyDialog(
                               athlete.name,
                               athlete.longTokenBookPrice!,

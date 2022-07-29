@@ -14,6 +14,7 @@ import 'package:ax_dapp/util/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 
 Container buyButton(
   BuildContext context,
@@ -32,10 +33,11 @@ Container buyButton(
         context: context,
         builder: (BuildContext context) => BlocProvider(
           create: (BuildContext context) => BuyDialogBloc(
+            tokensRepository: context.read<TokensRepository>(),
             repo: RepositoryProvider.of<GetBuyInfoUseCase>(context),
             wallet: GetTotalTokenBalanceUseCase(Get.find()),
             swapController: Get.find(),
-          ),
+          )..add(WatchApTokensStarted(athlete.id)),
           child: BuyDialog(
             athlete.name,
             athlete.longTokenBookPrice!,

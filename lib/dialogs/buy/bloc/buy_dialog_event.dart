@@ -5,8 +5,8 @@ abstract class BuyDialogEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class WatchAptsStarted extends BuyDialogEvent {
-  WatchAptsStarted(this.athleteId);
+class WatchApTokensStarted extends BuyDialogEvent {
+  WatchApTokensStarted(this.athleteId);
 
   final int athleteId;
 
