@@ -3,8 +3,8 @@
 // ignore_for_file: unused_local_variable
 
 import 'package:ax_dapp/service/controller/controller.dart';
-import 'package:ax_dapp/util/supported_sports.dart';
 import 'package:erc20/erc20.dart';
+import 'package:ethereum_api/ethereum_api.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:web3dart/web3dart.dart';

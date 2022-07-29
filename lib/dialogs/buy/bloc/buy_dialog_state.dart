@@ -2,22 +2,19 @@ part of 'buy_dialog_bloc.dart';
 
 class BuyDialogState extends Equatable {
   const BuyDialogState({
-    required this.balance,
-    required this.axInputAmount,
-    required this.status,
-    required this.tokenAddress,
-    required this.aptBuyInfo,
+    this.status = BlocStatus.initial,
+    this.tokenTypeSelection = TokenType.long,
+    this.longApt = const AthletePerformanceToken.empty(),
+    this.shortApt = const AthletePerformanceToken.empty(),
+    this.balance = 0,
+    this.axInputAmount = 0,
+    this.tokenAddress = '',
+    this.aptBuyInfo = AptBuyInfo.empty,
   });
 
-  factory BuyDialogState.initial() {
-    return BuyDialogState(
-      balance: 0,
-      axInputAmount: 0,
-      status: BlocStatus.initial,
-      tokenAddress: '',
-      aptBuyInfo: AptBuyInfo.empty(),
-    );
-  }
+  final TokenType tokenTypeSelection;
+  final AthletePerformanceToken longApt;
+  final AthletePerformanceToken shortApt;
   final double balance;
   final double axInputAmount;
   final BlocStatus status;
@@ -27,6 +24,9 @@ class BuyDialogState extends Equatable {
   @override
   List<Object> get props {
     return [
+      tokenTypeSelection,
+      longApt,
+      shortApt,
       balance,
       axInputAmount,
       status,
@@ -36,6 +36,9 @@ class BuyDialogState extends Equatable {
   }
 
   BuyDialogState copyWith({
+    TokenType? tokenTypeSelection,
+    AthletePerformanceToken? longApt,
+    AthletePerformanceToken? shortApt,
     double? balance,
     double? axInputAmount,
     BlocStatus? status,
@@ -43,6 +46,9 @@ class BuyDialogState extends Equatable {
     AptBuyInfo? aptBuyInfo,
   }) {
     return BuyDialogState(
+      tokenTypeSelection: tokenTypeSelection ?? this.tokenTypeSelection,
+      longApt: longApt ?? this.longApt,
+      shortApt: shortApt ?? this.shortApt,
       balance: balance ?? this.balance,
       axInputAmount: axInputAmount ?? this.axInputAmount,
       status: status ?? this.status,

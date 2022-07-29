@@ -5,6 +5,24 @@ abstract class BuyDialogEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+class WatchAptsStarted extends BuyDialogEvent {
+  WatchAptsStarted(this.athleteId);
+
+  final int athleteId;
+
+  @override
+  List<Object?> get props => [athleteId];
+}
+
+class TokenTypeSelectionChanged extends BuyDialogEvent {
+  TokenTypeSelectionChanged(this.tokenType);
+
+  final TokenType tokenType;
+
+  @override
+  List<Object?> get props => [tokenType];
+}
+
 class OnLoadDialog extends BuyDialogEvent {
   OnLoadDialog({required this.currentTokenAddress});
 

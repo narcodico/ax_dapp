@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:ax_dapp/repositories/subgraph/usecases/get_buy_info_use_case.dart';
 import 'package:ax_dapp/service/blockchain_models/apt_buy_info.dart';
 import 'package:ax_dapp/service/controller/swap/axt.dart';
@@ -6,24 +8,51 @@ import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 
 part 'buy_dialog_event.dart';
 part 'buy_dialog_state.dart';
 
 class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
   BuyDialogBloc({
+    required TokensRepository tokensRepository,
     required this.repo,
     required this.wallet,
     required this.swapController,
-  }) : super(BuyDialogState.initial()) {
+  })  : _tokensRepository = tokensRepository,
+        super(const BuyDialogState()) {
+    on<WatchAptsStarted>(_onWatchAptsStarted);
+    on<TokenTypeSelectionChanged>(_onTokenTypeSelectionChanged);
     on<OnLoadDialog>(_mapLoadDialogEventToState);
     on<OnMaxBuyTap>(_mapMaxBuyTapEventToState);
     on<OnConfirmBuy>(_mapConfirmBuyEventToState);
     on<OnNewAxInput>(_mapNewAxInputEventToState);
   }
-  GetBuyInfoUseCase repo;
-  GetTotalTokenBalanceUseCase wallet;
-  SwapController swapController;
+
+  final TokensRepository _tokensRepository;
+  final GetBuyInfoUseCase repo;
+  final GetTotalTokenBalanceUseCase wallet;
+  final SwapController swapController;
+
+  FutureOr<void> _onWatchAptsStarted(
+    WatchAptsStarted event,
+    Emitter<BuyDialogState> emit,
+  ) async {
+    await emit.forEach<List<AthletePerformanceToken>>(
+      _tokensRepository.apTokensChanges(event.athleteId),
+      onData: (tokens) => state.copyWith(
+        longApt: tokens.first,
+        shortApt: tokens.last,
+      ),
+    );
+  }
+
+  void _onTokenTypeSelectionChanged(
+    TokenTypeSelectionChanged event,
+    Emitter<BuyDialogState> emit,
+  ) {
+    emit(state.copyWith(tokenTypeSelection: event.tokenType));
+  }
 
   Future<void> _mapLoadDialogEventToState(
     OnLoadDialog event,
@@ -61,7 +90,7 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
         emit(
           state.copyWith(
             status: BlocStatus.error,
-            aptBuyInfo: AptBuyInfo.empty(),
+            aptBuyInfo: AptBuyInfo.empty,
           ),
         );
       }
@@ -69,7 +98,7 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
       emit(
         state.copyWith(
           status: BlocStatus.error,
-          aptBuyInfo: AptBuyInfo.empty(),
+          aptBuyInfo: AptBuyInfo.empty,
         ),
       );
     }
@@ -131,7 +160,7 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
         emit(
           state.copyWith(
             status: BlocStatus.error,
-            aptBuyInfo: AptBuyInfo.empty(),
+            aptBuyInfo: AptBuyInfo.empty,
           ),
         );
       }
@@ -139,7 +168,7 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
       emit(
         state.copyWith(
           status: BlocStatus.error,
-          aptBuyInfo: AptBuyInfo.empty(),
+          aptBuyInfo: AptBuyInfo.empty,
         ),
       );
     }
