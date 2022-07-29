@@ -1129,6 +1129,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
+  tokens_repository:
+    dependency: "direct main"
+    description:
+      path: "packages/tokens_repository"
+      relative: true
+    source: path
+    version: "1.0.0+1"
   tuple:
     dependency: transitive
     description:
