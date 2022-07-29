@@ -56,6 +56,19 @@ class AthletePerformanceTokenConfig extends Equatable {
         sport,
       ];
 
+  /// Represents an empty [AthletePerformanceTokenConfig]. Useful as default
+  /// value.
+  static const empty = AthletePerformanceTokenConfig(
+    athleteId: 0,
+    athleteName: '',
+    longTicker: '',
+    shortTicker: '',
+    pairAddressConfig: TokenAddressConfig.empty(),
+    longAddressConfig: TokenAddressConfig.empty(),
+    shortAddressConfig: TokenAddressConfig.empty(),
+    sport: SupportedSport.all,
+  );
+
   /// Static list of [AthletePerformanceTokenConfig]s used to generate
   /// [Token.shortApt]s and [Token.longApt]s.
   static const List<AthletePerformanceTokenConfig> values =

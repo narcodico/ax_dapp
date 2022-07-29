@@ -18,6 +18,20 @@ class EthereumApiClient {
   /// based on the current [EthereumChain].
   List<Token> get tokens => _tokensController.valueOrNull ?? const [];
 
+  /// Allows listening to changes to the [AthletePerformanceToken]s for the
+  /// athlete identified by [athleteId]. It should always return back exactly
+  /// two items, the first being [AthletePerformanceToken.long] and the second
+  /// [AthletePerformanceToken.short].
+  Stream<List<AthletePerformanceToken>> apTokensChanges(
+    int athleteId,
+  ) =>
+      _tokensController.stream
+          .map((tokens) => tokens.whereType<AthletePerformanceToken>())
+          .map(
+            (tokens) =>
+                tokens.where((token) => token.athleteId == athleteId).toList(),
+          );
+
   /// Allows switching the current [Token]s, which are set based on the current
   /// [EthereumChain].
   ///

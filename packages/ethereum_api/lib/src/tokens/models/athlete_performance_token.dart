@@ -34,7 +34,25 @@ class AthletePerformanceToken extends Token {
           chain: chain,
         );
 
+  /// Represents an empty [AthletePerformanceToken]. Useful as default value.
+  const AthletePerformanceToken.empty()
+      : _aptConfig = AthletePerformanceTokenConfig.empty,
+        super(
+          name: '',
+          ticker: '',
+          addressConfig: const TokenAddressConfig.empty(),
+          chain: EthereumChain.none,
+        );
+
   final AthletePerformanceTokenConfig _aptConfig;
+
+  /// Represents an empty [Token].
+  // static const empty = AthletePerformanceToken(
+  //   name: '__empty__',
+  //   ticker: '',
+  //   addressConfig: TokenAddressConfig.empty(),
+  //   chain: EthereumChain.none,
+  // );
 
   @override
   List<Object?> get props => super.props..add(_aptConfig);
