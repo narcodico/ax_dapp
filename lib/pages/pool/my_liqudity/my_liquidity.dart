@@ -7,12 +7,12 @@ import 'package:ax_dapp/service/approve_button.dart';
 import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
-import 'package:ax_dapp/util/supported_sports.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 
 class MyLiquidity extends StatefulWidget {
   const MyLiquidity({super.key, required this.togglePool});

@@ -17,12 +17,12 @@ import 'package:ax_dapp/repositories/subgraph/usecases/get_buy_info_use_case.dar
 import 'package:ax_dapp/service/controller/usecases/get_max_token_input_use_case.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/percent_helper.dart';
-import 'package:ax_dapp/util/supported_sports.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/get_instance.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 
 class DesktopScout extends StatefulWidget {
   const DesktopScout({

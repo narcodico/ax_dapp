@@ -1,9 +1,9 @@
 import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/pages/scout/usecases/get_scout_athletes_data_use_case.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
-import 'package:ax_dapp/util/supported_sports.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 
 part 'scout_page_event.dart';
 part 'scout_page_state.dart';
