@@ -8,11 +8,23 @@ enum EthereumCurrency {
   /// Represents no currency.
   none(currencyName: '', symbol: ''),
 
-  /// Currency used with Polygon.
+  /// AthleteX currency.
+  ax(currencyName: 'AthleteX Token', symbol: 'AX'),
+
+  /// SportX currency.
+  sx(currencyName: 'SportX Token', symbol: 'SX'),
+
+  /// Matic currency(used with Polygon).
   matic(currencyName: 'MATIC Token', symbol: 'MATIC'),
 
-  /// Currency used with SX.
-  sx(currencyName: 'SportX Token', symbol: 'SX');
+  /// Wrapped Ether currency.
+  weth(currencyName: 'WETH Token', symbol: 'WETH'),
+
+  /// USD Coin currency.
+  usdc(currencyName: 'USDC Token', symbol: 'USDC'),
+
+  /// APT currency.
+  apt(currencyName: 'AP Token', symbol: 'APT');
 
   /// {@macro ethereum_currency}
   const EthereumCurrency({

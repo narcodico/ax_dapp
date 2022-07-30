@@ -1,11 +1,11 @@
 part of 'token.dart';
 
 /// {@template athlete_performance_token_config}
-/// Configures an [AthletePerformanceToken].
+/// Configures an [Apt].
 /// {@endtemplate}
-class AthletePerformanceTokenConfig extends Equatable {
+class AptConfig extends Equatable {
   /// {@macro athlete_performance_token_config}
-  const AthletePerformanceTokenConfig({
+  const AptConfig({
     required this.athleteId,
     required this.athleteName,
     required this.longTicker,
@@ -26,19 +26,19 @@ class AthletePerformanceTokenConfig extends Equatable {
   /// {@endtemplate}
   final String athleteName;
 
-  /// Represents [AthletePerformanceToken.long]'s ticker.
+  /// Represents [Apt.long]'s ticker.
   final String longTicker;
 
-  /// Represents [AthletePerformanceToken.short]'s ticker.
+  /// Represents [Apt.short]'s ticker.
   final String shortTicker;
 
-  /// Represents [AthletePerformanceToken]'s pair address configuration.
+  /// Represents [Apt]'s pair address configuration.
   final TokenAddressConfig pairAddressConfig;
 
-  /// Represents [AthletePerformanceToken.long]'s address configuration.
+  /// Represents [Apt.long]'s address configuration.
   final TokenAddressConfig longAddressConfig;
 
-  /// Represents [AthletePerformanceToken.short]'s address configuration.
+  /// Represents [Apt.short]'s address configuration.
   final TokenAddressConfig shortAddressConfig;
 
   /// Represents athlete's [SupportedSport].
@@ -56,9 +56,8 @@ class AthletePerformanceTokenConfig extends Equatable {
         sport,
       ];
 
-  /// Represents an empty [AthletePerformanceTokenConfig]. Useful as default
-  /// value.
-  static const empty = AthletePerformanceTokenConfig(
+  /// Represents an empty [AptConfig]. Useful as default value.
+  static const empty = AptConfig(
     athleteId: 0,
     athleteName: '',
     longTicker: '',
@@ -69,22 +68,20 @@ class AthletePerformanceTokenConfig extends Equatable {
     sport: SupportedSport.all,
   );
 
-  /// Static list of [AthletePerformanceTokenConfig]s used to generate
-  /// [Token.shortApt]s and [Token.longApt]s.
-  static const List<AthletePerformanceTokenConfig> values =
-      _kAthletePerformanceTokenConfigs;
+  /// Static list of [AptConfig]s used to generate [Token.shortAp]s and
+  /// [Token.longAp]s.
+  static const List<AptConfig> values = _kAthletePerformanceTokenConfigs;
 }
 
-/// [AthletePerformanceTokenConfig] extensions.
-extension AthletePerformanceTokenConfigX on AthletePerformanceTokenConfig {
-  /// Returns [AthletePerformanceToken]'s name based on [TokenType], e.g.:
-  /// `Aaron Judge Long APT`.
-  String aptName(TokenType tokenType) =>
+/// [AptConfig] extensions.
+extension AthletePerformanceTokenConfigX on AptConfig {
+  /// Returns [Apt]'s name based on [AptType], e.g.: `Aaron Judge Long APT`.
+  String aptName(AptType tokenType) =>
       '$athleteName ${tokenType.name.capitalize()} APT';
 }
 
 const _kAthletePerformanceTokenConfigs = [
-  AthletePerformanceTokenConfig(
+  AptConfig(
     athleteId: 10002087,
     athleteName: 'Aaron Judge',
     sport: SupportedSport.MLB,
@@ -109,7 +106,7 @@ const _kAthletePerformanceTokenConfigs = [
       sxTestnet: 'TODO',
     ),
   ),
-  AthletePerformanceTokenConfig(
+  AptConfig(
     athleteId: 10001365,
     athleteName: 'Bryce Harper',
     sport: SupportedSport.MLB,
@@ -134,7 +131,7 @@ const _kAthletePerformanceTokenConfigs = [
       sxTestnet: 'TODO',
     ),
   ),
-  AthletePerformanceTokenConfig(
+  AptConfig(
     athleteId: 10001918,
     athleteName: 'Carlos Correa',
     sport: SupportedSport.MLB,
@@ -159,7 +156,7 @@ const _kAthletePerformanceTokenConfigs = [
       sxTestnet: 'TODO',
     ),
   ),
-  AthletePerformanceTokenConfig(
+  AptConfig(
     athleteId: 10007217,
     athleteName: 'Fernando Tatis Jr.',
     sport: SupportedSport.MLB,
@@ -184,7 +181,7 @@ const _kAthletePerformanceTokenConfigs = [
       sxTestnet: 'TODO',
     ),
   ),
-  AthletePerformanceTokenConfig(
+  AptConfig(
     athleteId: 10000352,
     athleteName: 'Jose Ramirez',
     sport: SupportedSport.MLB,
@@ -209,7 +206,7 @@ const _kAthletePerformanceTokenConfigs = [
       sxTestnet: 'TODO',
     ),
   ),
-  AthletePerformanceTokenConfig(
+  AptConfig(
     athleteId: 10006794,
     athleteName: 'Juan Soto',
     sport: SupportedSport.MLB,
@@ -234,7 +231,7 @@ const _kAthletePerformanceTokenConfigs = [
       sxTestnet: 'TODO',
     ),
   ),
-  AthletePerformanceTokenConfig(
+  AptConfig(
     athleteId: 10000908,
     athleteName: 'Marcus Semien',
     sport: SupportedSport.MLB,
@@ -259,7 +256,7 @@ const _kAthletePerformanceTokenConfigs = [
       sxTestnet: 'TODO',
     ),
   ),
-  AthletePerformanceTokenConfig(
+  AptConfig(
     athleteId: 10001009,
     athleteName: 'Starling Marte',
     sport: SupportedSport.MLB,
@@ -284,7 +281,7 @@ const _kAthletePerformanceTokenConfigs = [
       sxTestnet: 'TODO',
     ),
   ),
-  AthletePerformanceTokenConfig(
+  AptConfig(
     athleteId: 10002094,
     athleteName: 'Trea Turner',
     sport: SupportedSport.MLB,
@@ -309,7 +306,7 @@ const _kAthletePerformanceTokenConfigs = [
       sxTestnet: 'TODO',
     ),
   ),
-  AthletePerformanceTokenConfig(
+  AptConfig(
     athleteId: 10007501,
     athleteName: 'Vladimir Guerrero Jr.',
     sport: SupportedSport.MLB,

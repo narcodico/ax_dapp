@@ -18,12 +18,10 @@ class TokensRepository {
   /// based on the current [EthereumChain].
   List<Token> get tokens => _ethereumApiClient.tokens;
 
-  /// Allows listening to changes to the [AthletePerformanceToken]s for the
-  /// athlete identified by [athleteId]. It should always return back exactly
-  /// two items, the first being [AthletePerformanceToken.long] and the second
-  /// [AthletePerformanceToken.short].
-  Stream<List<AthletePerformanceToken>> apTokensChanges(int athleteId) =>
-      _ethereumApiClient.apTokensChanges(athleteId);
+  /// Allows listening to changes to the [Apt]s (long and short) for the
+  /// athlete identified by [athleteId].
+  Stream<AptPair> aptPairChanges(int athleteId) =>
+      _ethereumApiClient.aptPairChanges(athleteId);
 
   /// Allows switching the current [Token]s, which are set based on the current
   /// [EthereumChain].
