@@ -71,7 +71,7 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
   ) async {
     emit(state.copyWith(status: BlocStatus.loading));
     try {
-      final selectedTokenAddress = state.selectedTokenAddress;
+      final selectedTokenAddress = state.selectedAptAddress;
       final response =
           await repo.fetchAptSellInfo(aptAddress: selectedTokenAddress);
       final isSuccess = response.isLeft();
@@ -123,7 +123,7 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
     emit(state.copyWith(status: BlocStatus.loading));
     try {
       final maxInput =
-          await wallet.getTotalBalanceForToken(state.selectedTokenAddress);
+          await wallet.getTotalBalanceForToken(state.selectedAptAddress);
       emit(
         state.copyWith(aptInputAmount: maxInput, status: BlocStatus.success),
       );
@@ -145,7 +145,7 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
   ) async {
     final aptInputAmount = event.aptInputAmount;
     try {
-      final selectedTokenAddress = state.selectedTokenAddress;
+      final selectedTokenAddress = state.selectedAptAddress;
       final balance =
           await wallet.getTotalBalanceForToken(selectedTokenAddress);
       final response = await repo.fetchAptSellInfo(
