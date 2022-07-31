@@ -371,7 +371,7 @@ class _BuyDialogState extends State<BuyDialog> {
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [Price()],
+                        children: const [Flexible(child: Price())],
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -451,7 +451,7 @@ class LongAptButton extends StatelessWidget {
       ),
       onPressed: () => context
           .read<BuyDialogBloc>()
-          .add(TokenTypeSelectionChanged(AptType.long)),
+          .add(const TokenTypeSelectionChanged(AptType.long)),
       child: Text(
         'Long',
         style: TextStyle(
@@ -484,7 +484,7 @@ class ShortAptButton extends StatelessWidget {
       ),
       onPressed: () => context
           .read<BuyDialogBloc>()
-          .add(TokenTypeSelectionChanged(AptType.short)),
+          .add(const TokenTypeSelectionChanged(AptType.short)),
       child: Text(
         'Short',
         style: TextStyle(
@@ -503,33 +503,31 @@ class Price extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text('Price:', style: textStyle(Colors.white, 15, false)),
-          BlocBuilder<BuyDialogBloc, BuyDialogState>(
-            buildWhen: (previous, current) =>
-                previous.aptTypeSelection != current.aptTypeSelection ||
-                previous.aptBuyInfo != current.aptBuyInfo ||
-                previous.longApt != current.longApt ||
-                previous.shortApt != current.shortApt,
-            builder: (context, state) {
-              final price = state.aptBuyInfo.axPerAptPrice.toStringAsFixed(6);
-              final _textStyle = textStyle(Colors.white, 15, false);
-              return state.aptTypeSelection.isLong
-                  ? Text(
-                      '$price AX per ${state.longApt.ticker} APT',
-                      style: _textStyle,
-                    )
-                  : Text(
-                      '$price AX per ${state.shortApt.ticker} APT',
-                      style: _textStyle,
-                    );
-            },
-          )
-        ],
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text('Price:', style: textStyle(Colors.white, 15, false)),
+        BlocBuilder<BuyDialogBloc, BuyDialogState>(
+          buildWhen: (previous, current) =>
+              previous.aptTypeSelection != current.aptTypeSelection ||
+              previous.aptBuyInfo != current.aptBuyInfo ||
+              previous.longApt != current.longApt ||
+              previous.shortApt != current.shortApt,
+          builder: (context, state) {
+            final price = state.aptBuyInfo.axPerAptPrice.toStringAsFixed(6);
+            final _textStyle = textStyle(Colors.white, 15, false);
+            return state.aptTypeSelection.isLong
+                ? Text(
+                    '$price AX per ${state.longApt.ticker} APT',
+                    style: _textStyle,
+                  )
+                : Text(
+                    '$price AX per ${state.shortApt.ticker} APT',
+                    style: _textStyle,
+                  );
+          },
+        )
+      ],
     );
   }
 }
