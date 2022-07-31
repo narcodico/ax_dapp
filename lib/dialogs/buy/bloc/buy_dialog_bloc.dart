@@ -18,7 +18,7 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
     required this.repo,
     required this.wallet,
     required this.swapController,
-    required this.athleteId,
+    required int athleteId,
   })  : _tokensRepository = tokensRepository,
         super(
           // setting the apt corresponding to the default aptType which is long
@@ -40,17 +40,15 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
   final GetTotalTokenBalanceUseCase wallet;
   final SwapController swapController;
 
-  final int athleteId;
-
-  FutureOr<void> _onWatchAptPairStarted(
+  Future<void> _onWatchAptPairStarted(
     WatchAptPairStarted event,
     Emitter<BuyDialogState> emit,
   ) async {
     await emit.onEach<AptPair>(
       _tokensRepository.aptPairChanges(event.athleteId),
-      onData: (tokens) {
+      onData: (aptPair) {
         emit(
-          state.copyWith(longApt: tokens.longApt, shortApt: tokens.shortApt),
+          state.copyWith(longApt: aptPair.longApt, shortApt: aptPair.shortApt),
         );
         add(const FetchAptBuyInfoRequested());
       },
