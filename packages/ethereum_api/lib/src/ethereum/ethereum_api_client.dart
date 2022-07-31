@@ -18,16 +18,20 @@ class EthereumApiClient {
   /// based on the current [EthereumChain].
   List<Token> get tokens => _tokensController.valueOrNull ?? const [];
 
+  /// Allows listening to changes to the current [Apt]s.
+  Stream<List<Apt>> get aptsChanges => _tokensController.stream
+      .map((tokens) => tokens.whereType<Apt>().toList());
+
   /// Allows listening to changes to the [Apt]s (long and short) for the
   /// athlete identified by [athleteId].
   Stream<AptPair> aptPairChanges(int athleteId) =>
       _tokensController.stream.map((tokens) => tokens.whereType<Apt>()).map(
-            (tokens) => AptPair(
-              longApt: tokens.singleWhere(
-                (token) => token.athleteId == athleteId && token.type.isLong,
+            (apts) => AptPair(
+              longApt: apts.singleWhere(
+                (apt) => apt.athleteId == athleteId && apt.type.isLong,
               ),
-              shortApt: tokens.singleWhere(
-                (token) => token.athleteId == athleteId && token.type.isShort,
+              shortApt: apts.singleWhere(
+                (apt) => apt.athleteId == athleteId && apt.type.isShort,
               ),
             ),
           );
@@ -37,10 +41,10 @@ class EthereumApiClient {
     final apts = tokens.whereType<Apt>();
     return AptPair(
       longApt: apts.singleWhere(
-        (token) => token.athleteId == athleteId && token.type.isLong,
+        (apt) => apt.athleteId == athleteId && apt.type.isLong,
       ),
       shortApt: apts.singleWhere(
-        (token) => token.athleteId == athleteId && token.type.isShort,
+        (apt) => apt.athleteId == athleteId && apt.type.isShort,
       ),
     );
   }
