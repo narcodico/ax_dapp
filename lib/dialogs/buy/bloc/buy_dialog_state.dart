@@ -54,6 +54,6 @@ class BuyDialogState extends Equatable {
 }
 
 extension BuyDialogStateX on BuyDialogState {
-  String get selectedTokenAddress =>
+  String get selectedAptAddress =>
       aptTypeSelection.isLong ? longApt.address : shortApt.address;
 }

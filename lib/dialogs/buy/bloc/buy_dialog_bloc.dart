@@ -68,7 +68,7 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
     Emitter<BuyDialogState> emit,
   ) async {
     emit(state.copyWith(status: BlocStatus.loading));
-    final selectedTokenAddress = state.selectedTokenAddress;
+    final selectedTokenAddress = state.selectedAptAddress;
     try {
       final response =
           await repo.fetchAptBuyInfo(aptAddress: selectedTokenAddress);
@@ -141,7 +141,7 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
     final balance = await wallet.getTotalAxBalance();
     try {
       final response = await repo.fetchAptBuyInfo(
-        aptAddress: state.selectedTokenAddress,
+        aptAddress: state.selectedAptAddress,
         axInput: axInputAmount,
       );
       final isSuccess = response.isLeft();
