@@ -28,7 +28,6 @@ class _SellDialogState extends State<SellDialog> {
   double hgt = 500;
   final TextEditingController _aptAmountController = TextEditingController();
 
-  AptType _currentTokenTypeSelection = AptType.long;
   // in percents, slippage tolerance determines the upper bound of the receive
   // amount, below which transaction gets reverted
   double slippageTolerance = 1;
@@ -46,65 +45,9 @@ class _SellDialogState extends State<SellDialog> {
       height: hgt * 0.05,
       decoration: boxDecoration(Colors.transparent, 20, 1, Colors.grey[800]!),
       child: Row(
-        children: [
-          Expanded(
-            //Long apt toggle button
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                padding: EdgeInsets.zero,
-                minimumSize: const Size(50, 30),
-                primary: (_currentTokenTypeSelection == AptType.long)
-                    ? Colors.amber
-                    : Colors.transparent,
-              ),
-              onPressed: () {
-                setState(() {
-                  _currentTokenTypeSelection = AptType.long;
-                });
-              },
-              child: Text(
-                'Long',
-                style: TextStyle(
-                  color: (_currentTokenTypeSelection == AptType.long)
-                      ? Colors.black
-                      : const Color.fromRGBO(154, 154, 154, 1),
-                  fontSize: 11,
-                ),
-              ),
-            ),
-          ),
-          Expanded(
-            //short apt toggle button
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                padding: EdgeInsets.zero,
-                minimumSize: const Size(50, 30),
-                primary: (_currentTokenTypeSelection == AptType.long)
-                    ? Colors.transparent
-                    : Colors.black,
-              ),
-              onPressed: () {
-                setState(() {
-                  _currentTokenTypeSelection = AptType.short;
-                });
-              },
-              child: Text(
-                'Short',
-                style: TextStyle(
-                  color: (_currentTokenTypeSelection == AptType.long)
-                      ? const Color.fromRGBO(154, 154, 154, 1)
-                      : Colors.amber,
-                  fontSize: 11,
-                ),
-              ),
-            ),
-          )
+        children: const [
+          Expanded(child: LongAptButton()),
+          Expanded(child: ShortAptButton()),
         ],
       ),
     );
@@ -328,24 +271,7 @@ class _SellDialogState extends State<SellDialog> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(width: 5),
-                          Container(
-                            width: 35,
-                            height: 35,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                scale: 0.5,
-                                image:
-                                    _currentTokenTypeSelection == AptType.long
-                                        ? const AssetImage(
-                                            'assets/images/apt_noninverted.png',
-                                          )
-                                        : const AssetImage(
-                                            'assets/images/apt_inverted.png',
-                                          ),
-                              ),
-                            ),
-                          ),
+                          const AptIcon(),
                           Container(width: 15),
                           const Expanded(child: Ticker()),
                           Container(
@@ -479,6 +405,97 @@ class _SellDialogState extends State<SellDialog> {
           ),
         );
       },
+    );
+  }
+}
+
+class LongAptButton extends StatelessWidget {
+  const LongAptButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final aptTypeSelection =
+        context.select((SellDialogBloc bloc) => bloc.state.aptTypeSelection);
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        padding: EdgeInsets.zero,
+        minimumSize: const Size(50, 30),
+        primary: aptTypeSelection.isLong ? Colors.amber : Colors.transparent,
+      ),
+      onPressed: () => context
+          .read<SellDialogBloc>()
+          .add(const AptTypeSelectionChanged(AptType.long)),
+      child: Text(
+        'Long',
+        style: TextStyle(
+          color: aptTypeSelection.isLong
+              ? Colors.black
+              : const Color.fromRGBO(154, 154, 154, 1),
+          fontSize: 11,
+        ),
+      ),
+    );
+  }
+}
+
+class ShortAptButton extends StatelessWidget {
+  const ShortAptButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final aptTypeSelection =
+        context.select((SellDialogBloc bloc) => bloc.state.aptTypeSelection);
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        padding: EdgeInsets.zero,
+        minimumSize: const Size(50, 30),
+        primary: aptTypeSelection.isLong ? Colors.transparent : Colors.black,
+      ),
+      onPressed: () => context
+          .read<SellDialogBloc>()
+          .add(const AptTypeSelectionChanged(AptType.short)),
+      child: Text(
+        'Short',
+        style: TextStyle(
+          color: aptTypeSelection.isLong
+              ? const Color.fromRGBO(154, 154, 154, 1)
+              : Colors.amber,
+          fontSize: 11,
+        ),
+      ),
+    );
+  }
+}
+
+class AptIcon extends StatelessWidget {
+  const AptIcon({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final aptTypeSelection =
+        context.select((SellDialogBloc bloc) => bloc.state.aptTypeSelection);
+    return Container(
+      width: 35,
+      height: 35,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        image: DecorationImage(
+          scale: 0.5,
+          image: aptTypeSelection.isLong
+              ? const AssetImage(
+                  'assets/images/apt_noninverted.png',
+                )
+              : const AssetImage(
+                  'assets/images/apt_inverted.png',
+                ),
+        ),
+      ),
     );
   }
 }

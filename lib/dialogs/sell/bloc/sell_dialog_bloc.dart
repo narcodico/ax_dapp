@@ -27,7 +27,7 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
           ),
         ) {
     on<WatchAptPairStarted>(_onWatchAptPairStarted);
-    on<TokenTypeSelectionChanged>(_onTokenTypeSelectionChanged);
+    on<AptTypeSelectionChanged>(_onAptTypeSelectionChanged);
     on<FetchAptSellInfoRequested>(_onFetchAptSellInfoRequested);
     on<MaxSellTap>(_mapMaxSellTapEventToState);
     on<ConfirmSell>(_mapConfirmSellEventToState);
@@ -57,8 +57,8 @@ class SellDialogBloc extends Bloc<SellDialogEvent, SellDialogState> {
     );
   }
 
-  void _onTokenTypeSelectionChanged(
-    TokenTypeSelectionChanged event,
+  void _onAptTypeSelectionChanged(
+    AptTypeSelectionChanged event,
     Emitter<SellDialogState> emit,
   ) {
     emit(state.copyWith(aptTypeSelection: event.aptType));
