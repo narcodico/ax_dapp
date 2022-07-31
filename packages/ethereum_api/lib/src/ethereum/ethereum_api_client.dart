@@ -32,6 +32,19 @@ class EthereumApiClient {
             ),
           );
 
+  /// Returns the current [AptPair] for the given [athleteId] synchronously.
+  AptPair aptPair(int athleteId) {
+    final apts = tokens.whereType<Apt>();
+    return AptPair(
+      longApt: apts.singleWhere(
+        (token) => token.athleteId == athleteId && token.type.isLong,
+      ),
+      shortApt: apts.singleWhere(
+        (token) => token.athleteId == athleteId && token.type.isShort,
+      ),
+    );
+  }
+
   /// Allows switching the current [Token]s, which are set based on the current
   /// [EthereumChain].
   ///
