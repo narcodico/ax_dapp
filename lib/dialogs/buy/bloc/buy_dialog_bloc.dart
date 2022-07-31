@@ -25,7 +25,7 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
           BuyDialogState(longApt: tokensRepository.aptPair(athleteId).longApt),
         ) {
     on<WatchAptPairStarted>(_onWatchAptPairStarted);
-    on<TokenTypeSelectionChanged>(_onTokenTypeSelectionChanged);
+    on<AptTypeSelectionChanged>(_onAptTypeSelectionChanged);
     on<FetchAptBuyInfoRequested>(_onFetchAptBuyInfoRequested);
     on<OnMaxBuyTap>(_mapMaxBuyTapEventToState);
     on<OnConfirmBuy>(_mapConfirmBuyEventToState);
@@ -55,8 +55,8 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
     );
   }
 
-  void _onTokenTypeSelectionChanged(
-    TokenTypeSelectionChanged event,
+  void _onAptTypeSelectionChanged(
+    AptTypeSelectionChanged event,
     Emitter<BuyDialogState> emit,
   ) {
     emit(state.copyWith(aptTypeSelection: event.aptType));

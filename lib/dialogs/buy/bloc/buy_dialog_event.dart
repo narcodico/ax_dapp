@@ -16,8 +16,8 @@ class WatchAptPairStarted extends BuyDialogEvent {
   List<Object?> get props => [athleteId];
 }
 
-class TokenTypeSelectionChanged extends BuyDialogEvent {
-  const TokenTypeSelectionChanged(this.aptType);
+class AptTypeSelectionChanged extends BuyDialogEvent {
+  const AptTypeSelectionChanged(this.aptType);
 
   final AptType aptType;
 

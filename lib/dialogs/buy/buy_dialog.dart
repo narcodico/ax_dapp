@@ -437,7 +437,7 @@ class LongAptButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tokenTypeSelection =
+    final aptTypeSelection =
         context.select((BuyDialogBloc bloc) => bloc.state.aptTypeSelection);
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
@@ -446,16 +446,15 @@ class LongAptButton extends StatelessWidget {
         ),
         padding: EdgeInsets.zero,
         minimumSize: const Size(50, 30),
-        primary:
-            (tokenTypeSelection.isLong) ? Colors.amber : Colors.transparent,
+        primary: (aptTypeSelection.isLong) ? Colors.amber : Colors.transparent,
       ),
       onPressed: () => context
           .read<BuyDialogBloc>()
-          .add(const TokenTypeSelectionChanged(AptType.long)),
+          .add(const AptTypeSelectionChanged(AptType.long)),
       child: Text(
         'Long',
         style: TextStyle(
-          color: (tokenTypeSelection.isLong)
+          color: (aptTypeSelection.isLong)
               ? Colors.black
               : const Color.fromRGBO(154, 154, 154, 1),
           fontSize: 11,
@@ -470,7 +469,7 @@ class ShortAptButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tokenTypeSelection =
+    final aptTypeSelection =
         context.select((BuyDialogBloc bloc) => bloc.state.aptTypeSelection);
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
@@ -479,16 +478,15 @@ class ShortAptButton extends StatelessWidget {
         ),
         padding: EdgeInsets.zero,
         minimumSize: const Size(50, 30),
-        primary:
-            (tokenTypeSelection.isLong) ? Colors.transparent : Colors.black,
+        primary: (aptTypeSelection.isLong) ? Colors.transparent : Colors.black,
       ),
       onPressed: () => context
           .read<BuyDialogBloc>()
-          .add(const TokenTypeSelectionChanged(AptType.short)),
+          .add(const AptTypeSelectionChanged(AptType.short)),
       child: Text(
         'Short',
         style: TextStyle(
-          color: (tokenTypeSelection.isLong)
+          color: (aptTypeSelection.isLong)
               ? const Color.fromRGBO(154, 154, 154, 1)
               : Colors.amber,
           fontSize: 11,
