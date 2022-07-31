@@ -18,6 +18,9 @@ class TokensRepository {
   /// based on the current [EthereumChain].
   List<Token> get tokens => _ethereumApiClient.tokens;
 
+  /// Allows listening to changes to the current [Apt]s.
+  Stream<List<Apt>> get aptsChanges => _ethereumApiClient.aptsChanges;
+
   /// Allows listening to changes to the [Apt]s (long and short) for the
   /// athlete identified by [athleteId].
   Stream<AptPair> aptPairChanges(int athleteId) =>
