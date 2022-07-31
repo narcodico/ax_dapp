@@ -68,9 +68,11 @@ Container sellButton(
         context: context,
         builder: (BuildContext context) => BlocProvider(
           create: (BuildContext context) => SellDialogBloc(
+            tokensRepository: context.read<TokensRepository>(),
             repo: RepositoryProvider.of<GetSellInfoUseCase>(context),
             wallet: GetTotalTokenBalanceUseCase(Get.find()),
             swapController: Get.find(),
+            athleteId: athlete.id,
           ),
           child: SellDialog(
             athlete.name,
