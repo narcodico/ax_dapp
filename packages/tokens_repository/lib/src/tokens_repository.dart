@@ -23,6 +23,9 @@ class TokensRepository {
   Stream<AptPair> aptPairChanges(int athleteId) =>
       _ethereumApiClient.aptPairChanges(athleteId);
 
+  /// Returns the current [AptPair] for the given [athleteId] synchronously.
+  AptPair aptPair(int athleteId) => _ethereumApiClient.aptPair(athleteId);
+
   /// Allows switching the current [Token]s, which are set based on the current
   /// [EthereumChain].
   void switchTokens(EthereumChain chain) =>
