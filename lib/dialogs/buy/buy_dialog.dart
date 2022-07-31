@@ -438,7 +438,7 @@ class LongAptButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tokenTypeSelection =
-        context.select((BuyDialogBloc bloc) => bloc.state.tokenTypeSelection);
+        context.select((BuyDialogBloc bloc) => bloc.state.aptTypeSelection);
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(
@@ -451,7 +451,7 @@ class LongAptButton extends StatelessWidget {
       ),
       onPressed: () => context
           .read<BuyDialogBloc>()
-          .add(TokenTypeSelectionChanged(TokenType.long)),
+          .add(TokenTypeSelectionChanged(AptType.long)),
       child: Text(
         'Long',
         style: TextStyle(
@@ -471,7 +471,7 @@ class ShortAptButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tokenTypeSelection =
-        context.select((BuyDialogBloc bloc) => bloc.state.tokenTypeSelection);
+        context.select((BuyDialogBloc bloc) => bloc.state.aptTypeSelection);
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(
@@ -484,7 +484,7 @@ class ShortAptButton extends StatelessWidget {
       ),
       onPressed: () => context
           .read<BuyDialogBloc>()
-          .add(TokenTypeSelectionChanged(TokenType.short)),
+          .add(TokenTypeSelectionChanged(AptType.short)),
       child: Text(
         'Short',
         style: TextStyle(
@@ -510,14 +510,14 @@ class Price extends StatelessWidget {
           Text('Price:', style: textStyle(Colors.white, 15, false)),
           BlocBuilder<BuyDialogBloc, BuyDialogState>(
             buildWhen: (previous, current) =>
-                previous.tokenTypeSelection != current.tokenTypeSelection ||
+                previous.aptTypeSelection != current.aptTypeSelection ||
                 previous.aptBuyInfo != current.aptBuyInfo ||
                 previous.longApt != current.longApt ||
                 previous.shortApt != current.shortApt,
             builder: (context, state) {
               final price = state.aptBuyInfo.axPerAptPrice.toStringAsFixed(6);
               final _textStyle = textStyle(Colors.white, 15, false);
-              return state.tokenTypeSelection.isLong
+              return state.aptTypeSelection.isLong
                   ? Text(
                       '$price AX per ${state.longApt.ticker} APT',
                       style: _textStyle,
@@ -548,7 +548,7 @@ class AbountToReceive extends StatelessWidget {
           builder: (context, state) {
             final amountToReceive =
                 state.aptBuyInfo.receiveAmount.toStringAsFixed(6);
-            return state.tokenTypeSelection.isLong
+            return state.aptTypeSelection.isLong
                 ? Text(
                     '$amountToReceive ${state.longApt.ticker} APT',
                     style: _textStyle,

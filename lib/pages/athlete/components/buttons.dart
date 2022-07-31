@@ -37,7 +37,8 @@ Container buyButton(
             repo: RepositoryProvider.of<GetBuyInfoUseCase>(context),
             wallet: GetTotalTokenBalanceUseCase(Get.find()),
             swapController: Get.find(),
-          )..add(WatchApTokensStarted(athlete.id)),
+            athleteId: athlete.id,
+          ),
           child: BuyDialog(
             athlete.name,
             athlete.longTokenBookPrice!,

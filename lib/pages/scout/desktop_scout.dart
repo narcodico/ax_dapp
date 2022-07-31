@@ -742,7 +742,8 @@ class _DesktopScoutState extends State<DesktopScout> {
                                 Get.find(),
                               ),
                               swapController: Get.find(),
-                            )..add(WatchApTokensStarted(athlete.id)),
+                              athleteId: athlete.id,
+                            ),
                             child: BuyDialog(
                               athlete.name,
                               athlete.longTokenBookPrice!,
@@ -972,7 +973,8 @@ class _DesktopScoutState extends State<DesktopScout> {
                                 Get.find(),
                               ),
                               swapController: Get.find(),
-                            )..add(WatchApTokensStarted(athlete.id)),
+                              athleteId: athlete.id,
+                            ),
                             child: BuyDialog(
                               athlete.name,
                               athlete.longTokenBookPrice!,
