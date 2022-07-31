@@ -22,6 +22,10 @@ class EthereumApiClient {
   Stream<List<Apt>> get aptsChanges => _tokensController.stream
       .map((tokens) => tokens.whereType<Apt>().toList());
 
+  /// Returns the current [Apt]s synchronously. The returned [Apt]s are
+  /// based on the current [EthereumChain].
+  List<Apt> get apts => tokens.whereType<Apt>().toList();
+
   /// Allows listening to changes to the [Apt]s (long and short) for the
   /// athlete identified by [athleteId].
   Stream<AptPair> aptPairChanges(int athleteId) =>
@@ -37,6 +41,7 @@ class EthereumApiClient {
           );
 
   /// Returns the current [AptPair] for the given [athleteId] synchronously.
+  /// The returned [AptPair] is based on the current [EthereumChain].
   AptPair aptPair(int athleteId) {
     final apts = tokens.whereType<Apt>();
     return AptPair(
