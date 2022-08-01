@@ -159,4 +159,12 @@ extension TokensX on List<Token> {
   /// Returns the current [Token.ax].
   Token get axt =>
       singleWhere((token) => token.currency == EthereumCurrency.ax);
+
+  /// Finds and returns the [Token] with the corresponding [address].
+  Token byAddress(String address) {
+    return singleWhere(
+      (token) =>
+          token.address.trim().toLowerCase() == address.trim().toLowerCase(),
+    );
+  }
 }
