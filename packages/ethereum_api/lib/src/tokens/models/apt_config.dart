@@ -70,17 +70,17 @@ class AptConfig extends Equatable {
 
   /// Static list of [AptConfig]s used to generate [Token.shortAp]s and
   /// [Token.longAp]s.
-  static const List<AptConfig> values = _kAthletePerformanceTokenConfigs;
+  static const List<AptConfig> values = _kAptConfigs;
 }
 
 /// [AptConfig] extensions.
-extension AthletePerformanceTokenConfigX on AptConfig {
+extension AptConfigX on AptConfig {
   /// Returns [Apt]'s name based on [AptType], e.g.: `Aaron Judge Long APT`.
   String aptName(AptType tokenType) =>
       '$athleteName ${tokenType.name.capitalize()} APT';
 }
 
-const _kAthletePerformanceTokenConfigs = [
+const _kAptConfigs = [
   AptConfig(
     athleteId: 10002087,
     athleteName: 'Aaron Judge',
