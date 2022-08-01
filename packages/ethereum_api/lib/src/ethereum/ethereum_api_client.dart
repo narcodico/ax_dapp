@@ -33,9 +33,11 @@ class EthereumApiClient {
             (apts) => AptPair(
               longApt: apts.singleWhere(
                 (apt) => apt.athleteId == athleteId && apt.type.isLong,
+                orElse: () => const Apt.empty(),
               ),
               shortApt: apts.singleWhere(
                 (apt) => apt.athleteId == athleteId && apt.type.isShort,
+                orElse: () => const Apt.empty(),
               ),
             ),
           );
@@ -47,9 +49,11 @@ class EthereumApiClient {
     return AptPair(
       longApt: apts.singleWhere(
         (apt) => apt.athleteId == athleteId && apt.type.isLong,
+        orElse: () => const Apt.empty(),
       ),
       shortApt: apts.singleWhere(
         (apt) => apt.athleteId == athleteId && apt.type.isShort,
+        orElse: () => const Apt.empty(),
       ),
     );
   }

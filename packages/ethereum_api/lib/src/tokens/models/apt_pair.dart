@@ -16,6 +16,17 @@ class AptPair extends Equatable {
   /// Represents [Apt.short].
   final Apt shortApt;
 
+  /// Represents an empty [AptPair].
+  static const empty = AptPair(longApt: Apt.empty(), shortApt: Apt.empty());
+
   @override
   List<Object?> get props => [longApt, shortApt];
+}
+
+/// [AptPair] extensions
+extension AptPairX on AptPair {
+  /// Returns `true` if any of the [AptPair.longApt] or [AptPair.shortApt] is
+  /// empty, because it doesn't make sense to have operations involving a
+  /// compromised pair.
+  bool get isEmpty => longApt.isEmpty || shortApt.isEmpty;
 }

@@ -148,6 +148,9 @@ class Token extends Equatable {
 
 /// [Token] extensions.
 extension TokenX on Token {
+  /// Returns `true` for an empty [Token].
+  bool get isEmpty => this == Token.empty;
+
   /// Returns the correspondent [Token]'s address based on the current
   /// [EthereumChain]. For [EthereumChain.none] and [EthereumChain.unsupported]
   /// it will return [kEmptyTokenAddress].
@@ -157,14 +160,17 @@ extension TokenX on Token {
 /// [Token]s extensions.
 extension TokensX on List<Token> {
   /// Returns the current [Token.ax].
-  Token get axt =>
-      singleWhere((token) => token.currency == EthereumCurrency.ax);
+  Token get axt => singleWhere(
+        (token) => token.currency == EthereumCurrency.ax,
+        orElse: () => Token.empty,
+      );
 
   /// Finds and returns the [Token] with the corresponding [address].
   Token byAddress(String address) {
     return singleWhere(
       (token) =>
           token.address.trim().toLowerCase() == address.trim().toLowerCase(),
+      orElse: () => Token.empty,
     );
   }
 }

@@ -60,6 +60,9 @@ class Apt extends Token {
 
 /// [Apt] extensions.
 extension AptX on Apt {
+  /// Returns `true` for an empty [Apt].
+  bool get isEmpty => this == const Apt.empty();
+
   /// {@macro athlete_id}
   int get athleteId => _aptConfig.athleteId;
 
