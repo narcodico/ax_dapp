@@ -7,13 +7,6 @@ const kEmptyTokenAddress = '0x0000000000000000000000000000000000000000';
 /// Configures a [Token] with addresses, one for each supported [EthereumChain].
 /// {@endtemplate}
 class TokenAddressConfig {
-  /// Empty configuration.
-  const TokenAddressConfig.empty()
-      : polygonMainnet = kEmptyTokenAddress,
-        polygonTestnet = kEmptyTokenAddress,
-        sxMainnet = kEmptyTokenAddress,
-        sxTestnet = kEmptyTokenAddress;
-
   /// Configuration for `AXT`.
   const TokenAddressConfig.axt()
       : polygonMainnet = '0x5617604ba0a30e0ff1d2163ab94e50d8b6d0b0df',
@@ -56,6 +49,13 @@ class TokenAddressConfig {
     required this.sxMainnet,
     required this.sxTestnet,
   });
+
+  /// Empty configuration.
+  const TokenAddressConfig.empty()
+      : polygonMainnet = kEmptyTokenAddress,
+        polygonTestnet = kEmptyTokenAddress,
+        sxMainnet = kEmptyTokenAddress,
+        sxTestnet = kEmptyTokenAddress;
 
   /// Represents the token address on the [EthereumChain.polygonMainnet].
   final String polygonMainnet;
