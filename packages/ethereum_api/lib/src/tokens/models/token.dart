@@ -152,8 +152,10 @@ extension TokenX on Token {
   bool get isEmpty => this == Token.empty;
 
   /// Returns the correspondent [Token]'s address based on the current
-  /// [EthereumChain]. For [EthereumChain.none] and [EthereumChain.unsupported]
-  /// it will return [kEmptyTokenAddress].
+  /// [EthereumChain].
+  /// - for [EthereumChain.none] and [EthereumChain.unsupported] it will return
+  /// [kEmptyTokenAddress];
+  /// - for [Token.empty] it will also return [kEmptyTokenAddress].
   String get address => _addressConfig.address(_chain);
 }
 
