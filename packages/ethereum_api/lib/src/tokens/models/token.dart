@@ -125,6 +125,16 @@ class Token extends Equatable {
         _chain,
       ];
 
+  /// Static list of all available [Token]s for the given [EthereumChain].
+  static List<Token> values(EthereumChain chain) => [
+        Token.ax(chain),
+        Token.sx(chain),
+        Token.matic(chain),
+        Token.weth(chain),
+        Token.usdc(chain),
+        ...Token.apts(chain),
+      ];
+
   /// Static list of [Apt]'s. Composed based on a list of [AptConfig]s.
   static List<Token> apts(EthereumChain chain) => AptConfig.values
       .expand(

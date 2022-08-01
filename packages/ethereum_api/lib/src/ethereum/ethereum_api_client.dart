@@ -57,18 +57,11 @@ class EthereumApiClient {
   /// Allows switching the current [Token]s, which are set based on the current
   /// [EthereumChain].
   ///
-  /// The [Token]s are updated only if the current [EthereumChain] is
-  /// supported. Otherwise, we keep the existing data.
+  /// The [Token]s are updated only if the current [EthereumChain] is supported.
+  /// Otherwise, we keep the existing data.
   void switchTokens(EthereumChain chain) {
     if (chain.isSupported) {
-      _tokensController.add([
-        Token.ax(chain),
-        Token.sx(chain),
-        Token.matic(chain),
-        Token.weth(chain),
-        Token.usdc(chain),
-        ...Token.apts(chain),
-      ]);
+      _tokensController.add(Token.values(chain));
     }
   }
 }
