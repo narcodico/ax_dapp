@@ -1582,10 +1582,10 @@ class _AthletePageState extends State<AthletePage> {
                                 false,
                               ),
                             ),
-                            // TODO(anyone): get the all time high book value and
-                            // market value prices
-                            // Text(shortBookValue, style: textStyle(greyTextColor,
-                            // 14, false, false))
+                            // TODO(anyone): get the all time high book value
+                            // and market value prices
+                            // Text(shortBookValue, style: textStyle
+                            // (greyTextColor, 14, false, false))
                           ],
                         );
                       },
