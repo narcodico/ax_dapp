@@ -18,7 +18,7 @@ class TradeTokens extends Equatable {
 }
 
 extension EthereumChainX on EthereumChain {
-  TradeTokens tradeTokens({
+  TradeTokens computeTradeTokens({
     required bool isBuyAX,
     required List<Token> tokens,
   }) {

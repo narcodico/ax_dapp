@@ -56,7 +56,7 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
     await emit.onEach<EthereumChain>(
       _walletRepository.ethereumChainChanges,
       onData: (chain) {
-        final tradeTokens = chain.tradeTokens(
+        final tradeTokens = chain.computeTradeTokens(
           isBuyAX: isBuyAX,
           tokens: _tokensRepository.tokens,
         );

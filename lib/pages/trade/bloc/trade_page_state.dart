@@ -17,7 +17,8 @@ class TradePageState extends Equatable {
     required EthereumChain chain,
     required List<Token> tokens,
   }) {
-    final tradeTokens = chain.tradeTokens(isBuyAX: isBuyAX, tokens: tokens);
+    final tradeTokens =
+        chain.computeTradeTokens(isBuyAX: isBuyAX, tokens: tokens);
     return TradePageState(
       tokenFrom: tradeTokens.tokenFrom,
       tokenTo: tradeTokens.tokenTo,
