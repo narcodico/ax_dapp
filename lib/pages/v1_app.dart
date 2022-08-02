@@ -145,7 +145,9 @@ class _V1AppState extends State<V1App> {
           if (pageNumber == Pages.scout)
             BlocProvider(
               create: (BuildContext context) => ScoutPageBloc(
+                walletRepository: context.read<WalletRepository>(),
                 repo: GetScoutAthletesDataUseCase(
+                  walletRepository: context.read<WalletRepository>(),
                   tokensRepository: context.read<TokensRepository>(),
                   graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
                   sportsRepos: [
@@ -160,7 +162,6 @@ class _V1AppState extends State<V1App> {
             BlocProvider(
               create: (BuildContext context) => TradePageBloc(
                 walletRepository: context.read<WalletRepository>(),
-                tokensRepository: context.read<TokensRepository>(),
                 repo: RepositoryProvider.of<GetSwapInfoUseCase>(context),
                 swapController: Get.find(),
                 walletController: Get.find(),
@@ -181,7 +182,9 @@ class _V1AppState extends State<V1App> {
         children: <Widget>[
           BlocProvider(
             create: (BuildContext context) => ScoutPageBloc(
+              walletRepository: context.read<WalletRepository>(),
               repo: GetScoutAthletesDataUseCase(
+                walletRepository: context.read<WalletRepository>(),
                 tokensRepository: context.read<TokensRepository>(),
                 graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
                 sportsRepos: [
@@ -195,7 +198,6 @@ class _V1AppState extends State<V1App> {
           BlocProvider(
             create: (BuildContext context) => TradePageBloc(
               walletRepository: context.read<WalletRepository>(),
-              tokensRepository: context.read<TokensRepository>(),
               repo: RepositoryProvider.of<GetSwapInfoUseCase>(context),
               swapController: Get.find(),
               walletController: Get.find(),

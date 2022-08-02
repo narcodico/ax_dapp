@@ -18,12 +18,11 @@ class TradeTokens extends Equatable {
 }
 
 extension EthereumChainX on EthereumChain {
-  TradeTokens computeTradeTokens({
-    required bool isBuyAX,
-    required List<Token> tokens,
-  }) {
-    var tokenFrom = tokens.axt;
-    var tokenTo = tokens.weth;
+  TradeTokens computeTradeTokens({required bool isBuyAX}) {
+    final axt = Token.ax(this);
+    final weth = Token.weth(this);
+    var tokenFrom = axt;
+    var tokenTo = weth;
     if (isBuyAX) {
       switch (this) {
         case EthereumChain.none:
@@ -31,13 +30,13 @@ extension EthereumChainX on EthereumChain {
           return TradeTokens.empty;
         case EthereumChain.polygonMainnet:
         case EthereumChain.polygonTestnet:
-          tokenFrom = tokens.matic;
-          tokenTo = tokens.axt;
+          tokenFrom = Token.matic(this);
+          tokenTo = axt;
           break;
         case EthereumChain.sxMainnet:
         case EthereumChain.sxTestnet:
-          tokenFrom = tokens.sxt;
-          tokenTo = tokens.axt;
+          tokenFrom = Token.sx(this);
+          tokenTo = axt;
           break;
       }
     }
