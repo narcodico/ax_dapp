@@ -167,6 +167,30 @@ extension TokensX on List<Token> {
         orElse: () => Token.empty,
       );
 
+  /// Returns the current [Token.sx].
+  Token get sxt => singleWhere(
+        (token) => token.currency == EthereumCurrency.sx,
+        orElse: () => Token.empty,
+      );
+
+  /// Returns the current [Token.matic].
+  Token get matic => singleWhere(
+        (token) => token.currency == EthereumCurrency.matic,
+        orElse: () => Token.empty,
+      );
+
+  /// Returns the current [Token.weth].
+  Token get weth => singleWhere(
+        (token) => token.currency == EthereumCurrency.weth,
+        orElse: () => Token.empty,
+      );
+
+  /// Returns the current [Token.usdc].
+  Token get usdc => singleWhere(
+        (token) => token.currency == EthereumCurrency.usdc,
+        orElse: () => Token.empty,
+      );
+
   /// Finds and returns the [Token] with the corresponding [address].
   Token byAddress(String address) {
     return singleWhere(
