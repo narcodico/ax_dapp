@@ -50,7 +50,8 @@ class _AthletePageState extends State<AthletePage> {
   void initState() {
     super.initState();
     athlete = widget.athlete;
-    Get.find<LSPController>().updateAptAddress(athlete.id);
+    final aptPair = context.read<TokensRepository>().aptPair(athlete.id);
+    Get.find<LSPController>().updateAptAddress(aptPair.address);
     _zoomPanBehavior = ZoomPanBehavior(
       enableMouseWheelZooming: true,
       enablePanning: true,

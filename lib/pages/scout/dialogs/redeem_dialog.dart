@@ -35,7 +35,8 @@ class _RedeemDialogState extends State<RedeemDialog> {
   @override
   void initState() {
     super.initState();
-    lspController.updateAptAddress(widget.athlete.id);
+    final aptPair = context.read<TokensRepository>().aptPair(widget.athlete.id);
+    lspController.updateAptAddress(aptPair.address);
     updateStats();
   }
 

@@ -2,7 +2,6 @@
 import 'package:ax_dapp/contracts/LongShortPair.g.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/swap/axt.dart';
-import 'package:ax_dapp/service/token_list.dart';
 import 'package:ax_dapp/util/user_input_norm.dart';
 import 'package:erc20/erc20.dart';
 import 'package:get/get.dart';
@@ -64,14 +63,8 @@ class LSPController extends GetxController {
     }
   }
 
-  void updateAptAddress(int athleteId) {
-    if (TokenList.idToAddress.containsKey(athleteId)) {
-      aptAddress.value = TokenList.idToAddress[athleteId]![0];
-    } else {
-      aptAddress.value = '';
-      // Comment this out for now to access the athlete page for other sports
-      // throw Exception("Player id is not supported!");
-    }
+  void updateAptAddress(String pairAddress) {
+    aptAddress.value = pairAddress;
     update();
   }
 

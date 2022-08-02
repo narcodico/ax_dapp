@@ -7,7 +7,9 @@ import 'package:ax_dapp/service/dialog.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 
 class MintDialog extends StatefulWidget {
   const MintDialog(this.athlete, {super.key});
@@ -34,7 +36,8 @@ class _MintDialogState extends State<MintDialog> {
   @override
   void initState() {
     super.initState();
-    lspController.updateAptAddress(widget.athlete.id);
+    final aptPair = context.read<TokensRepository>().aptPair(widget.athlete.id);
+    lspController.updateAptAddress(aptPair.address);
     updateStats();
   }
 
