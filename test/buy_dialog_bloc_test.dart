@@ -10,26 +10,39 @@ import 'package:get/get.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 
 import 'buy_dialog_bloc_test.mocks.dart';
 
-@GenerateMocks([GetBuyInfoUseCase, GetTotalTokenBalanceUseCase, SwapController])
+// TODO(Rolly): generate mocks
+@GenerateMocks([
+  TokensRepository,
+  GetBuyInfoUseCase,
+  GetTotalTokenBalanceUseCase,
+  SwapController,
+])
 void main() {
+  late TokensRepository mockTokensRepository;
   var mockRepoUseCase = MockGetBuyInfoUseCase();
   var mockWalletController = MockGetTotalTokenBalanceUseCase();
   var mockSwapController = MockSwapController();
 
+  const mockAthleteId = 123;
+
   late BuyDialogBloc buyDialogBloc;
 
   setUp(() {
+    mockTokensRepository = MockTokensRepository();
     mockRepoUseCase = MockGetBuyInfoUseCase();
     mockWalletController = MockGetTotalTokenBalanceUseCase();
     mockSwapController = MockSwapController();
 
     buyDialogBloc = BuyDialogBloc(
+      tokensRepository: mockTokensRepository,
       repo: mockRepoUseCase,
       wallet: mockWalletController,
       swapController: mockSwapController,
+      athleteId: mockAthleteId,
     );
   });
 
@@ -57,7 +70,7 @@ void main() {
     when(mockSwapController.updateFromAmount(testAxInput)).thenReturn(null);
     when(mockSwapController.amount1).thenReturn(0.0.obs);
 
-    buyDialogBloc.add(OnNewAxInput(axInputAmount: testAxInput));
+    buyDialogBloc.add(const OnNewAxInput(axInputAmount: testAxInput));
 
     await untilCalled(
       mockRepoUseCase.fetchAptBuyInfo(
@@ -91,7 +104,7 @@ void main() {
                     receiveAmount: testSwapInfo.receiveAmount,
                     totalFee: testSwapInfo.totalFee,
                   ) &&
-              state.tokenAddress.isEmpty,
+              state.selectedAptAddress.isEmpty,
         )
       ]),
     );
@@ -117,7 +130,9 @@ void main() {
       ),
     ).thenAnswer((_) => Future.value(Either.left(Success(testSwapInfo))));
 
-    buyDialogBloc.add(OnLoadDialog(currentTokenAddress: testTokenAddress));
+    buyDialogBloc.add(
+      const FetchAptBuyInfoRequested(),
+    );
 
     await untilCalled(
       mockRepoUseCase.fetchAptBuyInfo(
@@ -150,7 +165,7 @@ void main() {
                     receiveAmount: testSwapInfo.receiveAmount,
                     totalFee: testSwapInfo.totalFee,
                   ) &&
-              state.tokenAddress == testTokenAddress,
+              state.selectedAptAddress == testTokenAddress,
         )
       ]),
     );
