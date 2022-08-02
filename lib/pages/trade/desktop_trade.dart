@@ -173,7 +173,7 @@ class _DesktopTradeState extends State<DesktopTrade> {
                         bloc,
                       );
 
-                      bloc.add(FetchTradeInfo());
+                      bloc.add(FetchTradeInfoRequested());
                       setState(() {
                         Navigator.pop(context);
                       });

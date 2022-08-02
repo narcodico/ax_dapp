@@ -15,22 +15,19 @@ part 'trade_page_state.dart';
 class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
   TradePageBloc({
     required WalletRepository walletRepository,
-    required TokensRepository tokensRepository,
     required this.repo,
     required this.swapController,
     required this.walletController,
     required this.isBuyAX,
   })  : _walletRepository = walletRepository,
-        _tokensRepository = tokensRepository,
         super(
           TradePageState.initial(
             isBuyAX: isBuyAX,
             chain: walletRepository.ethereumChain,
-            tokens: tokensRepository.tokens,
           ),
         ) {
     on<WatchEthereumChainChangesStarted>(_onWatchEthereumChainChangesStarted);
-    on<FetchTradeInfo>(_onFetchTradeInfo);
+    on<FetchTradeInfoRequested>(_onFetchTradeInfoRequested);
     on<MaxSwapTapEvent>(_mapMaxSwapTapEventToState);
     on<NewTokenFromInputEvent>(_mapNewTokenFromInputEventToState);
     on<NewTokenToInputEvent>(_mapNewTokenToInputEventToState);
@@ -39,11 +36,10 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
     on<SwapTokens>(_mapSwapTokensEventToState);
 
     add(WatchEthereumChainChangesStarted());
-    add(FetchTradeInfo());
+    add(FetchTradeInfoRequested());
   }
 
   final WalletRepository _walletRepository;
-  final TokensRepository _tokensRepository;
   final GetSwapInfoUseCase repo;
   final SwapController swapController;
   final WalletController walletController;
@@ -58,7 +54,6 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
       onData: (chain) {
         final tradeTokens = chain.computeTradeTokens(
           isBuyAX: isBuyAX,
-          tokens: _tokensRepository.tokens,
         );
         emit(
           state.copyWith(
@@ -66,13 +61,13 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
             tokenTo: tradeTokens.tokenTo,
           ),
         );
-        add(FetchTradeInfo());
+        add(FetchTradeInfoRequested());
       },
     );
   }
 
-  Future<void> _onFetchTradeInfo(
-    FetchTradeInfo event,
+  Future<void> _onFetchTradeInfoRequested(
+    FetchTradeInfoRequested event,
     Emitter<TradePageState> emit,
   ) async {
     emit(state.copyWith(status: BlocStatus.loading));

@@ -7,7 +7,7 @@ abstract class TradePageEvent extends Equatable {
 
 class WatchEthereumChainChangesStarted extends TradePageEvent {}
 
-class FetchTradeInfo extends TradePageEvent {}
+class FetchTradeInfoRequested extends TradePageEvent {}
 
 class NewTokenFromInputEvent extends TradePageEvent {
   NewTokenFromInputEvent({required this.tokenInputFromAmount});
