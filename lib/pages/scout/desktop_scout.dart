@@ -76,9 +76,6 @@ class _DesktopScoutState extends State<DesktopScout> {
       builder: (context, state) {
         final bloc = context.read<ScoutPageBloc>();
         final filteredAthletes = state.filteredAthletes;
-        if (state.status == BlocStatus.initial) {
-          bloc.add(OnPageRefresh());
-        }
         if (athletePage && curAthlete != null) {
           return BlocProvider(
             create: (context) => AthletePageBloc(
