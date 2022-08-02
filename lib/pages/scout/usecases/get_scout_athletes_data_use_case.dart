@@ -12,25 +12,29 @@ import 'package:ax_dapp/service/athlete_models/nfl/nfl_athlete.dart';
 import 'package:ax_dapp/service/athlete_models/sport_athlete.dart';
 import 'package:ax_dapp/service/blockchain_models/token_pair.dart';
 import 'package:ax_dapp/service/controller/swap/axt.dart';
-import 'package:ax_dapp/service/token_list.dart';
-import 'package:ax_dapp/util/supported_sports.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 
 class GetScoutAthletesDataUseCase {
   GetScoutAthletesDataUseCase({
+    required TokensRepository tokensRepository,
     required this.graphRepo,
     required this.coinGeckoRepo,
     required List<SportsRepo<SportAthlete>> sportsRepos,
-  }) {
+  }) : _tokensRepository = tokensRepository {
     for (final repo in sportsRepos) {
       _repos[repo.sport] = repo;
     }
   }
-  static const collateralizationMultiplier = 1000;
-  static const collateralizationPerPair = 15;
+
+  final TokensRepository _tokensRepository;
   final SubGraphRepo graphRepo;
   final CoinGeckoRepo coinGeckoRepo;
   final Map<SupportedSport, SportsRepo<SportAthlete>> _repos = {};
+
   List<TokenPair> allPairs = [];
+
+  static const collateralizationMultiplier = 1000;
+  static const collateralizationPerPair = 15;
 
   Future<double> fetchAxPrice() async {
     final axMarketData = await coinGeckoRepo.getAxPrice();
@@ -43,6 +47,7 @@ class GetScoutAthletesDataUseCase {
   Future<List<AthleteScoutModel>> fetchSupportedAthletes(
     SupportedSport sportSelection,
   ) async {
+    // TODO(Rolly): AX?
     allPairs = await fetchSpecificPairs('AX');
     //fetching AX Price
     final axPrice = await fetchAxPrice();
@@ -92,6 +97,7 @@ class GetScoutAthletesDataUseCase {
   }
 
   MarketModel getMarketModel(String strTokenAddr, double bookPrice) {
+    // TODO(Rolly): AXT?
     final strAXTAddr = AXT.polygonAddress.toUpperCase();
     // Looking for a pair which has the same token name as strTokenAddr
     // (token address as uppercase)
@@ -137,14 +143,12 @@ class GetScoutAthletesDataUseCase {
   ) {
     final mappedAthletes = <AthleteScoutModel>[];
     for (final athlete in athletes) {
-      final isIdFound = TokenList.idToAddress.containsKey(athlete.id);
-      final strLongTokenAddr =
-          isIdFound ? TokenList.idToAddress[athlete.id]![1].toUpperCase() : '';
-      final strShortTokenAddr =
-          isIdFound ? TokenList.idToAddress[athlete.id]![2].toUpperCase() : '';
-      final longToken = getMarketModel(strLongTokenAddr, athlete.price);
+      final aptPair = _tokensRepository.aptPair(athlete.id);
+      final longAptAddress = aptPair.longApt.address;
+      final shortAptAddress = aptPair.shortApt.address;
+      final longToken = getMarketModel(longAptAddress, athlete.price);
       final shortToken = getMarketModel(
-        strShortTokenAddr,
+        shortAptAddress,
         collateralizationPerPair - athlete.price,
       );
       AthleteScoutModel athleteScoutModel;

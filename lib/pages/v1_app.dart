@@ -145,6 +145,7 @@ class _V1AppState extends State<V1App> {
             BlocProvider(
               create: (BuildContext context) => ScoutPageBloc(
                 repo: GetScoutAthletesDataUseCase(
+                  tokensRepository: context.read<TokensRepository>(),
                   graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
                   sportsRepos: [
                     RepositoryProvider.of<MLBRepo>(context),
@@ -179,6 +180,7 @@ class _V1AppState extends State<V1App> {
           BlocProvider(
             create: (BuildContext context) => ScoutPageBloc(
               repo: GetScoutAthletesDataUseCase(
+                tokensRepository: context.read<TokensRepository>(),
                 graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
                 sportsRepos: [
                   RepositoryProvider.of<MLBRepo>(context),
