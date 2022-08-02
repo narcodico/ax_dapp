@@ -1,5 +1,4 @@
 // TODO(Pearlson): confirm info
-import 'package:flutter_web3/ethereum.dart';
 
 /// {@template ethereum_currency}
 /// Holds data about an `Ethereum` currency.
@@ -40,14 +39,4 @@ enum EthereumCurrency {
 
   /// The no. of decimals used with this currency.
   final int decimals = 18;
-}
-
-/// `EthereumCurrency` extensions.
-extension EthereumCurrencyX on EthereumCurrency {
-  /// Converts an `EthereumCurrency` to native `CurrencyParams`.
-  CurrencyParams get toCurrencyParams => CurrencyParams(
-        name: currencyName,
-        symbol: symbol,
-        decimals: decimals,
-      );
 }
