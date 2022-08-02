@@ -29,4 +29,10 @@ extension AptPairX on AptPair {
   /// empty, because it doesn't make sense to have operations involving a
   /// compromised pair.
   bool get isEmpty => longApt.isEmpty || shortApt.isEmpty;
+
+  /// Represents [AptPair] address for an [Apt.long] and [Apt.short] pair of
+  /// tokens.
+  ///
+  /// The `pairAddress` returned by the [Apt.long] and [Apt.short] are the same.
+  String get address => longApt.pairAddress;
 }
