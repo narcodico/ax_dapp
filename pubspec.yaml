@@ -59,7 +59,11 @@ dependencies:
     path: packages/wallet_repository
   webfeed: ^0.7.0
 
-dependency_overrides: null
+dependency_overrides:
+  web3dart:
+    git:
+      url: https://github.com/narcodico/web3dart.git
+
 
 dev_dependencies:
   build_runner: ^2.2.0
