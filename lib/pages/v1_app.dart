@@ -30,6 +30,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:wallet_repository/wallet_repository.dart';
 
 enum Pages { scout, trade, pool, farm }
 
@@ -158,8 +159,9 @@ class _V1AppState extends State<V1App> {
           else if (pageNumber == Pages.trade)
             BlocProvider(
               create: (BuildContext context) => TradePageBloc(
+                walletRepository: context.read<WalletRepository>(),
+                tokensRepository: context.read<TokensRepository>(),
                 repo: RepositoryProvider.of<GetSwapInfoUseCase>(context),
-                controller: Get.find(),
                 swapController: Get.find(),
                 walletController: Get.find(),
                 isBuyAX: isBuyAX,
@@ -192,8 +194,9 @@ class _V1AppState extends State<V1App> {
           ),
           BlocProvider(
             create: (BuildContext context) => TradePageBloc(
+              walletRepository: context.read<WalletRepository>(),
+              tokensRepository: context.read<TokensRepository>(),
               repo: RepositoryProvider.of<GetSwapInfoUseCase>(context),
-              controller: Get.find(),
               swapController: Get.find(),
               walletController: Get.find(),
               isBuyAX: isBuyAX,
