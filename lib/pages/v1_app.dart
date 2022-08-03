@@ -147,7 +147,6 @@ class _V1AppState extends State<V1App> {
               create: (BuildContext context) => ScoutPageBloc(
                 walletRepository: context.read<WalletRepository>(),
                 repo: GetScoutAthletesDataUseCase(
-                  walletRepository: context.read<WalletRepository>(),
                   tokensRepository: context.read<TokensRepository>(),
                   graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
                   sportsRepos: [
@@ -184,7 +183,6 @@ class _V1AppState extends State<V1App> {
             create: (BuildContext context) => ScoutPageBloc(
               walletRepository: context.read<WalletRepository>(),
               repo: GetScoutAthletesDataUseCase(
-                walletRepository: context.read<WalletRepository>(),
                 tokensRepository: context.read<TokensRepository>(),
                 graphRepo: RepositoryProvider.of<SubGraphRepo>(context),
                 sportsRepos: [
