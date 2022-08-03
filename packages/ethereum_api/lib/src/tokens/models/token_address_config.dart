@@ -1,7 +1,10 @@
 part of 'token.dart';
 
 /// Default value from an empty [Token] address.
-const kEmptyTokenAddress = '0x0000000000000000000000000000000000000000';
+///
+/// `0x0000000000000000000000000000000000000000` is not set as default because
+/// it could cause a request sent by mistake to succeed.
+const kEmptyTokenAddress = '';
 
 /// {@template token_address_config}
 /// Configures a [Token] with addresses, one for each supported [EthereumChain].
