@@ -2,9 +2,9 @@ import 'package:ax_dapp/contracts/APTRouter.g.dart';
 import 'package:ax_dapp/contracts/Dex.g.dart';
 import 'package:ax_dapp/contracts/ERC20.g.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
-import 'package:ax_dapp/service/controller/token.dart';
 import 'package:ax_dapp/util/user_input_norm.dart';
 import 'package:get/get.dart';
+import 'package:tokens_repository/tokens_repository.dart';
 import 'package:web3dart/web3dart.dart';
 
 class SwapController extends GetxController {
@@ -16,16 +16,7 @@ class SwapController extends GetxController {
     );
   }
   Controller controller = Get.find();
-  Rx<Token> activeTkn1 = Token(
-        'Empty Token',
-        'ET',
-        '0x0000000000000000000000000000000000000000',
-      ).obs,
-      activeTkn2 = Token(
-        'Empty Token',
-        'ET',
-        '0x0000000000000000000000000000000000000000',
-      ).obs;
+  Rx<Token> activeTkn1 = Token.empty.obs, activeTkn2 = Token.empty.obs;
   RxString address1 = ''.obs, address2 = ''.obs;
   RxDouble amount1 = 0.0.obs, amount2 = 0.0.obs;
   RxDouble price = 0.0.obs;
