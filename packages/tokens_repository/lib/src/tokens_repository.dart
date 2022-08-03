@@ -34,6 +34,23 @@ class TokensRepository {
   /// The returned [AptPair] is based on the current [EthereumChain].
   AptPair aptPair(int athleteId) => _ethereumApiClient.aptPair(athleteId);
 
+  /// Allows listening to changes to the [Token] associated with the current
+  /// [EthereumChain].
+  Stream<Token> get chainTokenChanges => tokensChanges.map((tokens) {
+        final tokensChain = tokens.first.chain;
+        switch (tokensChain) {
+          case EthereumChain.none:
+          case EthereumChain.unsupported:
+            return Token.empty;
+          case EthereumChain.polygonMainnet:
+          case EthereumChain.polygonTestnet:
+            return tokens.axt;
+          case EthereumChain.sxMainnet:
+          case EthereumChain.sxTestnet:
+            return tokens.sxt;
+        }
+      });
+
   /// Allows switching the current [Token]s, which are set based on the current
   /// [EthereumChain].
   void switchTokens(EthereumChain chain) =>
