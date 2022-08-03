@@ -2,7 +2,6 @@ import 'package:ax_dapp/contracts/APTRouter.g.dart';
 import 'package:ax_dapp/contracts/Dex.g.dart';
 import 'package:ax_dapp/contracts/ERC20.g.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
-import 'package:ax_dapp/service/controller/swap/axt.dart';
 import 'package:ax_dapp/service/controller/token.dart';
 import 'package:ax_dapp/util/user_input_norm.dart';
 import 'package:get/get.dart';
@@ -40,7 +39,6 @@ class SwapController extends GetxController {
   final EthereumAddress dexMainnetAddress =
       EthereumAddress.fromHex('0x8720DccfCd5687AfAE5F0BFb56ff664E6D8b385B');
 
-  final axtAddress = EthereumAddress.fromHex(AXT.polygonAddress);
   // Deadline is two minutes from 'now'
   final BigInt twoMinuteDeadline = BigInt.from(
     DateTime.now().add(const Duration(minutes: 5)).millisecondsSinceEpoch,
@@ -124,11 +122,14 @@ class SwapController extends GetxController {
     controller.updateTxString(txString);
   }
 
-  Future<void> swapforAX() async {
+  Future<void> swapforAX(String chainTokenAddress) async {
     final tknA = EthereumAddress.fromHex(address1.value);
     final amountIn = normalizeInput(amount1.value);
     final to = await controller.credentials.extractAddress();
-    final path = <EthereumAddress>[tknA, axtAddress];
+    final path = <EthereumAddress>[
+      tknA,
+      EthereumAddress.fromHex(chainTokenAddress),
+    ];
     final txString = await _aptRouter.swapExactTokensForAVAX(
       amountIn,
       BigInt.zero,
@@ -140,10 +141,13 @@ class SwapController extends GetxController {
     controller.updateTxString(txString);
   }
 
-  Future<void> swapFromAX() async {
+  Future<void> swapFromAX(String chainTokenAddress) async {
     final tknA = EthereumAddress.fromHex('$address1.value');
 
-    final path = <EthereumAddress>[tknA, axtAddress];
+    final path = <EthereumAddress>[
+      tknA,
+      EthereumAddress.fromHex(chainTokenAddress),
+    ];
     final to = await controller.credentials.extractAddress();
     final txString = await _aptRouter.swapExactAVAXForTokens(
       amountOutMin,
