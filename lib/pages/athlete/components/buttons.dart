@@ -35,7 +35,10 @@ Container buyButton(
           create: (BuildContext context) => BuyDialogBloc(
             tokensRepository: context.read<TokensRepository>(),
             repo: RepositoryProvider.of<GetBuyInfoUseCase>(context),
-            wallet: GetTotalTokenBalanceUseCase(Get.find()),
+            wallet: GetTotalTokenBalanceUseCase(
+              tokensRepository: context.read<TokensRepository>(),
+              walletController: Get.find(),
+            ),
             swapController: Get.find(),
             athleteId: athlete.id,
           ),
@@ -70,7 +73,10 @@ Container sellButton(
           create: (BuildContext context) => SellDialogBloc(
             tokensRepository: context.read<TokensRepository>(),
             repo: RepositoryProvider.of<GetSellInfoUseCase>(context),
-            wallet: GetTotalTokenBalanceUseCase(Get.find()),
+            wallet: GetTotalTokenBalanceUseCase(
+              tokensRepository: context.read<TokensRepository>(),
+              walletController: Get.find(),
+            ),
             swapController: Get.find(),
             athleteId: athlete.id,
           ),

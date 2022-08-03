@@ -738,7 +738,9 @@ class _DesktopScoutState extends State<DesktopScout> {
                                 context,
                               ),
                               wallet: GetTotalTokenBalanceUseCase(
-                                Get.find(),
+                                tokensRepository:
+                                    context.read<TokensRepository>(),
+                                walletController: Get.find(),
                               ),
                               swapController: Get.find(),
                               athleteId: athlete.id,
@@ -969,7 +971,9 @@ class _DesktopScoutState extends State<DesktopScout> {
                                 context,
                               ),
                               wallet: GetTotalTokenBalanceUseCase(
-                                Get.find(),
+                                tokensRepository:
+                                    context.read<TokensRepository>(),
+                                walletController: Get.find(),
                               ),
                               swapController: Get.find(),
                               athleteId: athlete.id,

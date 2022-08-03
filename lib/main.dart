@@ -67,10 +67,16 @@ void main() async {
             RepositoryProvider(create: (context) => _getPairInfoUseCase),
             RepositoryProvider(create: (context) => _getSwapInfoUseCase),
             RepositoryProvider(
-              create: (context) => GetBuyInfoUseCase(_getSwapInfoUseCase),
+              create: (context) => GetBuyInfoUseCase(
+                tokensRepository: context.read<TokensRepository>(),
+                repo: _getSwapInfoUseCase,
+              ),
             ),
             RepositoryProvider(
-              create: (context) => GetSellInfoUseCase(_getSwapInfoUseCase),
+              create: (context) => GetSellInfoUseCase(
+                tokensRepository: context.read<TokensRepository>(),
+                repo: _getSwapInfoUseCase,
+              ),
             ),
             RepositoryProvider(
               create: (context) => GetPoolInfoUseCase(_getPairInfoUseCase),

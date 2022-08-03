@@ -1,7 +1,6 @@
 // ignore_for_file: non_constant_identifier_names
 import 'package:ax_dapp/contracts/LongShortPair.g.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
-import 'package:ax_dapp/service/controller/swap/axt.dart';
 import 'package:ax_dapp/util/user_input_norm.dart';
 import 'package:erc20/erc20.dart';
 import 'package:get/get.dart';
@@ -36,17 +35,19 @@ class LSPController extends GetxController {
     controller.updateTxString(txString); //Sends tx to controller
   }
 
-  Future<void> approve() async {
+  Future<void> approve(String chainTokenAddress) async {
     final address = EthereumAddress.fromHex(aptAddress.value);
     genericLSP = LongShortPair(address: address, client: tokenClient);
     final transferAmount = await genericLSP.collateralPerPair();
     final amount = normalizeInput(createAmt.value) *
         transferAmount ~/
         BigInt.from(10).pow(18); // removes 18 zeros from collateralPerPair
-    final axtaddress = EthereumAddress.fromHex(AXT.polygonAddress);
-    final axt = ERC20(address: axtaddress, client: tokenClient);
+    final chainTokenEthereumAddress =
+        EthereumAddress.fromHex(chainTokenAddress);
+    final token =
+        ERC20(address: chainTokenEthereumAddress, client: tokenClient);
     try {
-      await axt.approve(address, amount, credentials: controller.credentials);
+      await token.approve(address, amount, credentials: controller.credentials);
     } catch (_) {}
   }
 

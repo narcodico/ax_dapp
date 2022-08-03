@@ -42,8 +42,9 @@ class _MintDialogState extends State<MintDialog> {
 
   Future<void> updateStats() async {
     try {
+      final chainToken = context.read<TokensRepository>().chainToken;
       balance.value =
-          await walletController.getTokenBalance(AXT.polygonAddress);
+          await walletController.getTokenBalance(chainToken.address);
       maxAmount.value = double.parse(balance.value) /
           15000; // 15000 is collateral per pair for the APTs
     } catch (_) {}
@@ -362,7 +363,11 @@ class _MintDialogState extends State<MintDialog> {
                     175,
                     40,
                     'Approve',
-                    lspController.approve,
+                    () {
+                      final chainToken =
+                          context.read<TokensRepository>().chainToken;
+                      return lspController.approve(chainToken.address);
+                    },
                     lspController.mint,
                     transactionConfirmed,
                   ),
