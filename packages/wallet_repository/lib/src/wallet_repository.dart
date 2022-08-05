@@ -10,10 +10,10 @@ import 'package:shared/shared.dart';
 class WalletRepository {
   /// {@macro wallet_repository}
   WalletRepository({
-    WalletApiClient? walletApiClient,
+    required WalletApiClient walletApiClient,
     CacheClient? cache,
     required EthereumChain defaultChain,
-  })  : _walletApiClient = walletApiClient ?? EthereumWalletApiClient(),
+  })  : _walletApiClient = walletApiClient,
         _cache = cache ?? CacheClient(),
         _defaultChain = defaultChain;
 
