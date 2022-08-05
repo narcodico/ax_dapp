@@ -18,11 +18,13 @@ import 'package:ax_dapp/service/api/mlb_athlete_api.dart';
 import 'package:ax_dapp/service/graphql/graphql_client_helper.dart';
 import 'package:ax_dapp/service/graphql/graphql_configuration.dart';
 import 'package:coingecko_api/coingecko_api.dart';
-import 'package:dio/dio.dart';
 import 'package:ethereum_api/ethereum_api.dart';
+import 'package:ethereum_api/wallet_api.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:tracking_repository/tracking_repository.dart';
 import 'package:wallet_repository/wallet_repository.dart';
@@ -40,6 +42,10 @@ void main() async {
 
   log('GraphQL Client initialized}');
 
+  final httpClient = http.Client();
+  // TODO(Rolly): reactive configuration
+  final web3client = Web3Client('url', httpClient);
+  final walletApiClient = EthereumWalletApiClient(web3Client: web3client);
   final ethereumApiClient = EthereumApiClient();
 
   unawaited(
@@ -53,6 +59,7 @@ void main() async {
           providers: [
             RepositoryProvider(
               create: (_) => WalletRepository(
+                walletApiClient: walletApiClient,
                 defaultChain: EthereumChain.polygonMainnet,
               ),
             ),
