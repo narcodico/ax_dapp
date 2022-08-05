@@ -20,10 +20,10 @@ class WalletRepository {
   final WalletApiClient _walletApiClient;
   final CacheClient _cache;
 
-  /// The initial `EthereumChain` that the wallet will be switched to.
+  /// The initial [EthereumChain] that the wallet will be switched to.
   final EthereumChain _defaultChain;
 
-  /// [Credentials] cache key.
+  /// [WalletCredentials] cache key.
   /// Should only be used for testing purposes.
   @visibleForTesting
   static const credentialsCacheKey = '__credentials_cache_key__';
@@ -79,9 +79,6 @@ class WalletRepository {
   /// Returns the cached [WalletCredentials] for the connected wallet. This
   /// doesn't return `null`, because when called, the wallet is asssumed to be
   /// connected and thus have it's credentials cached.
-  ///
-  /// This can used in the BLoC layer to pass [WalletCredentials] to other calls
-  /// needing them.
   WalletCredentials get credentials =>
       _cache.read<WalletCredentials>(key: credentialsCacheKey)!;
 
