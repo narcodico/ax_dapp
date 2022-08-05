@@ -76,4 +76,18 @@ class WalletRepository {
   /// Simulates disconnecting user's wallet. For security reasons an actual
   /// disconnect is not possible.
   void disconnectWallet() => _walletApiClient.removeChainChangedListener();
+
+  /// Adds the token with the given [address] and [imageUrl] to user's wallet.
+  ///
+  /// Throws:
+  /// - [WalletUnavailableFailure]
+  /// - [WalletUnsuccessfulOperationFailure]
+  /// - [WalletOperationRejectedFailure]
+  /// - [EthereumWalletFailure]
+  /// - [UnknownWalletFailure]
+  Future<void> addToken({
+    required String address,
+    required String imageUrl,
+  }) =>
+      _walletApiClient.addToken(address: address, imageUrl: imageUrl);
 }
