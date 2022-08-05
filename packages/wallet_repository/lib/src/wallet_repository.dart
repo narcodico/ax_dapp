@@ -86,7 +86,8 @@ class WalletRepository {
   /// disconnect is not possible.
   void disconnectWallet() => _walletApiClient.removeChainChangedListener();
 
-  /// Adds the token with the given [address] and [imageUrl] to user's wallet.
+  /// Adds the token with the given [tokenAddress] and [tokenImageUrl] to
+  /// user's wallet.
   ///
   /// Throws:
   /// - [WalletUnavailableFailure]
@@ -95,8 +96,11 @@ class WalletRepository {
   /// - [EthereumWalletFailure]
   /// - [UnknownWalletFailure]
   Future<void> addToken({
-    required String address,
-    required String imageUrl,
+    required String tokenAddress,
+    required String tokenImageUrl,
   }) =>
-      _walletApiClient.addToken(address: address, imageUrl: imageUrl);
+      _walletApiClient.addToken(
+        tokenAddress: tokenAddress,
+        tokenImageUrl: tokenImageUrl,
+      );
 }
