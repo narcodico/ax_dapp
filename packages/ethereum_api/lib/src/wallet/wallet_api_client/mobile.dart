@@ -1,8 +1,19 @@
 import 'package:ethereum_api/src/wallet/models/models.dart';
 import 'package:ethereum_api/src/wallet/wallet_api_client/wallet_api_client.dart';
+import 'package:shared/shared.dart';
 
+/// {@template mobile_wallet_api_client}
 /// Mobile client that manages the wallet API(i.e. MetaMask).
+/// {@endtemplate}
 class EthereumWalletApiClient implements WalletApiClient {
+  /// {@macro mobile_wallet_api_client}
+  EthereumWalletApiClient({
+    required Web3Client web3Client,
+  }) : _web3Client = web3Client;
+
+  // ignore: unused_field
+  final Web3Client _web3Client;
+
   @override
   Stream<EthereumChain> get ethereumChainChanges =>
       throw UnimplementedError('ethereumChainChanges');

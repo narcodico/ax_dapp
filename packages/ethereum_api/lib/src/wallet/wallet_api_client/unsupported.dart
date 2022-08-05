@@ -1,9 +1,19 @@
+// ignore_for_file: avoid_unused_constructor_parameters
+
 import 'package:ethereum_api/src/wallet/models/ethereum_chain.dart';
 import 'package:ethereum_api/src/wallet/models/wallet_credentials.dart';
 import 'package:ethereum_api/src/wallet/wallet_api_client/wallet_api_client.dart';
+import 'package:shared/shared.dart';
 
-/// Mobile client that manages the wallet API(i.e. MetaMask).
+/// {@template unsupported_wallet_api_client}
+/// Unsupported implementation of [WalletApiClient]
+/// {@endtemplate}
 class EthereumWalletApiClient implements WalletApiClient {
+  /// {@macro unsupported_wallet_api_client}
+  EthereumWalletApiClient({
+    required Web3Client web3Client,
+  });
+
   @override
   Stream<EthereumChain> get ethereumChainChanges => throw UnsupportedError(
         'ethereumChainChanges not supported on the current platform',

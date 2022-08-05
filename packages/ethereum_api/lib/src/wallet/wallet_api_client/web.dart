@@ -17,9 +17,12 @@ class EthereumWalletApiClient implements WalletApiClient {
   /// {@macro wallet_api_client}
   EthereumWalletApiClient({
     Ethereum? ethereum,
-  }) : _ethereum = ethereum ?? Ethereum.provider;
+    required Web3Client web3Client,
+  })  : _ethereum = ethereum ?? Ethereum.provider,
+        _web3Client = web3Client;
 
   final Ethereum? _ethereum;
+  final Web3Client _web3Client;
 
   final _chainController = BehaviorSubject<EthereumChain>();
 
