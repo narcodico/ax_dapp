@@ -28,6 +28,10 @@ abstract class WalletApiClient {
   /// Removes `onChainChanged` listener.
   void removeChainChangedListener();
 
-  /// Adds the token with the given [address] and [imageUrl] to user's wallet.
-  Future<void> addToken({required String address, required String imageUrl});
+  /// Adds the token with the given [tokenAddress] and [tokenImageUrl] to
+  /// user's wallet.
+  Future<void> addToken({
+    required String tokenAddress,
+    required String tokenImageUrl,
+  });
 }

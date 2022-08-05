@@ -54,7 +54,10 @@ class EthereumWalletApiClient implements WalletApiClient {
       );
 
   @override
-  Future<void> addToken({required String address, required String imageUrl}) {
+  Future<void> addToken({
+    required String tokenAddress,
+    required String tokenImageUrl,
+  }) {
     throw UnsupportedError('addToken not supported on the current platform');
   }
 }

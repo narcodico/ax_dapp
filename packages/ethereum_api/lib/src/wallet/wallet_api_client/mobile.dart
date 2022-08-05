@@ -45,7 +45,10 @@ class EthereumWalletApiClient implements WalletApiClient {
       throw UnimplementedError('removeChainChangedListener');
 
   @override
-  Future<void> addToken({required String address, required String imageUrl}) {
+  Future<void> addToken({
+    required String tokenAddress,
+    required String tokenImageUrl,
+  }) {
     throw UnimplementedError('addToken');
   }
 }
