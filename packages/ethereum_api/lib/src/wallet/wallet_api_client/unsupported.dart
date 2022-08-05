@@ -52,4 +52,9 @@ class EthereumWalletApiClient implements WalletApiClient {
   void removeChainChangedListener() => throw UnsupportedError(
         'removeChainChangedListener not supported on the current platform',
       );
+
+  @override
+  Future<void> addToken({required String address, required String imageUrl}) {
+    throw UnsupportedError('addToken not supported on the current platform');
+  }
 }

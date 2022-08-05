@@ -152,6 +152,43 @@ class EthereumWalletApiClient implements WalletApiClient {
     _chainController.add(EthereumChain.none);
   }
 
+  /// Adds the token with the given [address] and [imageUrl] to user's wallet.
+  ///
+  /// Throws:
+  /// - [WalletUnavailableFailure]
+  /// - [WalletUnsuccessfulOperationFailure]
+  /// - [WalletOperationRejectedFailure]
+  /// - [EthereumWalletFailure]
+  /// - [UnknownWalletFailure]
+  @override
+  Future<void> addToken({
+    required String address,
+    required String imageUrl,
+  }) async {
+    _checkWalletAvailability();
+    try {
+      final ethereumAddress = EthereumAddress.fromHex(address);
+      final token = ERC20(address: ethereumAddress, client: _web3Client);
+      final symbol = await token.symbol();
+      final decimals = await token.decimals();
+      final result = await _ethereum!.walletWatchAssets(
+        address: address,
+        symbol: symbol,
+        decimals: decimals.toInt(),
+        image: imageUrl,
+      );
+      if (!result) {
+        throw WalletFailure.fromUnsuccessfulOperation();
+      }
+    } on EthereumUserRejected catch (exception, stackTrace) {
+      throw WalletFailure.fromOperationRejected(exception, stackTrace);
+    } on EthereumException catch (exception, stackTrace) {
+      throw WalletFailure.fromEthereum(exception, stackTrace);
+    } catch (error, stackTrace) {
+      throw WalletFailure.fromError(error, stackTrace);
+    }
+  }
+
   void _checkWalletAvailability() {
     if (!isEthereumSupported) {
       throw WalletFailure.fromWalletUnavailable();
