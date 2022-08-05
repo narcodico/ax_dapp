@@ -38,13 +38,25 @@ class WalletRepository {
   /// Allows the user to connect to a `MetaMask` wallet.
   ///
   /// Returns the hexadecimal representation of the wallet address.
+  ///
+  /// Throws:
+  /// - [WalletUnavailableFailure]
+  /// - [WalletOperationRejectedFailure]
+  /// - [EthereumWalletFailure]
+  /// - [UnknownWalletFailure]
   Future<String> connectWallet() async {
     _walletApiClient.addChainChangedListener();
     await switchChain(_defaultChain);
     return _getWalletCredentials();
   }
 
-  /// Switches the currently used chain.
+  /// Switches the currently used [EthereumChain].
+  ///
+  /// Throws:
+  /// - [WalletUnavailableFailure]
+  /// - [WalletOperationRejectedFailure]
+  /// - [EthereumWalletFailure]
+  /// - [UnknownWalletFailure]
   Future<void> switchChain(EthereumChain chain) async {
     try {
       await _walletApiClient.switchChain(chain);
