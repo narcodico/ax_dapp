@@ -32,7 +32,7 @@ class WalletRepository {
   Stream<EthereumChain> get chainChanges => _walletApiClient.chainChanges;
 
   /// Returns the current [EthereumChain] synchronously.
-  EthereumChain get ethereumChain => _walletApiClient.ethereumChain;
+  EthereumChain get currentChain => _walletApiClient.currentChain;
 
   /// Returns the cached [WalletCredentials] for the connected wallet. This
   /// doesn't return `null`, because when called, the wallet is asssumed to be
