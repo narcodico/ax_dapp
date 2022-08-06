@@ -14,9 +14,8 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   })  : _walletRepository = walletRepository,
         super(
           WalletState(
-            chain: walletRepository.ethereumChain,
-            status:
-                WalletStatus.fromEthereumChain(walletRepository.ethereumChain),
+            chain: walletRepository.currentChain,
+            status: WalletStatus.fromChain(walletRepository.currentChain),
           ),
         ) {
     on<ConnectWalletRequested>(_onConnectWalletRequested);
@@ -58,7 +57,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
       _walletRepository.chainChanges,
       onData: (chain) => state.copyWith(
         chain: chain,
-        status: WalletStatus.fromEthereumChain(chain),
+        status: WalletStatus.fromChain(chain),
       ),
     );
   }

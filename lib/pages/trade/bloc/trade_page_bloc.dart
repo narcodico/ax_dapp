@@ -23,7 +23,7 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
         super(
           TradePageState.initial(
             isBuyAX: isBuyAX,
-            chain: walletRepository.ethereumChain,
+            chain: walletRepository.currentChain,
           ),
         ) {
     on<WatchChainChangesStarted>(_onWatchChainChangesStarted);
