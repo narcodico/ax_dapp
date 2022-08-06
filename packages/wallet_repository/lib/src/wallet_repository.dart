@@ -119,4 +119,7 @@ class WalletRepository {
         tokenAddress: tokenAddress,
         walletAddress: walletAddress,
       );
+
+  /// Returns the amount typically needed to pay for one unit of gas(in gwei).
+  Future<double> getGasPrice() => _walletApiClient.getGasPrice();
 }
