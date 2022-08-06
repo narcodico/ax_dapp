@@ -209,7 +209,8 @@ class EthereumWalletApiClient implements WalletApiClient {
       final rawBalance = await token.balanceOf(walletEthereumAddress);
       final balanceInWei = EtherAmount.inWei(rawBalance);
       final balance = balanceInWei.getValueInUnit(EtherUnit.ether);
-      return balance;
+      final formattedBalance = balance.toStringAsFixed(2);
+      return double.parse(formattedBalance);
     } catch (_) {
       return 0.0;
     }
