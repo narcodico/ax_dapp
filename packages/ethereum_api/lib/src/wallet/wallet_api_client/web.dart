@@ -190,6 +190,32 @@ class EthereumWalletApiClient implements WalletApiClient {
     }
   }
 
+  /// Returns an aproximate balance for the token with the given [tokenAddress],
+  /// on the wallet identified by [walletAddress]. It returns a balance of
+  /// `0.0` when any error occurs.
+  ///
+  /// **WARNING**: Due to rounding errors, the returned balance is not
+  /// reliable, especially for larger amounts or smaller units. While it can be
+  /// used to display the amount of ether in a human-readable format, it should
+  /// not be used for anything else.
+  @override
+  Future<double> getTokenBalance({
+    required String tokenAddress,
+    required String walletAddress,
+  }) async {
+    try {
+      final tokenEthereumAddress = EthereumAddress.fromHex(tokenAddress);
+      final walletEthereumAddress = EthereumAddress.fromHex(walletAddress);
+      final token = ERC20(address: tokenEthereumAddress, client: _web3Client);
+      final rawBalance = await token.balanceOf(walletEthereumAddress);
+      final balanceInWei = EtherAmount.inWei(rawBalance);
+      final balance = balanceInWei.getValueInUnit(EtherUnit.ether);
+      return balance;
+    } catch (_) {
+      return 0.0;
+    }
+  }
+
   void _checkWalletAvailability() {
     if (!isEthereumSupported) {
       throw WalletFailure.fromWalletUnavailable();
