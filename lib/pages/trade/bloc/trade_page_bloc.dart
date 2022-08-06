@@ -26,7 +26,7 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
             chain: walletRepository.ethereumChain,
           ),
         ) {
-    on<WatchEthereumChainChangesStarted>(_onWatchEthereumChainChangesStarted);
+    on<WatchChainChangesStarted>(_onWatchChainChangesStarted);
     on<FetchTradeInfoRequested>(_onFetchTradeInfoRequested);
     on<MaxSwapTapEvent>(_mapMaxSwapTapEventToState);
     on<NewTokenFromInputEvent>(_mapNewTokenFromInputEventToState);
@@ -35,7 +35,7 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
     on<SetTokenTo>(_mapSetTokenToEventToState);
     on<SwapTokens>(_mapSwapTokensEventToState);
 
-    add(WatchEthereumChainChangesStarted());
+    add(WatchChainChangesStarted());
     add(FetchTradeInfoRequested());
   }
 
@@ -45,12 +45,12 @@ class TradePageBloc extends Bloc<TradePageEvent, TradePageState> {
   final WalletController walletController;
   final bool isBuyAX;
 
-  Future<void> _onWatchEthereumChainChangesStarted(
-    WatchEthereumChainChangesStarted _,
+  Future<void> _onWatchChainChangesStarted(
+    WatchChainChangesStarted _,
     Emitter<TradePageState> emit,
   ) async {
     await emit.onEach<EthereumChain>(
-      _walletRepository.ethereumChainChanges,
+      _walletRepository.chainChanges,
       onData: (chain) {
         final tradeTokens = chain.computeTradeTokens(
           isBuyAX: isBuyAX,

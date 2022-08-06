@@ -21,11 +21,11 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
         ) {
     on<ConnectWalletRequested>(_onConnectWalletRequested);
     on<DisconnectWalletRequested>(_onDisconnectWalletRequested);
-    on<WatchEthereumChainChangesStarted>(_onWatchEthereumChainChangesStarted);
-    on<SwitchEthereumChainRequested>(_onSwitchEthereumChainRequested);
+    on<WatchChainChangesStarted>(_onWatchChainChangesStarted);
+    on<SwitchChainRequested>(_onSwitchChainRequested);
     on<WalletFailed>(_onWalletFailed);
 
-    add(const WatchEthereumChainChangesStarted());
+    add(const WatchChainChangesStarted());
   }
 
   final WalletRepository _walletRepository;
@@ -50,12 +50,12 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     emit(state.copyWith(walletAddress: kEmptyAddress));
   }
 
-  Future<void> _onWatchEthereumChainChangesStarted(
-    WatchEthereumChainChangesStarted event,
+  Future<void> _onWatchChainChangesStarted(
+    WatchChainChangesStarted event,
     Emitter<WalletState> emit,
   ) async {
     await emit.forEach<EthereumChain>(
-      _walletRepository.ethereumChainChanges,
+      _walletRepository.chainChanges,
       onData: (chain) => state.copyWith(
         chain: chain,
         status: WalletStatus.fromEthereumChain(chain),
@@ -63,8 +63,8 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     );
   }
 
-  FutureOr<void> _onSwitchEthereumChainRequested(
-    SwitchEthereumChainRequested event,
+  FutureOr<void> _onSwitchChainRequested(
+    SwitchChainRequested event,
     Emitter<WalletState> emit,
   ) async {
     final chain = event.chain;
