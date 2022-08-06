@@ -32,7 +32,7 @@ class EthereumWalletApiClient implements WalletApiClient {
 
   /// Returns the current [EthereumChain] synchronously.
   @override
-  EthereumChain get ethereumChain =>
+  EthereumChain get currentChain =>
       _chainController.valueOrNull ?? EthereumChain.none;
 
   /// Returns whether [Ethereum] is currently supported. Can be overriden for

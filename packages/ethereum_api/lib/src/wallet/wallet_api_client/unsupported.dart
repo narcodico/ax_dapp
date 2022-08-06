@@ -20,7 +20,7 @@ class EthereumWalletApiClient implements WalletApiClient {
       );
 
   @override
-  EthereumChain get ethereumChain => throw UnsupportedError(
+  EthereumChain get currentChain => throw UnsupportedError(
         'ethereumChain not supported on the current platform',
       );
 

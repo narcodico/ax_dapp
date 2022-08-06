@@ -20,7 +20,7 @@ void main() {
     });
 
     test('is unimplemented on mobile', () {
-      expect(subject.ethereumChain, throwsUnimplementedError);
+      expect(subject.currentChain, throwsUnimplementedError);
     });
   });
 }

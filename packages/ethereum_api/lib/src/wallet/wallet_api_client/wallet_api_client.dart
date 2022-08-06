@@ -10,7 +10,7 @@ abstract class WalletApiClient {
   Stream<EthereumChain> get chainChanges;
 
   /// Returns the current [EthereumChain] synchronously.
-  EthereumChain get ethereumChain;
+  EthereumChain get currentChain;
 
   /// Adds the specified [chain] to user's wallet.
   Future<void> addChain(EthereumChain chain);
