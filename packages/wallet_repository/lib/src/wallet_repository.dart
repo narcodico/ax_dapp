@@ -29,8 +29,7 @@ class WalletRepository {
   static const credentialsCacheKey = '__credentials_cache_key__';
 
   /// Allows listening to changes to the current [EthereumChain].
-  Stream<EthereumChain> get ethereumChainChanges =>
-      _walletApiClient.ethereumChainChanges;
+  Stream<EthereumChain> get chainChanges => _walletApiClient.chainChanges;
 
   /// Returns the current [EthereumChain] synchronously.
   EthereumChain get ethereumChain => _walletApiClient.ethereumChain;
