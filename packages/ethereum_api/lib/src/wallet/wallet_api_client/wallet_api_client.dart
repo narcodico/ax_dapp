@@ -7,7 +7,7 @@ abstract class WalletApiClient {
   /// {@macro wallet_api_client}
 
   /// Allows listening to changes to the current [EthereumChain].
-  Stream<EthereumChain> get ethereumChainChanges;
+  Stream<EthereumChain> get chainChanges;
 
   /// Returns the current [EthereumChain] synchronously.
   EthereumChain get ethereumChain;

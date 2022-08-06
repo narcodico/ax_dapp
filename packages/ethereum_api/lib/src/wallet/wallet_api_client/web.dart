@@ -28,8 +28,7 @@ class EthereumWalletApiClient implements WalletApiClient {
 
   /// Allows listening to changes to the current [EthereumChain].
   @override
-  Stream<EthereumChain> get ethereumChainChanges =>
-      _chainController.stream.distinct();
+  Stream<EthereumChain> get chainChanges => _chainController.stream.distinct();
 
   /// Returns the current [EthereumChain] synchronously.
   @override
@@ -132,7 +131,7 @@ class EthereumWalletApiClient implements WalletApiClient {
 
   /// Starts reacting to [Ethereum.onChainChanged].
   ///
-  /// It will result in updates to [ethereumChainChanges] stream whenever the
+  /// It will result in updates to [chainChanges] stream whenever the
   /// user changes the chain on `MetaMask`.
   @override
   void addChainChangedListener() => _ethereum?.onChainChanged(_onChainChanged);
@@ -143,7 +142,7 @@ class EthereumWalletApiClient implements WalletApiClient {
 
   /// Stops reacting to [Ethereum.onChainChanged].
   ///
-  /// It will update the [ethereumChainChanges] stream with
+  /// It will update the [chainChanges] stream with
   /// [EthereumChain.none] to simulate that the wallet was disconnected.
   /// For security reasons an actual disconnect is not possible.
   @override

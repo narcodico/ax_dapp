@@ -15,7 +15,7 @@ class EthereumWalletApiClient implements WalletApiClient {
   });
 
   @override
-  Stream<EthereumChain> get ethereumChainChanges => throw UnsupportedError(
+  Stream<EthereumChain> get chainChanges => throw UnsupportedError(
         'ethereumChainChanges not supported on the current platform',
       );
 

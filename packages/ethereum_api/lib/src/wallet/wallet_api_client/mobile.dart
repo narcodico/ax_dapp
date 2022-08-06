@@ -15,7 +15,7 @@ class EthereumWalletApiClient implements WalletApiClient {
   final Web3Client _web3Client;
 
   @override
-  Stream<EthereumChain> get ethereumChainChanges =>
+  Stream<EthereumChain> get chainChanges =>
       throw UnimplementedError('ethereumChainChanges');
 
   @override
