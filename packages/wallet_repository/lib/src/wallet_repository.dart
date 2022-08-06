@@ -35,6 +35,15 @@ class WalletRepository {
   /// Returns the current [EthereumChain] synchronously.
   EthereumChain get ethereumChain => _walletApiClient.ethereumChain;
 
+  /// Returns the cached [WalletCredentials] for the connected wallet. This
+  /// doesn't return `null`, because when called, the wallet is asssumed to be
+  /// connected and thus have it's credentials cached.
+  WalletCredentials get credentials =>
+      _cache.read<WalletCredentials>(key: credentialsCacheKey)!;
+
+  /// Returns the connected wallet address.
+  String get walletAddress => credentials.value.address.hex;
+
   /// Allows the user to connect to a `MetaMask` wallet.
   ///
   /// Returns the hexadecimal representation of the wallet address.
@@ -50,6 +59,17 @@ class WalletRepository {
     return _getWalletCredentials();
   }
 
+  Future<String> _getWalletCredentials() async {
+    final credentials = await _walletApiClient.getWalletCredentials();
+    _cacheWalletCredentials(credentials);
+    return credentials.value.address.hex;
+  }
+
+  void _cacheWalletCredentials(WalletCredentials credentials) => _cache.write(
+        key: credentialsCacheKey,
+        value: credentials,
+      );
+
   /// Switches the currently used [EthereumChain].
   ///
   /// Throws:
@@ -64,23 +84,6 @@ class WalletRepository {
       await _walletApiClient.addChain(chain);
     }
   }
-
-  Future<String> _getWalletCredentials() async {
-    final credentials = await _walletApiClient.getWalletCredentials();
-    _cacheWalletCredentials(credentials);
-    return credentials.value.address.hex;
-  }
-
-  void _cacheWalletCredentials(WalletCredentials credentials) => _cache.write(
-        key: credentialsCacheKey,
-        value: credentials,
-      );
-
-  /// Returns the cached [WalletCredentials] for the connected wallet. This
-  /// doesn't return `null`, because when called, the wallet is asssumed to be
-  /// connected and thus have it's credentials cached.
-  WalletCredentials get credentials =>
-      _cache.read<WalletCredentials>(key: credentialsCacheKey)!;
 
   /// Simulates disconnecting user's wallet. For security reasons an actual
   /// disconnect is not possible.
@@ -103,9 +106,6 @@ class WalletRepository {
         tokenAddress: tokenAddress,
         tokenImageUrl: tokenImageUrl,
       );
-
-  /// Returns the connected wallet address.
-  String get walletAddress => credentials.value.address.hex;
 
   /// Returns an aproximate balance for the token with the given [tokenAddress],
   /// on the connected wallet. It returns a balance of `0.0` when any error
