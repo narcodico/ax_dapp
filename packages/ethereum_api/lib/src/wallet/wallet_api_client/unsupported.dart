@@ -70,4 +70,9 @@ class EthereumWalletApiClient implements WalletApiClient {
       'getTokenBalance not supported on the current platform',
     );
   }
+
+  @override
+  Future<double> getGasPrice() {
+    throw UnsupportedError('getGasPrice not supported on the current platform');
+  }
 }

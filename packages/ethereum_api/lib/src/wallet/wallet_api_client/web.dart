@@ -215,6 +215,19 @@ class EthereumWalletApiClient implements WalletApiClient {
     }
   }
 
+  /// Returns the amount typically needed to pay for one unit of gas(in gwei).
+  @override
+  Future<double> getGasPrice() async {
+    try {
+      final rawGasPrice = await _web3Client.getGasPrice();
+      final gasPriceInGwei = rawGasPrice.getValueInUnit(EtherUnit.gwei);
+      final formattedGasPriceInGwei = gasPriceInGwei.toStringAsFixed(2);
+      return double.parse(formattedGasPriceInGwei);
+    } catch (_) {
+      return 0.0;
+    }
+  }
+
   void _checkWalletAvailability() {
     if (!isEthereumSupported) {
       throw WalletFailure.fromWalletUnavailable();

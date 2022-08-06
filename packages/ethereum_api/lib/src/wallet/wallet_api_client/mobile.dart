@@ -59,4 +59,9 @@ class EthereumWalletApiClient implements WalletApiClient {
   }) {
     throw UnimplementedError('getTokenBalance');
   }
+
+  @override
+  Future<double> getGasPrice() {
+    throw UnimplementedError('getGasPrice');
+  }
 }

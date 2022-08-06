@@ -47,4 +47,7 @@ abstract class WalletApiClient {
     required String tokenAddress,
     required String walletAddress,
   });
+
+  /// Returns the amount typically needed to pay for one unit of gas(in gwei).
+  Future<double> getGasPrice();
 }
