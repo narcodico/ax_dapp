@@ -19,6 +19,7 @@ import 'package:ax_dapp/service/graphql/graphql_client_helper.dart';
 import 'package:ax_dapp/service/graphql/graphql_configuration.dart';
 import 'package:coingecko_api/coingecko_api.dart';
 import 'package:ethereum_api/ethereum_api.dart';
+import 'package:ethereum_api/lsp_api.dart';
 import 'package:ethereum_api/wallet_api.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -48,6 +49,13 @@ void main() async {
   final walletApiClient = EthereumWalletApiClient(web3Client: web3client);
   final ethereumApiClient = EthereumApiClient();
 
+  // TODO(Rolly): AppBloc should update this with the needed apt address,
+  // AppEvent being dispatched by the widget needing lsp
+  final lspClient = LongShortPair(
+    address: EthereumAddress.fromHex(kEmptyAddress),
+    client: web3client,
+  );
+
   unawaited(
     bootstrap(() async {
       await Firebase.initializeApp(
@@ -66,6 +74,7 @@ void main() async {
             RepositoryProvider(
               create: (_) => TokensRepository(
                 ethereumApiClient: ethereumApiClient,
+                lspClient: lspClient,
               ),
             ),
             RepositoryProvider(create: (context) => _subGraphRepo),
