@@ -68,7 +68,7 @@ class TokensRepository {
 
   /// Returns the collateral value per pair. In case of an error it returns
   /// [BigInt.zero].
-  Future<BigInt> getcollateralPerPair() async {
+  Future<BigInt> getCollateralPerPair() async {
     try {
       final collateralValue = await _lspClient.collateralPerPair();
       final normalizedCollateralValue =
