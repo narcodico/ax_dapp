@@ -45,15 +45,15 @@ void main() async {
 
   final httpClient = http.Client();
   // TODO(Rolly): reactive configuration
-  final web3client = Web3Client('url', httpClient);
-  final walletApiClient = EthereumWalletApiClient(web3Client: web3client);
+  final web3Client = Web3Client('url', httpClient);
+  final walletApiClient = EthereumWalletApiClient(web3Client: web3Client);
   final ethereumApiClient = EthereumApiClient();
 
   // TODO(Rolly): AppBloc should update this with the needed apt address,
   // AppEvent being dispatched by the widget needing lsp
   final lspClient = LongShortPair(
     address: EthereumAddress.fromHex(kEmptyAddress),
-    client: web3client,
+    client: web3Client,
   );
 
   unawaited(
