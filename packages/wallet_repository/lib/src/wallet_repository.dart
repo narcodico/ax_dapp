@@ -107,14 +107,13 @@ class WalletRepository {
       );
 
   /// Returns an aproximate balance for the token with the given [tokenAddress],
-  /// on the connected wallet. It returns a balance of `0.0` when any error
-  /// occurs.
+  /// on the connected wallet. It returns `null` when any error occurs.
   ///
   /// **WARNING**: Due to rounding errors, the returned balance is not
   /// reliable, especially for larger amounts or smaller units. While it can be
   /// used to display the amount of ether in a human-readable format, it should
   /// not be used for anything else.
-  Future<double> getTokenBalance(String tokenAddress) =>
+  Future<double?> getTokenBalance(String tokenAddress) =>
       _walletApiClient.getTokenBalance(
         tokenAddress: tokenAddress,
         walletAddress: walletAddress,
