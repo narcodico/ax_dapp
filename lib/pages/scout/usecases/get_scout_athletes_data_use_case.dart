@@ -32,15 +32,14 @@ class GetScoutAthletesDataUseCase {
   static const collateralizationMultiplier = 1000;
   static const collateralizationPerPair = 15;
 
-  Future<double> fetchAxPrice() => _tokensRepository.getAxPrice();
-
   Future<List<AthleteScoutModel>> fetchSupportedAthletes(
     SupportedSport sportSelection,
   ) async {
     final scoutToken = _tokensRepository.chainToken;
     allPairs = await fetchSpecificPairs(scoutToken);
     //fetching AX Price
-    final axPrice = await fetchAxPrice();
+    final axData = await _tokensRepository.getAxData();
+    final axPrice = axData.price ?? 0;
 
     /// If specific sport is selected return athletes from that specific repo
     if (sportSelection != SupportedSport.all) {
