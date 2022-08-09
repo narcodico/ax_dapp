@@ -9,7 +9,6 @@ import 'package:ax_dapp/pages/scout/desktop_scout.dart';
 import 'package:ax_dapp/pages/scout/usecases/get_scout_athletes_data_use_case.dart';
 import 'package:ax_dapp/pages/trade/bloc/trade_page_bloc.dart';
 import 'package:ax_dapp/pages/trade/desktop_trade.dart';
-import 'package:ax_dapp/repositories/coin_gecko_repo.dart';
 import 'package:ax_dapp/repositories/mlb_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/sub_graph_repo.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_pool_info_use_case.dart';
@@ -152,7 +151,6 @@ class _V1AppState extends State<V1App> {
                   sportsRepos: [
                     RepositoryProvider.of<MLBRepo>(context),
                   ],
-                  coinGeckoRepo: RepositoryProvider.of<CoinGeckoRepo>(context),
                 ),
               ),
               child: DesktopScout(goToTradePage: goToTradePage),
@@ -188,7 +186,6 @@ class _V1AppState extends State<V1App> {
                 sportsRepos: [
                   RepositoryProvider.of<MLBRepo>(context),
                 ],
-                coinGeckoRepo: RepositoryProvider.of<CoinGeckoRepo>(context),
               ),
             ),
             child: DesktopScout(goToTradePage: goToTradePage),
