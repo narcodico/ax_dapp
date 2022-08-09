@@ -1,5 +1,8 @@
+import 'package:coingecko_api/coingecko_api.dart';
+import 'package:coingecko_api/data/coin.dart';
 import 'package:ethereum_api/ethereum_api.dart';
 import 'package:ethereum_api/lsp_api.dart';
+import 'package:shared/shared.dart';
 
 /// {@template tokens_repository}
 /// Repository that manages the token domain.
@@ -9,11 +12,18 @@ class TokensRepository {
   TokensRepository({
     required EthereumApiClient ethereumApiClient,
     required LongShortPair lspClient,
+    CoinGeckoApi? coinGeckoApiClient,
   })  : _ethereumApiClient = ethereumApiClient,
-        _lspClient = lspClient;
+        _lspClient = lspClient,
+        _coinGeckoApiClient = coinGeckoApiClient ??
+            CoinGeckoApi(
+              rateLimitManagement: false,
+              enableLogging: false,
+            );
 
   final EthereumApiClient _ethereumApiClient;
   final LongShortPair _lspClient;
+  final CoinGeckoApi _coinGeckoApiClient;
 
   /// Allows listening to changes to the current [Token]s.
   Stream<List<Token>> get tokensChanges => _ethereumApiClient.tokensChanges;
@@ -77,5 +87,31 @@ class TokensRepository {
     } catch (_) {
       return BigInt.zero;
     }
+  }
+
+  /// Returns `AthleteX` market price.
+  ///
+  /// Defaults to `0.0` if price fetch fails.
+  Future<double> getAxPrice() async {
+    try {
+      final axData = await _getAxData();
+      final axDataByCurrency = axData?.marketData?.dataByCurrency;
+      final axMarketData = axDataByCurrency
+          ?.firstWhereOrNull((marketData) => marketData.coinId == 'usd');
+      return axMarketData?.currentPrice ?? 0.0;
+    } catch (_) {
+      return 0.0;
+    }
+  }
+
+  Future<Coin?> _getAxData() async {
+    final result = await _coinGeckoApiClient.coins.getCoinData(
+      id: 'athletex',
+      localization: false,
+      communityData: false,
+      tickers: false,
+      developerData: false,
+    );
+    return result.data;
   }
 }
