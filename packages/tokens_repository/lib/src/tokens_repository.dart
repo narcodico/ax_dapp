@@ -3,6 +3,7 @@ import 'package:coingecko_api/data/coin.dart';
 import 'package:ethereum_api/ethereum_api.dart';
 import 'package:ethereum_api/lsp_api.dart';
 import 'package:shared/shared.dart';
+import 'package:tokens_repository/src/models/models.dart';
 
 /// {@template tokens_repository}
 /// Repository that manages the token domain.
@@ -96,11 +97,37 @@ class TokensRepository {
     try {
       final axData = await _getAxData();
       final axDataByCurrency = axData?.marketData?.dataByCurrency;
-      final axMarketData = axDataByCurrency
-          ?.firstWhereOrNull((marketData) => marketData.coinId == 'usd');
+      final axMarketData = axDataByCurrency?.firstWhereOrNull(
+        (marketData) => marketData.coinId == 'usd',
+      );
       return axMarketData?.currentPrice ?? 0.0;
     } catch (_) {
       return 0.0;
+    }
+  }
+
+  /// Returns `AthleteX` market data: price, total supply and circulating
+  /// supply.
+  ///
+  /// Defaults to [AxData.empty] if data fetch fails.
+  Future<AxData> getAxData() async {
+    try {
+      final axData = await _getAxData();
+      final axMarketData = axData?.marketData;
+      final axDataByCurrency = axMarketData?.dataByCurrency;
+      final axMarketDataByUsd = axDataByCurrency?.firstWhereOrNull(
+        (marketData) => marketData.coinId.toLowerCase() == 'usd',
+      );
+      final axPrice = axMarketDataByUsd?.currentPrice;
+      final axTotalSupply = axMarketData?.totalSupply;
+      final axCirculatingSupply = axMarketData?.circulatingSupply;
+      return AxData(
+        price: axPrice,
+        totalSupply: axTotalSupply,
+        circulatingSupply: axCirculatingSupply,
+      );
+    } catch (_) {
+      return AxData.empty;
     }
   }
 
