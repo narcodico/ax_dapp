@@ -1,5 +1,4 @@
 import 'package:coingecko_api/coingecko_api.dart';
-import 'package:coingecko_api/data/coin.dart';
 import 'package:ethereum_api/ethereum_api.dart';
 import 'package:ethereum_api/lsp_api.dart';
 import 'package:shared/shared.dart';
@@ -90,29 +89,20 @@ class TokensRepository {
     }
   }
 
-  /// Returns `AthleteX` market price.
-  ///
-  /// Defaults to `0.0` if price fetch fails.
-  Future<double> getAxPrice() async {
-    try {
-      final axData = await _getAxData();
-      final axDataByCurrency = axData?.marketData?.dataByCurrency;
-      final axMarketData = axDataByCurrency?.firstWhereOrNull(
-        (marketData) => marketData.coinId == 'usd',
-      );
-      return axMarketData?.currentPrice ?? 0.0;
-    } catch (_) {
-      return 0.0;
-    }
-  }
-
   /// Returns `AthleteX` market data: price, total supply and circulating
   /// supply.
   ///
   /// Defaults to [AxData.empty] if data fetch fails.
   Future<AxData> getAxData() async {
     try {
-      final axData = await _getAxData();
+      final result = await _coinGeckoApiClient.coins.getCoinData(
+        id: 'athletex',
+        localization: false,
+        communityData: false,
+        tickers: false,
+        developerData: false,
+      );
+      final axData = result.data;
       final axMarketData = axData?.marketData;
       final axDataByCurrency = axMarketData?.dataByCurrency;
       final axMarketDataByUsd = axDataByCurrency?.firstWhereOrNull(
@@ -129,16 +119,5 @@ class TokensRepository {
     } catch (_) {
       return AxData.empty;
     }
-  }
-
-  Future<Coin?> _getAxData() async {
-    final result = await _coinGeckoApiClient.coins.getCoinData(
-      id: 'athletex',
-      localization: false,
-      communityData: false,
-      tickers: false,
-      developerData: false,
-    );
-    return result.data;
   }
 }
