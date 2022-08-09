@@ -53,7 +53,7 @@ class EthereumWalletApiClient implements WalletApiClient {
   }
 
   @override
-  Future<double> getTokenBalance({
+  Future<double?> getTokenBalance({
     required String tokenAddress,
     required String walletAddress,
   }) {
