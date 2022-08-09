@@ -77,8 +77,8 @@ class TokensRepository {
   /// Returns `AthleteX` market data: price, total supply and circulating
   /// supply.
   ///
-  /// Defaults to [AxData.empty] if data fetch fails.
-  Future<AxData> getAxData() async {
+  /// Defaults to [AxMarketData.empty] if data fetch fails.
+  Future<AxMarketData> getAxMarketData() async {
     try {
       final result = await _coinGeckoApiClient.coins.getCoinData(
         id: 'athletex',
@@ -96,13 +96,13 @@ class TokensRepository {
       final axPrice = axMarketDataByUsd?.currentPrice;
       final axTotalSupply = axMarketData?.totalSupply;
       final axCirculatingSupply = axMarketData?.circulatingSupply;
-      return AxData(
+      return AxMarketData(
         price: axPrice,
         totalSupply: axTotalSupply,
         circulatingSupply: axCirculatingSupply,
       );
     } catch (_) {
-      return AxData.empty;
+      return AxMarketData.empty;
     }
   }
 }
