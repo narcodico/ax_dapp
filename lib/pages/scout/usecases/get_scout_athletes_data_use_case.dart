@@ -35,8 +35,8 @@ class GetScoutAthletesDataUseCase {
   Future<List<AthleteScoutModel>> fetchSupportedAthletes(
     SupportedSport sportSelection,
   ) async {
-    final scoutToken = _tokensRepository.chainToken;
-    allPairs = await fetchSpecificPairs(scoutToken);
+    final currentAxt = _tokensRepository.currentAxt;
+    allPairs = await fetchSpecificPairs(currentAxt);
     //fetching AX Price
     final axData = await _tokensRepository.getAxData();
     final axPrice = axData.price ?? 0;
@@ -49,7 +49,7 @@ class GetScoutAthletesDataUseCase {
         response,
         repo,
         axPrice,
-        scoutToken: scoutToken,
+        scoutToken: currentAxt,
       );
     } else {
       /// if ALL sports is selected fetch for each sport and add athletes to a
@@ -66,7 +66,7 @@ class GetScoutAthletesDataUseCase {
             response,
             _repos.values.elementAt(key),
             axPrice,
-            scoutToken: scoutToken,
+            scoutToken: currentAxt,
           ),
         );
       });

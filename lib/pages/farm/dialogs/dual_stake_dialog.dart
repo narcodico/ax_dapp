@@ -116,10 +116,10 @@ Dialog dualStakeDialog(
                     ),
                     child: TextButton(
                       onPressed: () {
-                        final chainToken =
-                            context.read<TokensRepository>().chainToken;
+                        final currentAxt =
+                            context.read<TokensRepository>().currentAxt;
                         walletController
-                            .getYourAxBalance(chainToken.address)
+                            .getYourAxBalance(currentAxt.address)
                             .then((value) {
                           stakeAxInput.text =
                               walletController.yourBalance.value;

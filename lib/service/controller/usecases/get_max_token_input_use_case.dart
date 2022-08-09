@@ -15,8 +15,8 @@ class GetTotalTokenBalanceUseCase {
   final WalletController walletController;
 
   Future<double> getTotalAxBalance() async {
-    final chainToken = _tokensRepository.chainToken;
-    await walletController.getYourAxBalance(chainToken.address);
+    final currentAxt = _tokensRepository.currentAxt;
+    await walletController.getYourAxBalance(currentAxt.address);
     final maxInput = double.parse(walletController.yourBalance.value);
     log('Max Possible Ax Input: $maxInput');
     return maxInput;
