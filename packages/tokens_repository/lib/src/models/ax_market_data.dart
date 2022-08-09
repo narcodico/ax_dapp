@@ -1,11 +1,11 @@
 import 'package:shared/shared.dart';
 
-/// {@template ax_data}
+/// {@template ax_market_data}
 /// Holds `AthleteX` market data.
 /// {@endtemplate}
-class AxData extends Equatable {
-  /// {@macro ax_data}
-  const AxData({
+class AxMarketData extends Equatable {
+  /// {@macro ax_market_data}
+  const AxMarketData({
     this.price,
     this.totalSupply,
     this.circulatingSupply,
@@ -20,8 +20,8 @@ class AxData extends Equatable {
   /// `AthleteX` circulating supply.
   final double? circulatingSupply;
 
-  /// Default [AxData].
-  static const empty = AxData();
+  /// Default [AxMarketData].
+  static const empty = AxMarketData();
 
   @override
   List<Object?> get props => [price, totalSupply, circulatingSupply];
