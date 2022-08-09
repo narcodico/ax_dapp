@@ -48,33 +48,18 @@ class TokensRepository {
   /// The returned [AptPair] is based on the current [EthereumChain].
   AptPair aptPair(int athleteId) => _ethereumApiClient.aptPair(athleteId);
 
-  /// Allows listening to changes to the [Token] associated with the current
+  /// Allows listening to changes to the [Token.ax] associated with the current
   /// [EthereumChain].
-  Stream<Token> get chainTokenChanges => tokensChanges.map(_chainTokenMapper);
+  Stream<Token> get axtChanges => tokensChanges.map((tokens) => tokens.axt);
 
-  /// Returns the [Token] associated with the current [EthereumChain],
+  /// Returns the [Token.ax] associated with the current [EthereumChain],
   /// synchronously.
-  Token get chainToken => _chainTokenMapper(tokens);
+  Token get currentAxt => tokens.axt;
 
   /// Allows switching the current [Token]s, which are set based on the current
   /// [EthereumChain].
   void switchTokens(EthereumChain chain) =>
       _ethereumApiClient.switchTokens(chain);
-
-  Token _chainTokenMapper(List<Token> tokens) {
-    final tokensChain = tokens.first.chain;
-    switch (tokensChain) {
-      case EthereumChain.none:
-      case EthereumChain.unsupported:
-        return Token.empty;
-      case EthereumChain.polygonMainnet:
-      case EthereumChain.polygonTestnet:
-        return tokens.axt;
-      case EthereumChain.sxMainnet:
-      case EthereumChain.sxTestnet:
-        return tokens.sxt;
-    }
-  }
 
   /// Returns the collateral value per pair. In case of an error it returns
   /// [BigInt.zero].
