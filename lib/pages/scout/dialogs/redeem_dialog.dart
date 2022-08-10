@@ -12,6 +12,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:tokens_repository/tokens_repository.dart';
+import 'package:wallet_repository/wallet_repository.dart';
 
 class RedeemDialog extends StatefulWidget {
   const RedeemDialog(
@@ -57,10 +58,14 @@ class _RedeemDialogState extends State<RedeemDialog> {
     try {
       final tokensRepository = context.read<TokensRepository>();
       final aptPair = tokensRepository.aptPair(widget.athlete.id);
-      longBalance.value =
-          await walletController.getTokenBalance(aptPair.longApt.address);
-      shortBalance.value =
-          await walletController.getTokenBalance(aptPair.shortApt.address);
+      final walletRepository = context.read<WalletRepository>();
+      final _longBalance =
+          await walletRepository.getTokenBalance(aptPair.longApt.address);
+      longBalance.value = _longBalance?.toString() ?? '0.0';
+
+      final _shortBalance =
+          await walletRepository.getTokenBalance(aptPair.shortApt.address);
+      shortBalance.value = _shortBalance?.toString() ?? '0.0';
       maxAmount.value = min(
         double.parse(longBalance.value),
         double.parse(shortBalance.value),

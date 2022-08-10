@@ -342,17 +342,20 @@ class _AddLiquidityState extends State<AddLiquidity> {
                             ),
                             child: TextButton(
                               onPressed: () {
-                                _tokenAmountOneController.text = balance0;
+                                final formattedBalance0 =
+                                    balance0.toStringAsFixed(6);
+                                _tokenAmountOneController.text =
+                                    formattedBalance0;
                                 if (state.status == BlocStatus.success) {
                                   onTokenInputChange(
                                     tknNum,
-                                    balance0,
+                                    formattedBalance0,
                                     true,
                                   );
                                 } else {
                                   onTokenInputChange(
                                     tknNum,
-                                    balance0,
+                                    formattedBalance0,
                                     false,
                                   );
                                 }

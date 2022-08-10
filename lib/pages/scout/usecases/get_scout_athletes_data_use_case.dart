@@ -38,7 +38,7 @@ class GetScoutAthletesDataUseCase {
     final currentAxt = _tokensRepository.currentAxt;
     allPairs = await fetchSpecificPairs(currentAxt);
     //fetching AX Price
-    final axData = await _tokensRepository.getAxData();
+    final axData = await _tokensRepository.getAxMarketData();
     final axPrice = axData.price ?? 0;
 
     /// If specific sport is selected return athletes from that specific repo

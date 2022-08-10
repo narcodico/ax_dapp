@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:tokens_repository/tokens_repository.dart';
+import 'package:wallet_repository/wallet_repository.dart';
 
 class MyLiquidity extends StatefulWidget {
   const MyLiquidity({super.key, required this.togglePool});
@@ -879,9 +880,20 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                   width: 175,
                                   height: 40,
                                   text: 'Approve',
-                                  approveCallback: poolController.approveRemove,
-                                  confirmCallback:
-                                      poolController.removeLiquidity,
+                                  approveCallback: () {
+                                    final handler = context
+                                        .read<WalletRepository>()
+                                        .getTokenBalance;
+                                    return poolController
+                                        .approveRemove(handler);
+                                  },
+                                  confirmCallback: () {
+                                    final handler = context
+                                        .read<WalletRepository>()
+                                        .getTokenBalance;
+                                    return poolController
+                                        .removeLiquidity(handler);
+                                  },
                                   confirmDialog: removalConfirmed,
                                   currencyOne: infoOfSelectedCard.token0Symbol,
                                   currencyTwo: infoOfSelectedCard.token1Symbol,

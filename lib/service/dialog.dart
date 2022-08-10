@@ -14,8 +14,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:tokens_repository/tokens_repository.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:wallet_repository/wallet_repository.dart';
 
 Future<void> testFunction() async {
   log('Test function invoked');
@@ -890,11 +890,9 @@ Dialog yourAXDialog(BuildContext context) {
                       size: 30,
                     ),
                     onPressed: () {
-                      final chainToken =
-                          context.read<TokensRepository>().chainToken;
-                      walletController
-                        ..getTokenMetrics()
-                        ..getYourAxBalance(chainToken.address);
+                      context
+                          .read<WalletBloc>()
+                          .add(const UpdateAxDataRequested());
                       Navigator.pop(context);
                     },
                   ),
@@ -1683,7 +1681,10 @@ Dialog poolRemoveLiquidity(BuildContext context, String name) {
             40,
             'Approve',
             poolController.approve,
-            poolController.removeLiquidity,
+            () {
+              final handler = context.read<WalletRepository>().getTokenBalance;
+              return poolController.removeLiquidity(handler);
+            },
             removalConfirmed,
           )
         ],

@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:tokens_repository/tokens_repository.dart';
+import 'package:wallet_repository/wallet_repository.dart';
 
 class MintDialog extends StatefulWidget {
   const MintDialog(this.athlete, {super.key});
@@ -44,8 +45,11 @@ class _MintDialogState extends State<MintDialog> {
   Future<void> updateStats() async {
     try {
       final currentAxt = context.read<TokensRepository>().currentAxt;
-      balance.value =
-          await walletController.getTokenBalance(currentAxt.address);
+      final axBalance = await context
+          .read<WalletRepository>()
+          .getTokenBalance(currentAxt.address);
+      balance.value = axBalance?.toString() ?? '0.0';
+
       maxAmount.value = double.parse(balance.value) /
           15000; // 15000 is collateral per pair for the APTs
     } catch (_) {}

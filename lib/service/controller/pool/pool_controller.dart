@@ -106,16 +106,15 @@ class PoolController extends GetxController {
     controller.updateTxString(txString);
   }
 
-  Future<void> approveRemove() async {
+  Future<void> approveRemove(
+    Future<double?> Function(String address) getTokenBalanceHandler,
+  ) async {
     var txStringA = '';
     final lpTokenEthAddress = EthereumAddress.fromHex(lpTokenPairAddress);
     final lpToken =
         ERC20(address: lpTokenEthAddress, client: controller.client.value);
-    final lpTokenBalance = normalizeInput(
-      double.parse(
-        await walletController.getTokenBalance(lpTokenPairAddress),
-      ),
-    );
+    final tokenBalance = await getTokenBalanceHandler(lpTokenPairAddress);
+    final lpTokenBalance = normalizeInput(tokenBalance ?? 0);
     final approveAmount =
         (lpTokenBalance * BigInt.from(removePercentage)) ~/ BigInt.from(100);
     try {
@@ -130,12 +129,11 @@ class PoolController extends GetxController {
     }
   }
 
-  Future<void> removeLiquidity() async {
-    final lpTokenBalance = normalizeInput(
-      double.parse(
-        await walletController.getTokenBalance(lpTokenPairAddress),
-      ),
-    );
+  Future<void> removeLiquidity(
+    Future<double?> Function(String address) getTokenBalanceHandler,
+  ) async {
+    final tokenBalance = await getTokenBalanceHandler(lpTokenPairAddress);
+    final lpTokenBalance = normalizeInput(tokenBalance ?? 0);
     final liquidity =
         (lpTokenBalance * BigInt.from(removePercentage)) ~/ BigInt.from(100);
     final amountAMin = BigInt.zero;
