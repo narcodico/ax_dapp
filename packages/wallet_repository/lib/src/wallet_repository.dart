@@ -110,7 +110,7 @@ class WalletRepository {
   /// identified by [walletAddress].
   ///
   /// Defaults to [BigInt.zero] on error.
-  Future<BigInt> getRawTokenBalance({required String tokenAddress}) =>
+  Future<BigInt> getRawTokenBalance(String tokenAddress) =>
       _walletApiClient.getRawTokenBalance(
         tokenAddress: tokenAddress,
         walletAddress: walletAddress,
@@ -123,8 +123,8 @@ class WalletRepository {
   /// reliable, especially for larger amounts or smaller units. While it can be
   /// used to display the amount of ether in a human-readable format, it should
   /// not be used for anything else.
-  Future<double?> getTokenBalance({required String tokenAddress}) async {
-    final rawBalance = await getRawTokenBalance(tokenAddress: tokenAddress);
+  Future<double?> getTokenBalance(String tokenAddress) async {
+    final rawBalance = await getRawTokenBalance(tokenAddress);
     if (rawBalance == BigInt.zero) {
       return null;
     }
