@@ -9,7 +9,6 @@ import 'package:ax_dapp/pages/scout/widget_factories/athlete_details_widget.dart
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/create_wallet/web.dart';
 import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
-import 'package:ax_dapp/service/controller/wallet_controller.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/util/athlete_page_format_helper.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
@@ -1389,7 +1388,6 @@ class _AthletePageState extends State<AthletePage> {
   ) {
     const longBookValuePercent = '+4%';
     const shortBookValuePercent = '+2%';
-    final walletController = Get.find<WalletController>();
     final longCurrentBookValueRatio =
         (athlete.longTokenPrice! / athlete.longTokenBookPrice!) * 100;
     final shortCurrentBookValueRatio =
@@ -1433,9 +1431,10 @@ class _AthletePageState extends State<AthletePage> {
                         selector: (state) => state.selectedAptAddress,
                         builder: (context, selectedAptAddress) {
                           return FutureBuilder<String>(
-                            future: walletController.getTokenSymbol(
-                              selectedAptAddress,
-                            ),
+                            future:
+                                context.read<TokensRepository>().getTokenSymbol(
+                                      selectedAptAddress,
+                                    ),
                             builder: (context, snapshot) {
                               //Check API response data
                               if (snapshot.hasError) {

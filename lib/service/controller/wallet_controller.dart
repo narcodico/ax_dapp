@@ -53,19 +53,4 @@ class WalletController extends GetxController {
 
     launchUrl(Uri.parse(axEthUniswap));
   }
-
-  Future<String> getTokenSymbol(String tokenAddress) async {
-    final tokenEthAddress = EthereumAddress.fromHex(tokenAddress);
-    var rpcUrl = '';
-    if (Controller.supportedChains.containsKey(controller.networkID.value)) {
-      rpcUrl = Controller.supportedChains[controller.networkID.value]!;
-    } else {
-      rpcUrl = 'https://polygon-rpc.com';
-    }
-    final rpcClient = Web3Client(rpcUrl, Client());
-    final token = ERC20(address: tokenEthAddress, client: rpcClient);
-    return token.symbol();
-  }
-
-  Future<void> addTokenToWallet() async {}
 }
