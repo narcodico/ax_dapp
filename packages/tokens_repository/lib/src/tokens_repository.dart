@@ -105,4 +105,10 @@ class TokensRepository {
       return AxMarketData.empty;
     }
   }
+
+  /// Returns the symbol for the [Token] identified by the [tokenAddress].
+  ///
+  /// Defaults to returning an empty string on error.
+  Future<String> getTokenSymbol(String tokenAddress) =>
+      _ethereumApiClient.getTokenSymbol(tokenAddress);
 }
