@@ -106,6 +106,16 @@ class WalletRepository {
         tokenImageUrl: tokenImageUrl,
       );
 
+  /// Returns the amount of tokens with [tokenAddress] owned by the wallet
+  /// identified by [walletAddress].
+  ///
+  /// Defaults to [BigInt.zero] on error.
+  Future<BigInt> getRawTokenBalance({required String tokenAddress}) =>
+      _walletApiClient.getRawTokenBalance(
+        tokenAddress: tokenAddress,
+        walletAddress: walletAddress,
+      );
+
   /// Returns an aproximate balance for the token with the given [tokenAddress],
   /// on the connected wallet. It returns `null` when any error occurs.
   ///
