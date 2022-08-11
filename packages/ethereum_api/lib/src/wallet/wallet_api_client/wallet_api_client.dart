@@ -35,6 +35,15 @@ abstract class WalletApiClient {
     required String tokenImageUrl,
   });
 
+  /// Returns the amount of tokens with [tokenAddress] owned by the wallet
+  /// identified by [walletAddress].
+  ///
+  /// Defaults to [BigInt.zero] on error.
+  Future<BigInt> getRawTokenBalance({
+    required String tokenAddress,
+    required String walletAddress,
+  });
+
   /// Returns an aproximate balance for the token with the given [tokenAddress],
   /// on the wallet identified by [walletAddress]. It returns `null` when any
   /// error occurs.

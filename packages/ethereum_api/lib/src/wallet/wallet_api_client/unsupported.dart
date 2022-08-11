@@ -62,6 +62,16 @@ class EthereumWalletApiClient implements WalletApiClient {
   }
 
   @override
+  Future<BigInt> getRawTokenBalance({
+    required String tokenAddress,
+    required String walletAddress,
+  }) {
+    throw UnsupportedError(
+      'getRawTokenBalance not supported on the current platform',
+    );
+  }
+
+  @override
   Future<double?> getTokenBalance({
     required String tokenAddress,
     required String walletAddress,

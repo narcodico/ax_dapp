@@ -189,6 +189,26 @@ class EthereumWalletApiClient implements WalletApiClient {
     }
   }
 
+  /// Returns the amount of tokens with [tokenAddress] owned by the wallet
+  /// identified by [walletAddress].
+  ///
+  /// Defaults to [BigInt.zero] on error.
+  @override
+  Future<BigInt> getRawTokenBalance({
+    required String tokenAddress,
+    required String walletAddress,
+  }) async {
+    try {
+      final tokenEthereumAddress = EthereumAddress.fromHex(tokenAddress);
+      final walletEthereumAddress = EthereumAddress.fromHex(walletAddress);
+      final token = ERC20(address: tokenEthereumAddress, client: _web3Client);
+      final rawBalance = await token.balanceOf(walletEthereumAddress);
+      return rawBalance;
+    } catch (_) {
+      return BigInt.zero;
+    }
+  }
+
   /// Returns an aproximate balance for the token with the given [tokenAddress],
   /// on the wallet identified by [walletAddress]. It returns `null` when any
   /// error occurs.
