@@ -44,7 +44,7 @@ void main() async {
   // TODO(Rolly): reactive configuration
   final web3Client = Web3Client('url', httpClient);
   final walletApiClient = EthereumWalletApiClient(web3Client: web3Client);
-  final ethereumApiClient = EthereumApiClient();
+  final ethereumApiClient = EthereumApiClient(web3Client: web3Client);
 
   // TODO(Rolly): AppBloc should update this with the needed apt address,
   // AppEvent being dispatched by the widget needing lsp
