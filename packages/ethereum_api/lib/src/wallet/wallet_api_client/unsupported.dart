@@ -72,16 +72,6 @@ class EthereumWalletApiClient implements WalletApiClient {
   }
 
   @override
-  Future<double?> getTokenBalance({
-    required String tokenAddress,
-    required String walletAddress,
-  }) {
-    throw UnsupportedError(
-      'getTokenBalance not supported on the current platform',
-    );
-  }
-
-  @override
   Future<double> getGasPrice() {
     throw UnsupportedError('getGasPrice not supported on the current platform');
   }

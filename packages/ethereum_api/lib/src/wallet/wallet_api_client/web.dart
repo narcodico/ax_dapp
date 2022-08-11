@@ -209,33 +209,6 @@ class EthereumWalletApiClient implements WalletApiClient {
     }
   }
 
-  /// Returns an aproximate balance for the token with the given [tokenAddress],
-  /// on the wallet identified by [walletAddress]. It returns `null` when any
-  /// error occurs.
-  ///
-  /// **WARNING**: Due to rounding errors, the returned balance is not
-  /// reliable, especially for larger amounts or smaller units. While it can be
-  /// used to display the amount of ether in a human-readable format, it should
-  /// not be used for anything else.
-  @override
-  Future<double?> getTokenBalance({
-    required String tokenAddress,
-    required String walletAddress,
-  }) async {
-    try {
-      final tokenEthereumAddress = EthereumAddress.fromHex(tokenAddress);
-      final walletEthereumAddress = EthereumAddress.fromHex(walletAddress);
-      final token = ERC20(address: tokenEthereumAddress, client: _web3Client);
-      final rawBalance = await token.balanceOf(walletEthereumAddress);
-      final balanceInWei = EtherAmount.inWei(rawBalance);
-      final balance = balanceInWei.getValueInUnit(EtherUnit.ether);
-      final formattedBalance = balance.toStringAsFixed(2);
-      return double.parse(formattedBalance);
-    } catch (_) {
-      return null;
-    }
-  }
-
   /// Returns the amount typically needed to pay for one unit of gas(in gwei).
   @override
   Future<double> getGasPrice() async {
