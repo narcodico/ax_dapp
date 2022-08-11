@@ -43,10 +43,8 @@ class LSPController extends GetxController {
         transferAmount ~/
         BigInt.from(10).pow(18); // removes 18 zeros from collateralPerPair
     final axtEthereumAddress = EthereumAddress.fromHex(axtAddress);
-    final token = ERC20(address: axtEthereumAddress, client: tokenClient);
-    try {
-      await token.approve(address, amount, credentials: controller.credentials);
-    } catch (_) {}
+    final axt = ERC20(address: axtEthereumAddress, client: tokenClient);
+    await axt.approve(address, amount, credentials: controller.credentials);
   }
 
   Future<bool> redeem() async {
