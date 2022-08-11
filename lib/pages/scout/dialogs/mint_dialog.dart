@@ -1,9 +1,7 @@
 import 'package:ax_dapp/pages/athlete/components/athlete_mint_approve_button.dart';
 import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
-import 'package:ax_dapp/service/controller/wallet_controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
-import 'package:ax_dapp/util/format_wallet_address.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -31,7 +29,6 @@ class _MintDialogState extends State<MintDialog> {
   String aptAddress = '';
   final TextEditingController _aptAmountController = TextEditingController();
 
-  final WalletController walletController = Get.find();
   LSPController lspController = Get.find();
 
   @override
@@ -138,9 +135,6 @@ class _MintDialogState extends State<MintDialog> {
     final _height = MediaQuery.of(context).size.height;
     final wid = isWeb ? 400.0 : 355.0;
     if (_height < 505) hgt = _height;
-    final userWalletAddress = FormatWalletAddress.getWalletAddress(
-      walletController.controller.publicAddress.toString(),
-    );
 
     return Dialog(
       insetPadding: EdgeInsets.zero,
@@ -382,8 +376,7 @@ class _MintDialogState extends State<MintDialog> {
                     },
                     confirmCallback: lspController.mint,
                     confirmDialog: transactionConfirmed,
-                    walletAddress: userWalletAddress.walletAddress,
-                  ),
+                  )
                 ],
               ),
             )

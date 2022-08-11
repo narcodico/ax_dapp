@@ -1,5 +1,6 @@
 import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
+import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -19,7 +20,6 @@ class PoolApproveButton extends StatefulWidget {
     required this.valueTwo,
     required this.shareOfPool,
     required this.lpTokenName,
-    required this.walletId,
     super.key,
   });
 
@@ -33,7 +33,6 @@ class PoolApproveButton extends StatefulWidget {
   final String lpTokens;
   final String shareOfPool;
   final String lpTokenName;
-  final String walletId;
   final Future<void> Function() approveCallback;
   final Future<void> Function() confirmCallback;
   final Dialog Function(BuildContext) confirmDialog;
@@ -98,13 +97,15 @@ class _PoolApproveButtonState extends State<PoolApproveButton> {
                 .onPoolConfirmClick(currencyTwo: widget.currencyTwo);
             //Confirm button pressed
             widget.confirmCallback().then((value) {
+              final walletAddress =
+                  context.read<WalletBloc>().state.formattedWalletAddress;
               context.read<TrackingCubit>().onPoolCreated(
                     valueOne: widget.valueOne,
                     valueTwo: widget.valueTwo,
                     lpTokens: widget.lpTokens,
                     shareOfPool: widget.shareOfPool,
                     lpTokenName: widget.lpTokenName,
-                    walletId: widget.walletId,
+                    walletId: walletAddress,
                   );
               showDialog<void>(
                 context: context,

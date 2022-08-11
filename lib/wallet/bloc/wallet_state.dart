@@ -60,4 +60,6 @@ extension WalletStateX on WalletState {
   bool get isWalletUnsupported => status == WalletStatus.unsupported;
   bool get isWalletUnavailable => failure is WalletUnavailableFailure;
   bool get hasFailure => failure != WalletFailure.none;
+
+  String get formattedWalletAddress => "'$walletAddress'";
 }

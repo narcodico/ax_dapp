@@ -8,7 +8,6 @@ import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/util/assets/assets.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
-import 'package:ax_dapp/util/format_wallet_address.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
@@ -111,9 +110,7 @@ class _MyLiquidityState extends State<MyLiquidity> {
         kIsWeb && (MediaQuery.of(context).orientation == Orientation.landscape);
     final _layoutWdt = _isWeb ? _width * 0.8 : _width * 0.9;
     final gridHgt = _layoutHgt * 0.75;
-    final userWalletAddress = FormatWalletAddress.getWalletAddress(
-      controller.publicAddress.toString(),
-    );
+
     final tokenOneRemoveAmount =
         double.parse(infoOfSelectedCard.token0LpAmount) * (value / 100);
     final tokenTwoRemoveAmount =
@@ -903,7 +900,6 @@ class _MyLiquidityState extends State<MyLiquidity> {
                                       infoOfSelectedCard.lpTokenPairBalance,
                                   shareOfPool: infoOfSelectedCard.shareOfPool,
                                   percentRemoval: value,
-                                  walletId: userWalletAddress.walletAddress,
                                   lpTokenName:
                                       '${infoOfSelectedCard.token0Symbol}/${infoOfSelectedCard.token1Symbol}',
                                 ),

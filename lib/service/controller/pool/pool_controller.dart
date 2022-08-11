@@ -1,5 +1,4 @@
 import 'package:ax_dapp/service/controller/controller.dart';
-import 'package:ax_dapp/service/controller/wallet_controller.dart';
 import 'package:ax_dapp/util/user_input_norm.dart';
 import 'package:ethereum_api/apt_router_api.dart';
 import 'package:ethereum_api/dex_api.dart';
@@ -27,7 +26,6 @@ class PoolController extends GetxController {
   String lpTokenPairAddress = '';
   double removePercentage = 0;
   RxDouble amount1 = 0.0.obs, amount2 = 0.0.obs;
-  WalletController walletController = Get.find();
   final tokenClient = Web3Client('https://polygon-rpc.com', Client());
   // Deadline is two minutes from 'now'
   final BigInt twoMinuteDeadline = BigInt.from(

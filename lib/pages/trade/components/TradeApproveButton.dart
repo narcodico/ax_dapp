@@ -2,6 +2,7 @@
 
 import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
+import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -19,7 +20,6 @@ class TradeApproveButton extends StatefulWidget {
     required this.fromUnits,
     required this.toUnits,
     required this.totalFee,
-    required this.walletAddress,
     super.key,
   });
 
@@ -31,7 +31,6 @@ class TradeApproveButton extends StatefulWidget {
   final String fromUnits;
   final String toUnits;
   final String totalFee;
-  final String walletAddress;
   final Future<void> Function() approveCallback;
   final Future<void> Function() confirmCallback;
   final Dialog Function(BuildContext) confirmDialog;
@@ -96,11 +95,13 @@ class _TradeApproveButtonState extends State<TradeApproveButton> {
                 .onSwapConfirmClick(toCurrency: widget.toCurrency);
             //Confirm button pressed
             widget.confirmCallback().then((value) {
+              final walletAddress =
+                  context.read<WalletBloc>().state.formattedWalletAddress;
               context.read<TrackingCubit>().onSwapConfirmedTransaction(
                     fromUnits: widget.fromUnits,
                     toUnits: widget.toUnits,
                     totalFee: widget.totalFee,
-                    walletId: widget.walletAddress,
+                    walletId: walletAddress,
                   );
               showDialog<void>(
                 context: context,

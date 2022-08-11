@@ -1,5 +1,4 @@
 import 'package:ax_dapp/service/controller/controller.dart';
-import 'package:ax_dapp/service/controller/wallet_controller.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
 import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:ax_dapp/wallet/widgets/widgets.dart';
@@ -10,11 +9,9 @@ class WalletView extends StatelessWidget {
   const WalletView({
     super.key,
     required this.controller,
-    required this.walletController,
   });
 
   final Controller controller;
-  final WalletController walletController;
 
   @override
   Widget build(BuildContext context) {

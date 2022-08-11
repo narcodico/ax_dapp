@@ -14,8 +14,8 @@ import 'package:ax_dapp/util/athlete_page_format_helper.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:ax_dapp/util/chart/extensions/graph_data.dart';
 import 'package:ax_dapp/util/colors.dart';
-import 'package:ax_dapp/util/format_wallet_address.dart';
 import 'package:ax_dapp/util/percent_helper.dart';
+import 'package:ax_dapp/wallet/bloc/wallet_bloc.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -1043,9 +1043,7 @@ class _AthletePageState extends State<AthletePage> {
     final _height = MediaQuery.of(context).size.height;
     var wid = _width * 0.4;
     final webWallet = Get.find<WebWallet>();
-    final userWalletAddress = FormatWalletAddress.getWalletAddress(
-      controller.publicAddress.toString(),
-    );
+
     if (_width < 1160) wid = containerWdt;
     return Container(
       height: _height / 1.5,
@@ -1235,9 +1233,13 @@ class _AthletePageState extends State<AthletePage> {
                               .read<AthletePageBloc>()
                               .state
                               .selectedAptAddress;
+                          final formattedWalletAddress = context
+                              .read<WalletBloc>()
+                              .state
+                              .formattedWalletAddress;
                           context.read<TrackingCubit>().trackAddToWallet(
                                 athleteName: athlete.name,
-                                walletId: userWalletAddress.walletAddress,
+                                walletId: formattedWalletAddress,
                               );
                           webWallet.addTokenToWallet(
                             selectedAptAddress,

@@ -2,10 +2,9 @@ import 'dart:math';
 
 import 'package:ax_dapp/pages/scout/models/athlete_scout_model.dart';
 import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
-import 'package:ax_dapp/service/controller/wallet_controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
 import 'package:ax_dapp/service/tracking/tracking_cubit.dart';
-import 'package:ax_dapp/util/format_wallet_address.dart';
+import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -43,7 +42,6 @@ class _RedeemDialogState extends State<RedeemDialog> {
   final TextEditingController _longInputController = TextEditingController();
   final TextEditingController _shortInputController = TextEditingController();
 
-  final WalletController walletController = Get.find();
   LSPController lspController = Get.find();
 
   @override
@@ -139,9 +137,6 @@ class _RedeemDialogState extends State<RedeemDialog> {
     final _height = MediaQuery.of(context).size.height;
     final wid = isWeb ? 400.0 : 355.0;
     if (_height < 505) hgt = _height;
-    final userWalletAddress = FormatWalletAddress.getWalletAddress(
-      walletController.controller.publicAddress.toString(),
-    );
 
     return Dialog(
       insetPadding: EdgeInsets.zero,
@@ -432,6 +427,10 @@ class _RedeemDialogState extends State<RedeemDialog> {
                             builder: (BuildContext context) =>
                                 confirmTransaction(context, true, ''),
                           ).then((value) {
+                            final walletAddress = context
+                                .read<WalletBloc>()
+                                .state
+                                .formattedWalletAddress;
                             context
                                 .read<TrackingCubit>()
                                 .trackAthleteRedeemSuccess(
@@ -441,7 +440,7 @@ class _RedeemDialogState extends State<RedeemDialog> {
                                   inputShortApt: _shortInputController.text,
                                   valueInAx: (lspController.redeemAmt * 15000)
                                       .toStringAsFixed(6),
-                                  walletId: userWalletAddress.walletAddress,
+                                  walletId: walletAddress,
                                 );
                           });
                           if (mounted) {

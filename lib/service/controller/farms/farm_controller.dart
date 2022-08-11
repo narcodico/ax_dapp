@@ -2,7 +2,6 @@ import 'dart:typed_data';
 
 import 'package:ax_dapp/pages/farm/models/farm_model.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
-import 'package:ax_dapp/service/controller/wallet_controller.dart';
 import 'package:ax_dapp/util/user_input_info.dart';
 import 'package:ethereum_api/erc20_api.dart';
 import 'package:ethereum_api/pool_api.dart';
@@ -102,7 +101,6 @@ class FarmController {
   late Pool contract;
 
   Controller controller = Get.find();
-  WalletController wallet = Get.find();
   String? athlete;
   String strName = '';
   String strAddress = '';

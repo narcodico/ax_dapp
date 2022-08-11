@@ -19,7 +19,6 @@ import 'package:ax_dapp/service/controller/create_wallet/web.dart';
 import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
 import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
 import 'package:ax_dapp/service/controller/swap/swap_controller.dart';
-import 'package:ax_dapp/service/controller/wallet_controller.dart';
 import 'package:ax_dapp/service/widgets_mobile/dropdown_menu.dart';
 import 'package:ax_dapp/wallet/wallet.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -95,7 +94,6 @@ class _V1AppState extends State<V1App> {
     Get
       ..put(LSPController())
       ..put(SwapController())
-      ..put(WalletController())
       ..put(PoolController())
       ..put(WebWallet());
   }
@@ -347,10 +345,7 @@ class _V1AppState extends State<V1App> {
               ],
             ),
           ),
-          WalletView(
-            controller: controller,
-            walletController: Get.find<WalletController>(),
-          ),
+          WalletView(controller: controller),
         ],
       ),
     );
@@ -377,10 +372,7 @@ class _V1AppState extends State<V1App> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              WalletView(
-                controller: controller,
-                walletController: Get.find<WalletController>(),
-              ),
+              WalletView(controller: controller),
               const DropdownMenuMobile(),
             ],
           ),
