@@ -9,14 +9,17 @@ import 'package:ethereum_api/pool_api.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart';
 import 'package:tokens_repository/tokens_repository.dart';
+import 'package:wallet_repository/wallet_repository.dart';
 import 'package:web3dart/web3dart.dart' as web3_dart;
 
 class FarmController {
   // contructor with poolInfo from api
   FarmController({
     required FarmModel farm,
+    required WalletRepository walletRepository,
     required TokensRepository tokensRepository,
-  }) : _tokensRepository = tokensRepository {
+  })  : _walletRepository = walletRepository,
+        _tokensRepository = tokensRepository {
     strAddress = farm.strAddress;
     strName = farm.strName;
     athlete = _getAthleteTokenNameFromAlias(farm.strStakedAlias);
@@ -48,8 +51,10 @@ class FarmController {
   // constructor from another farm
   FarmController.fromFarm({
     required FarmController farm,
+    required WalletRepository walletRepository,
     required TokensRepository tokensRepository,
-  }) : _tokensRepository = tokensRepository {
+  })  : _walletRepository = walletRepository,
+        _tokensRepository = tokensRepository {
     strAddress = farm.strAddress;
     strName = farm.strName;
     athlete = farm.athlete;
@@ -77,6 +82,7 @@ class FarmController {
     updateCurrentBalance();
   }
 
+  final WalletRepository _walletRepository;
   final TokensRepository _tokensRepository;
 
   String? _getAthleteTokenNameFromAlias(String stakingAlias) {
@@ -126,9 +132,11 @@ class FarmController {
   ///
   /// @return {void}
   Future<void> updateCurrentBalance() async {
-    stakingInfo.value = await wallet.getTokenBalanceAsInfo(
-      strStakeTokenAddress,
-      nStakeTokenDecimals,
+    final rawBalance =
+        await _walletRepository.getRawTokenBalance(strStakeTokenAddress);
+    stakingInfo.value = UserInputInfo.fromBalance(
+      rawAmount: rawBalance,
+      decimals: nStakeTokenDecimals,
     );
   }
 
