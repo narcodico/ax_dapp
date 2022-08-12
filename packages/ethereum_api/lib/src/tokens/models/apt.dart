@@ -55,7 +55,7 @@ class Apt extends Token {
   final AptConfig _aptConfig;
 
   @override
-  List<Object?> get props => super.props..add(_aptConfig);
+  List<Object?> get props => super.props..addAll([type, _aptConfig]);
 }
 
 /// [Apt] extensions.
