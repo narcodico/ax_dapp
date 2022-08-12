@@ -2,7 +2,6 @@ import 'package:ethereum_api/src/apt_router/apt_router.dart';
 import 'package:ethereum_api/src/dex/dex.dart';
 import 'package:ethereum_api/src/ethereum/models/models.dart';
 import 'package:ethereum_api/src/tokens/tokens.dart';
-import 'package:ethereum_api/src/wallet/models/models.dart';
 
 /// {@template token_address_config}
 /// Configures an object with addresses, one for each supported [EthereumChain].
