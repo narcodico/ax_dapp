@@ -1,4 +1,4 @@
-import 'package:ethereum_api/src/config/ethereum_address_config.dart';
+import 'package:ethereum_api/src/config/models/ethereum_address_config.dart';
 import 'package:ethereum_api/src/ethereum/models/models.dart';
 import 'package:ethereum_api/src/tokens/tokens.dart';
 import 'package:shared/shared.dart';
