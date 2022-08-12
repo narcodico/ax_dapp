@@ -1,26 +1,26 @@
 // ignore_for_file: prefer_const_constructors
-import 'package:ethereum_api/ethereum_api.dart';
 import 'package:ethereum_api/lsp_api.dart';
+import 'package:ethereum_api/tokens_api.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 
-class MockEthereumApiClient extends Mock implements EthereumApiClient {}
+class MockTokensApiClient extends Mock implements TokensApiClient {}
 
 class MockLongShortPair extends Mock implements LongShortPair {}
 
 void main() {
   group('TokensRepository', () {
-    late EthereumApiClient ethereumApiClient;
+    late TokensApiClient tokensApiClient;
     late LongShortPair lspClient;
 
     setUp(() {
-      ethereumApiClient = MockEthereumApiClient();
+      tokensApiClient = MockTokensApiClient();
       lspClient = MockLongShortPair();
     });
 
     TokensRepository createSubject() => TokensRepository(
-          ethereumApiClient: ethereumApiClient,
+          tokensApiClient: tokensApiClient,
           lspClient: lspClient,
         );
 

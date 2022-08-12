@@ -1,6 +1,6 @@
 import 'package:coingecko_api/coingecko_api.dart';
-import 'package:ethereum_api/ethereum_api.dart';
 import 'package:ethereum_api/lsp_api.dart';
+import 'package:ethereum_api/tokens_api.dart';
 import 'package:shared/shared.dart';
 import 'package:tokens_repository/src/models/models.dart';
 
@@ -10,10 +10,10 @@ import 'package:tokens_repository/src/models/models.dart';
 class TokensRepository {
   /// {@macro tokens_repository}
   TokensRepository({
-    required EthereumApiClient ethereumApiClient,
+    required TokensApiClient tokensApiClient,
     required LongShortPair lspClient,
     CoinGeckoApi? coinGeckoApiClient,
-  })  : _ethereumApiClient = ethereumApiClient,
+  })  : _tokensApiClient = tokensApiClient,
         _lspClient = lspClient,
         _coinGeckoApiClient = coinGeckoApiClient ??
             CoinGeckoApi(
@@ -21,32 +21,32 @@ class TokensRepository {
               enableLogging: false,
             );
 
-  final EthereumApiClient _ethereumApiClient;
+  final TokensApiClient _tokensApiClient;
   final LongShortPair _lspClient;
   final CoinGeckoApi _coinGeckoApiClient;
 
   /// Allows listening to changes to the current [Token]s.
-  Stream<List<Token>> get tokensChanges => _ethereumApiClient.tokensChanges;
+  Stream<List<Token>> get tokensChanges => _tokensApiClient.tokensChanges;
 
   /// Returns the current [Token]s synchronously. The returned [Token]s are
   /// based on the current [EthereumChain].
-  List<Token> get tokens => _ethereumApiClient.tokens;
+  List<Token> get tokens => _tokensApiClient.tokens;
 
   /// Allows listening to changes to the current [Apt]s.
-  Stream<List<Apt>> get aptsChanges => _ethereumApiClient.aptsChanges;
+  Stream<List<Apt>> get aptsChanges => _tokensApiClient.aptsChanges;
 
   /// Returns the current [Apt]s synchronously. The returned [Apt]s are
   /// based on the current [EthereumChain].
-  List<Apt> get apts => _ethereumApiClient.apts;
+  List<Apt> get apts => _tokensApiClient.apts;
 
   /// Allows listening to changes to the [Apt]s (long and short) for the
   /// athlete identified by [athleteId].
   Stream<AptPair> aptPairChanges(int athleteId) =>
-      _ethereumApiClient.aptPairChanges(athleteId);
+      _tokensApiClient.aptPairChanges(athleteId);
 
   /// Returns the current [AptPair] for the given [athleteId] synchronously.
   /// The returned [AptPair] is based on the current [EthereumChain].
-  AptPair aptPair(int athleteId) => _ethereumApiClient.aptPair(athleteId);
+  AptPair aptPair(int athleteId) => _tokensApiClient.aptPair(athleteId);
 
   /// Allows listening to changes to the [Token.ax] associated with the current
   /// [EthereumChain].
@@ -59,7 +59,7 @@ class TokensRepository {
   /// Allows switching the current [Token]s, which are set based on the current
   /// [EthereumChain].
   void switchTokens(EthereumChain chain) =>
-      _ethereumApiClient.switchTokens(chain);
+      _tokensApiClient.switchTokens(chain);
 
   /// Returns the collateral value per pair. In case of an error it returns
   /// [BigInt.zero].
@@ -110,5 +110,5 @@ class TokensRepository {
   ///
   /// Defaults to returning an empty string on error.
   Future<String> getTokenSymbol(String tokenAddress) =>
-      _ethereumApiClient.getTokenSymbol(tokenAddress);
+      _tokensApiClient.getTokenSymbol(tokenAddress);
 }
