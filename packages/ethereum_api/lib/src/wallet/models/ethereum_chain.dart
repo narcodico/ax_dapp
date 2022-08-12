@@ -1,4 +1,7 @@
+import 'package:ethereum_api/src/config/config.dart';
+import 'package:ethereum_api/src/tokens/tokens.dart';
 import 'package:ethereum_api/src/wallet/models/ethereum_currency.dart';
+import 'package:shared/shared.dart';
 
 // TODO(Pearlson): confirm info
 /// {@template ethereum_chain}
@@ -92,11 +95,41 @@ enum EthereumChain {
   /// List of block explorer urls used by this [chainId].
   final List<String>? blockExplorerUrls;
 
-  /// Returns whether this [EthereumChain] is supported.
-  bool get isSupported =>
-      this != EthereumChain.none && this != EthereumChain.unsupported;
-
   /// Returns a list of supported [EthereumChain]s.
   static List<EthereumChain> get supportedValues =>
       values.where((chain) => chain.isSupported).toList();
+}
+
+/// [EthereumChain] extensions.
+extension ChainX on EthereumChain {
+  /// Returns whether this [EthereumChain] is supported.
+  bool get isSupported =>
+      this != EthereumChain.none && this != EthereumChain.unsupported;
+}
+
+/// [EthereumChain] configuration.
+extension ChainConfigX on EthereumChain {
+  /// Returns the RPC URL used to initialize a [Web3Client].
+  String get rpcUrl => rpcUrls.firstOrNull ?? '';
+
+  /// Generates a list of all available [Token]s for this [EthereumChain].
+  List<Token> createTokens() => [
+        Token.ax(this),
+        Token.sx(this),
+        Token.matic(this),
+        Token.weth(this),
+        Token.usdc(this),
+        ...createApts(),
+      ];
+
+  /// Generates the list of [Apt]'s for this [EthereumChain]. Composed based on
+  /// a list of [AptConfig]s.
+  List<Token> createApts() => AptConfig.values
+      .expand(
+        (aptConfig) => [
+          Token.longAp(this, aptConfig: aptConfig),
+          Token.shortAp(this, aptConfig: aptConfig),
+        ],
+      )
+      .toList();
 }

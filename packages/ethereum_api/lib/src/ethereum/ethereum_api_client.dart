@@ -68,7 +68,7 @@ class EthereumApiClient {
   /// Otherwise, we keep the existing data.
   void switchTokens(EthereumChain chain) {
     if (chain.isSupported) {
-      _tokensController.add(Token.values(chain));
+      _tokensController.add(chain.createTokens());
     }
   }
 
