@@ -1,14 +1,12 @@
 import 'package:ethereum_api/src/tokens/tokens.dart';
-import 'package:ethereum_api/src/wallet/models/models.dart';
 import 'package:shared/shared.dart';
 
-/// {@template ethereum_api_client}
-/// API client which handles interaction with the `Ethereum` blockchain.
+/// {@template tokens_api_client}
+/// Client that manages the tokens API on `Ethereum`.
 /// {@endtemplate}
-class EthereumApiClient {
-  /// {@macro ethereum_api_client}
-  EthereumApiClient({required Web3Client web3Client})
-      : _web3Client = web3Client;
+class TokensApiClient {
+  /// {@macro tokens_api_client}
+  TokensApiClient({required Web3Client web3Client}) : _web3Client = web3Client;
 
   final Web3Client _web3Client;
 
