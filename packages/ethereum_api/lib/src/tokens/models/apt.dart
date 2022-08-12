@@ -45,7 +45,7 @@ class Apt extends Token {
         super(
           name: '',
           ticker: '',
-          addressConfig: const TokenAddressConfig.empty(),
+          addressConfig: const EthereumAddressConfig.empty(),
           chain: EthereumChain.none,
           currency: EthereumCurrency.none,
         );

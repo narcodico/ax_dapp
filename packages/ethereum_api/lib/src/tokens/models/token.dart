@@ -1,3 +1,4 @@
+import 'package:ethereum_api/src/config/config.dart';
 import 'package:ethereum_api/src/ethereum/models/models.dart';
 import 'package:ethereum_api/src/wallet/models/models.dart';
 import 'package:shared/shared.dart';
@@ -6,7 +7,6 @@ part 'apt.dart';
 part 'apt_config.dart';
 part 'apt_pair.dart';
 part 'apt_type.dart';
-part 'token_address_config.dart';
 
 /// {@template token}
 /// Represents an `Ethereum` token.
@@ -17,7 +17,7 @@ class Token extends Equatable {
     required this.name,
     required this.ticker,
     this.sport = SupportedSport.all,
-    required TokenAddressConfig addressConfig,
+    required EthereumAddressConfig addressConfig,
     required EthereumChain chain,
     required this.currency,
   })  : _addressConfig = addressConfig,
@@ -28,7 +28,7 @@ class Token extends Equatable {
       : this(
           name: 'AthleteX',
           ticker: 'AX',
-          addressConfig: const TokenAddressConfig.axt(),
+          addressConfig: const EthereumAddressConfig.axt(),
           chain: chain,
           currency: EthereumCurrency.ax,
         );
@@ -38,7 +38,7 @@ class Token extends Equatable {
       : this(
           name: 'SportX',
           ticker: 'SX',
-          addressConfig: const TokenAddressConfig.sxt(),
+          addressConfig: const EthereumAddressConfig.sxt(),
           chain: chain,
           currency: EthereumCurrency.sx,
         );
@@ -48,7 +48,7 @@ class Token extends Equatable {
       : this(
           name: 'Matic/Polygon',
           ticker: 'Matic',
-          addressConfig: const TokenAddressConfig.matic(),
+          addressConfig: const EthereumAddressConfig.matic(),
           chain: chain,
           currency: EthereumCurrency.matic,
         );
@@ -58,7 +58,7 @@ class Token extends Equatable {
       : this(
           name: 'WETH',
           ticker: 'WETH',
-          addressConfig: const TokenAddressConfig.weth(),
+          addressConfig: const EthereumAddressConfig.weth(),
           chain: chain,
           currency: EthereumCurrency.weth,
         );
@@ -68,7 +68,7 @@ class Token extends Equatable {
       : this(
           name: 'USDC',
           ticker: 'USDC',
-          addressConfig: const TokenAddressConfig.usdc(),
+          addressConfig: const EthereumAddressConfig.usdc(),
           chain: chain,
           currency: EthereumCurrency.usdc,
         );
@@ -99,7 +99,7 @@ class Token extends Equatable {
   final SupportedSport sport;
 
   /// {@macro token_address_config}
-  final TokenAddressConfig _addressConfig;
+  final EthereumAddressConfig _addressConfig;
 
   /// Represents current [EthereumChain].
   final EthereumChain _chain;
@@ -111,7 +111,7 @@ class Token extends Equatable {
   static const empty = Token(
     name: '__empty__',
     ticker: '',
-    addressConfig: TokenAddressConfig.empty(),
+    addressConfig: EthereumAddressConfig.empty(),
     chain: EthereumChain.none,
     currency: EthereumCurrency.none,
   );
