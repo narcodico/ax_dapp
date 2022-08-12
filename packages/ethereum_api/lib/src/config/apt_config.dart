@@ -1,4 +1,7 @@
-part of 'token.dart';
+import 'package:ethereum_api/src/config/ethereum_address_config.dart';
+import 'package:ethereum_api/src/ethereum/models/models.dart';
+import 'package:ethereum_api/src/tokens/tokens.dart';
+import 'package:shared/shared.dart';
 
 /// {@template athlete_performance_token_config}
 /// Configures an [Apt].
@@ -76,8 +79,8 @@ class AptConfig extends Equatable {
 /// [AptConfig] extensions.
 extension AptConfigX on AptConfig {
   /// Returns [Apt]'s name based on [AptType], e.g.: `Aaron Judge Long APT`.
-  String aptName(AptType tokenType) =>
-      '$athleteName ${tokenType.name.capitalize()} APT';
+  String aptName(AptType aptType) =>
+      '$athleteName ${aptType.name.capitalize()} APT';
 }
 
 const _kAptConfigs = [
