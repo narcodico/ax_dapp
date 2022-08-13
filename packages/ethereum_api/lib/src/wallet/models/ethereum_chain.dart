@@ -1,6 +1,9 @@
-import 'package:ethereum_api/src/config/config.dart';
+import 'package:ethereum_api/src/apt_router/apt_router.dart';
+import 'package:ethereum_api/src/config/models/apt_config.dart';
+import 'package:ethereum_api/src/config/models/ethereum_address_config.dart';
+import 'package:ethereum_api/src/dex/dex.dart';
 import 'package:ethereum_api/src/tokens/tokens.dart';
-import 'package:ethereum_api/src/wallet/models/ethereum_currency.dart';
+import 'package:http/http.dart' as http;
 import 'package:shared/shared.dart';
 
 // TODO(Pearlson): confirm info
@@ -105,13 +108,13 @@ extension ChainX on EthereumChain {
   /// Returns whether this [EthereumChain] is supported.
   bool get isSupported =>
       this != EthereumChain.none && this != EthereumChain.unsupported;
+
+  /// Returns the RPC URL used to initialize a [Web3Client].
+  String get rpcUrl => rpcUrls.firstOrNull ?? '';
 }
 
 /// [EthereumChain] configuration.
 extension ChainConfigX on EthereumChain {
-  /// Returns the RPC URL used to initialize a [Web3Client].
-  String get rpcUrl => rpcUrls.firstOrNull ?? '';
-
   /// Generates a list of all available [Token]s for this [EthereumChain].
   List<Token> createTokens() => [
         Token.ax(this),
@@ -132,4 +135,24 @@ extension ChainConfigX on EthereumChain {
         ],
       )
       .toList();
+
+  /// Creates a [Web3Client] based on this [EthereumChain] configuration.
+  Web3Client createWeb3Client(http.Client httpClient) =>
+      Web3Client(rpcUrl, httpClient);
+
+  /// Creates an [APTRouter] client based on this [EthereumChain] configuration.
+  APTRouter createAptRouterClient(Web3Client client) => APTRouter(
+        address: EthereumAddress.fromHex(
+          const EthereumAddressConfig.aptRouter().address(this),
+        ),
+        client: client,
+      );
+
+  /// Creates a [Dex] client based on this [EthereumChain] configuration.
+  Dex createDexClient(Web3Client client) => Dex(
+        address: EthereumAddress.fromHex(
+          const EthereumAddressConfig.dex().address(this),
+        ),
+        client: client,
+      );
 }
