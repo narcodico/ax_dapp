@@ -109,7 +109,7 @@ void main() async {
               create: (context) => TrackingRepository(),
             ),
           ],
-          child: const App(),
+          child: App(configRepository: configRepository),
         ),
       );
     }),
