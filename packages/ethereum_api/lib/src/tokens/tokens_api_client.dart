@@ -1,4 +1,5 @@
 import 'package:ethereum_api/src/tokens/tokens.dart';
+import 'package:ethereum_api/src/wallet/models/models.dart';
 import 'package:shared/shared.dart';
 
 /// {@template tokens_api_client}
@@ -6,9 +7,11 @@ import 'package:shared/shared.dart';
 /// {@endtemplate}
 class TokensApiClient {
   /// {@macro tokens_api_client}
-  TokensApiClient({required Web3Client web3Client}) : _web3Client = web3Client;
+  TokensApiClient({required ValueStream<Web3Client> reactiveWeb3Client})
+      : _reactiveWeb3Client = reactiveWeb3Client;
 
-  final Web3Client _web3Client;
+  final ValueStream<Web3Client> _reactiveWeb3Client;
+  Web3Client get _web3Client => _reactiveWeb3Client.value;
 
   final _tokensController = BehaviorSubject<List<Token>>();
 
