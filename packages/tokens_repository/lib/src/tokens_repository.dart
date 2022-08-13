@@ -11,10 +11,10 @@ class TokensRepository {
   /// {@macro tokens_repository}
   TokensRepository({
     required TokensApiClient tokensApiClient,
-    required LongShortPair lspClient,
+    required ValueStream<LongShortPair> reactiveLspClient,
     CoinGeckoApi? coinGeckoApiClient,
   })  : _tokensApiClient = tokensApiClient,
-        _lspClient = lspClient,
+        _reactiveLspClient = reactiveLspClient,
         _coinGeckoApiClient = coinGeckoApiClient ??
             CoinGeckoApi(
               rateLimitManagement: false,
@@ -22,7 +22,10 @@ class TokensRepository {
             );
 
   final TokensApiClient _tokensApiClient;
-  final LongShortPair _lspClient;
+
+  final ValueStream<LongShortPair> _reactiveLspClient;
+  LongShortPair get _lspClient => _reactiveLspClient.value;
+
   final CoinGeckoApi _coinGeckoApiClient;
 
   /// Allows listening to changes to the current [Token]s.
