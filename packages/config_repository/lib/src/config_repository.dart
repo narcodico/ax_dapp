@@ -1,4 +1,5 @@
 import 'package:ethereum_api/config_api.dart';
+import 'package:ethereum_api/lsp_api.dart';
 import 'package:ethereum_api/wallet_api.dart';
 
 /// {@template config_repository}
@@ -18,4 +19,8 @@ class ConfigRepository {
   /// Switches dependencies and then disposes of the old ones.
   void switchDependencies(EthereumChain chain) =>
       _configApiClient.switchDependencies(chain);
+
+  /// Switches the [LongShortPair] client.
+  void switchLspClient(String pairAddress) =>
+      _configApiClient.switchLspClient(pairAddress);
 }
