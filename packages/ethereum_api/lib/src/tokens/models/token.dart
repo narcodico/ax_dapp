@@ -1,4 +1,5 @@
-import 'package:ethereum_api/src/config/config.dart';
+import 'package:ethereum_api/src/config/models/apt_config.dart';
+import 'package:ethereum_api/src/config/models/ethereum_address_config.dart';
 import 'package:ethereum_api/src/ethereum/models/models.dart';
 import 'package:ethereum_api/src/wallet/models/models.dart';
 import 'package:shared/shared.dart';
