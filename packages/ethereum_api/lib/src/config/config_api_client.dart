@@ -1,5 +1,6 @@
 import 'package:ethereum_api/src/config/models/models.dart';
 import 'package:ethereum_api/src/lsp/lsp.dart';
+import 'package:ethereum_api/src/wallet/models/models.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared/shared.dart';
 
@@ -22,5 +23,23 @@ class ConfigApiClient {
       reactiveWeb3Client: _web3ClientController.stream,
       reactiveLspClient: _lspController.stream,
     );
+  }
+
+  /// Switches dependencies and then disposes of the old ones.
+  void switchDependencies(EthereumChain chain) {
+    final previousWeb3Client = _web3ClientController.valueOrNull;
+    final web3Client = chain.createWeb3Client(_httpClient);
+    _web3ClientController.add(web3Client);
+    previousWeb3Client?.dispose();
+
+    // When chain changes, we recreate an existing [LongShortPair] at the same
+    // address but with the latest [Web3Client].
+    final previousLspClient = _lspController.valueOrNull;
+    if (previousLspClient != null) {
+      final previousLspAddress = previousLspClient.self.address;
+      final lspClient =
+          LongShortPair(address: previousLspAddress, client: web3Client);
+      _lspController.add(lspClient);
+    }
   }
 }
