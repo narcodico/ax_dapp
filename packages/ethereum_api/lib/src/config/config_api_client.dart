@@ -42,4 +42,13 @@ class ConfigApiClient {
       _lspController.add(lspClient);
     }
   }
+
+  /// Switches the [LongShortPair] client.
+  void switchLspClient(String pairAddress) {
+    final lspClient = LongShortPair(
+      address: EthereumAddress.fromHex(pairAddress),
+      client: _web3ClientController.value,
+    );
+    _lspController.add(lspClient);
+  }
 }
