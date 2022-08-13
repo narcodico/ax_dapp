@@ -2,26 +2,28 @@
 import 'package:ethereum_api/lsp_api.dart';
 import 'package:ethereum_api/tokens_api.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:shared/shared.dart';
 import 'package:test/test.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 
 class MockTokensApiClient extends Mock implements TokensApiClient {}
 
-class MockLongShortPair extends Mock implements LongShortPair {}
+class MockReactiveLspClient extends Mock implements ValueStream<LongShortPair> {
+}
 
 void main() {
   group('TokensRepository', () {
     late TokensApiClient tokensApiClient;
-    late LongShortPair lspClient;
+    late ValueStream<LongShortPair> reactiveLspClient;
 
     setUp(() {
       tokensApiClient = MockTokensApiClient();
-      lspClient = MockLongShortPair();
+      reactiveLspClient = MockReactiveLspClient();
     });
 
     TokensRepository createSubject() => TokensRepository(
           tokensApiClient: tokensApiClient,
-          lspClient: lspClient,
+          reactiveLspClient: reactiveLspClient,
         );
 
     test('can be instantiated', () {
