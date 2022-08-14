@@ -59,10 +59,9 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         }
         final currentAptPair =
             apts.findPairByAthleteId(previousAptPair.athleteId);
-        if (currentAptPair.isEmpty) {
-          return;
+        if (currentAptPair.isNotEmpty) {
+          _configRepository.switchLspClient(currentAptPair.address);
         }
-        _configRepository.switchLspClient(currentAptPair.address);
       },
     );
   }
