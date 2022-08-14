@@ -33,23 +33,52 @@ class TokensRepository {
 
   /// Returns the current [Token]s synchronously. The returned [Token]s are
   /// based on the current [EthereumChain].
-  List<Token> get tokens => _tokensApiClient.tokens;
+  List<Token> get currentTokens => _tokensApiClient.currentTokens;
+
+  /// Returns the previous [Token]s synchronously. The returned [Token]s are
+  /// based on the previous [EthereumChain].
+  List<Token> get previousTokens => _tokensApiClient.previousTokens;
 
   /// Allows listening to changes to the current [Apt]s.
-  Stream<List<Apt>> get aptsChanges => _tokensApiClient.aptsChanges;
+  Stream<List<Apt>> get aptsChanges =>
+      tokensChanges.map((tokens) => tokens.whereType<Apt>().toList());
 
   /// Returns the current [Apt]s synchronously. The returned [Apt]s are
   /// based on the current [EthereumChain].
-  List<Apt> get apts => _tokensApiClient.apts;
+  List<Apt> get currentApts => currentTokens.whereType<Apt>().toList();
+
+  /// Returns the previous [Apt]s synchronously. The returned [Apt]s are
+  /// based on the previous [EthereumChain].
+  List<Apt> get previousApts => previousTokens.whereType<Apt>().toList();
 
   /// Allows listening to changes to the [Apt]s (long and short) for the
   /// athlete identified by [athleteId].
   Stream<AptPair> aptPairChanges(int athleteId) =>
-      _tokensApiClient.aptPairChanges(athleteId);
+      tokensChanges.map((tokens) => tokens.whereType<Apt>()).map(
+            (apts) => AptPair(
+              longApt: apts.singleWhere(
+                (apt) => apt.athleteId == athleteId && apt.type.isLong,
+                orElse: () => const Apt.empty(),
+              ),
+              shortApt: apts.singleWhere(
+                (apt) => apt.athleteId == athleteId && apt.type.isShort,
+                orElse: () => const Apt.empty(),
+              ),
+            ),
+          );
 
   /// Returns the current [AptPair] for the given [athleteId] synchronously.
   /// The returned [AptPair] is based on the current [EthereumChain].
-  AptPair aptPair(int athleteId) => _tokensApiClient.aptPair(athleteId);
+  AptPair currentAptPair(int athleteId) => AptPair(
+        longApt: currentApts.singleWhere(
+          (apt) => apt.athleteId == athleteId && apt.type.isLong,
+          orElse: () => const Apt.empty(),
+        ),
+        shortApt: currentApts.singleWhere(
+          (apt) => apt.athleteId == athleteId && apt.type.isShort,
+          orElse: () => const Apt.empty(),
+        ),
+      );
 
   /// Allows listening to changes to the [Token.ax] associated with the current
   /// [EthereumChain].
@@ -57,7 +86,7 @@ class TokensRepository {
 
   /// Returns the [Token.ax] associated with the current [EthereumChain],
   /// synchronously.
-  Token get currentAxt => tokens.axt;
+  Token get currentAxt => currentTokens.axt;
 
   /// Allows switching the current [Token]s, which are set based on the current
   /// [EthereumChain].
