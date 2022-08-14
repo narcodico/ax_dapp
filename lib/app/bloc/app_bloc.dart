@@ -17,8 +17,10 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         _configRepository = configRepository,
         super(const AppState()) {
     on<WatchChainChangesStarted>(_onWatchChainChangesStarted);
+    on<WatchAptsChangesStarted>(_onWatchAptsChangesStarted);
 
     add(const WatchChainChangesStarted());
+    add(const WatchAptsChangesStarted());
   }
 
   final WalletRepository _walletRepository;
@@ -34,6 +36,33 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       onData: (chain) {
         _tokensRepository.switchTokens(chain);
         _configRepository.switchDependencies(chain);
+      },
+    );
+  }
+
+  Future<void> _onWatchAptsChangesStarted(
+    WatchAptsChangesStarted _,
+    Emitter<AppState> emit,
+  ) async {
+    await emit.onEach<List<Apt>>(
+      _tokensRepository.aptsChanges,
+      onData: (apts) {
+        final previousApts = _tokensRepository.previousApts;
+        if (previousApts.isEmpty) {
+          return;
+        }
+        final currentLspAddress = _configRepository.currentLspAddress;
+        final previousAptPair =
+            previousApts.findPairByAddress(currentLspAddress);
+        if (previousAptPair.isEmpty) {
+          return;
+        }
+        final currentAptPair =
+            apts.findPairByAthleteId(previousAptPair.athleteId);
+        if (currentAptPair.isEmpty) {
+          return;
+        }
+        _configRepository.switchLspClient(currentAptPair.address);
       },
     );
   }
