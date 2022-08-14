@@ -72,3 +72,40 @@ extension AptX on Apt {
   /// Returns [Apt]'s pair address.
   String get pairAddress => _aptConfig.pairAddressConfig.address(_chain);
 }
+
+/// [Apt]s extensions.
+extension AptsX on Iterable<Apt> {
+  /// Returns the [AptPair] with the corresponding [pairAddress].
+  ///
+  /// Defaults to [AptPair.empty] when no such [AptPair] is found.
+  AptPair findPairByAddress(String pairAddress) => AptPair(
+        longApt: singleWhere(
+          (apt) =>
+              apt.pairAddress.trim().toLowerCase() ==
+                  pairAddress.trim().toLowerCase() &&
+              apt.type.isLong,
+          orElse: () => const Apt.empty(),
+        ),
+        shortApt: singleWhere(
+          (apt) =>
+              apt.pairAddress.trim().toLowerCase() ==
+                  pairAddress.trim().toLowerCase() &&
+              apt.type.isShort,
+          orElse: () => const Apt.empty(),
+        ),
+      );
+
+  /// Returns the [AptPair] with the corresponding [athleteId].
+  ///
+  /// Defaults to [AptPair.empty] when no such [AptPair] is found.
+  AptPair findPairByAthleteId(int athleteId) => AptPair(
+        longApt: singleWhere(
+          (apt) => apt.athleteId == athleteId && apt.type.isLong,
+          orElse: () => const Apt.empty(),
+        ),
+        shortApt: singleWhere(
+          (apt) => apt.athleteId == athleteId && apt.type.isShort,
+          orElse: () => const Apt.empty(),
+        ),
+      );
+}
