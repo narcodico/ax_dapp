@@ -1,4 +1,5 @@
 import 'package:ethereum_api/src/config/models/models.dart';
+import 'package:ethereum_api/src/dex/dex.dart';
 import 'package:ethereum_api/src/lsp/lsp.dart';
 import 'package:ethereum_api/src/wallet/models/models.dart';
 import 'package:http/http.dart' as http;
@@ -14,6 +15,7 @@ class ConfigApiClient {
   final http.Client _httpClient;
 
   final _web3ClientController = BehaviorSubject<Web3Client>();
+  final _dexClientController = BehaviorSubject<Dex>();
 
   final _lspClientController = BehaviorSubject<LongShortPair>();
 
@@ -25,6 +27,7 @@ class ConfigApiClient {
   AppConfig initializeAppConfig() {
     return AppConfig(
       reactiveWeb3Client: _web3ClientController.stream,
+      reactiveDexClient: _dexClientController.stream,
       reactiveLspClient: _lspClientController.stream,
     );
   }
@@ -36,7 +39,8 @@ class ConfigApiClient {
     _web3ClientController.add(web3Client);
     previousWeb3Client?.dispose();
 
-    // TODO(Rolly): switch apt router and dex
+    final dexClient = chain.createDexClient(web3Client);
+    _dexClientController.add(dexClient);
   }
 
   /// Switches the [LongShortPair] client.

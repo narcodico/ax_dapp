@@ -1,3 +1,4 @@
+import 'package:ethereum_api/src/dex/dex.dart';
 import 'package:ethereum_api/src/lsp/lsp.dart';
 import 'package:shared/shared.dart';
 
@@ -8,15 +9,23 @@ class AppConfig extends Equatable {
   /// {@macro app_config}
   const AppConfig({
     required this.reactiveWeb3Client,
+    required this.reactiveDexClient,
     required this.reactiveLspClient,
   });
 
   /// Reactive [Web3Client].
   final ValueStream<Web3Client> reactiveWeb3Client;
 
+  /// Reactive [Dex] client.
+  final ValueStream<Dex> reactiveDexClient;
+
   /// Reactive [LongShortPair] client.
   final ValueStream<LongShortPair> reactiveLspClient;
 
   @override
-  List<Object?> get props => [reactiveWeb3Client, reactiveLspClient];
+  List<Object?> get props => [
+        reactiveWeb3Client,
+        reactiveDexClient,
+        reactiveLspClient,
+      ];
 }
