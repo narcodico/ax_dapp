@@ -1,3 +1,4 @@
+import 'package:ethereum_api/src/apt_router/apt_router.dart';
 import 'package:ethereum_api/src/config/models/models.dart';
 import 'package:ethereum_api/src/dex/dex.dart';
 import 'package:ethereum_api/src/lsp/lsp.dart';
@@ -15,6 +16,7 @@ class ConfigApiClient {
   final http.Client _httpClient;
 
   final _web3ClientController = BehaviorSubject<Web3Client>();
+  final _aptRouterClientController = BehaviorSubject<APTRouter>();
   final _dexClientController = BehaviorSubject<Dex>();
 
   final _lspClientController = BehaviorSubject<LongShortPair>();
@@ -27,6 +29,7 @@ class ConfigApiClient {
   AppConfig initializeAppConfig() {
     return AppConfig(
       reactiveWeb3Client: _web3ClientController.stream,
+      reactiveAptRouterClient: _aptRouterClientController.stream,
       reactiveDexClient: _dexClientController.stream,
       reactiveLspClient: _lspClientController.stream,
     );
@@ -38,6 +41,9 @@ class ConfigApiClient {
     final web3Client = chain.createWeb3Client(_httpClient);
     _web3ClientController.add(web3Client);
     previousWeb3Client?.dispose();
+
+    final aptRouterClient = chain.createAptRouterClient(web3Client);
+    _aptRouterClientController.add(aptRouterClient);
 
     final dexClient = chain.createDexClient(web3Client);
     _dexClientController.add(dexClient);
