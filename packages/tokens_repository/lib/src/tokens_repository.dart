@@ -37,6 +37,10 @@ class TokensRepository {
 
   /// Returns the previous [Token]s synchronously. The returned [Token]s are
   /// based on the previous [EthereumChain].
+  ///
+  /// Defaults to an empty list when there's no previous [EthereumChain],
+  /// meaning the wallet was not yet connected or it was just connected but the
+  /// chain wasn't yet changed.
   List<Token> get previousTokens => _tokensApiClient.previousTokens;
 
   /// Allows listening to changes to the current [Apt]s.
