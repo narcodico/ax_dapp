@@ -15,17 +15,17 @@ class ConfigApiClient {
 
   final _web3ClientController = BehaviorSubject<Web3Client>();
 
-  final _lspController = BehaviorSubject<LongShortPair>();
+  final _lspClientController = BehaviorSubject<LongShortPair>();
 
   /// Returns the current [LongShortPair] address synchronously.
-  String get currentLspAddress => _lspController.value.self.address.hex;
+  String get currentLspAddress => _lspClientController.value.self.address.hex;
 
   /// Creates and returns the initial [AppConfig] which is used to pass down
   /// reactive dependencies.
   AppConfig initializeAppConfig() {
     return AppConfig(
       reactiveWeb3Client: _web3ClientController.stream,
-      reactiveLspClient: _lspController.stream,
+      reactiveLspClient: _lspClientController.stream,
     );
   }
 
@@ -45,6 +45,6 @@ class ConfigApiClient {
       address: EthereumAddress.fromHex(pairAddress),
       client: _web3ClientController.value,
     );
-    _lspController.add(lspClient);
+    _lspClientController.add(lspClient);
   }
 }
