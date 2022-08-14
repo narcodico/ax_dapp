@@ -21,7 +21,7 @@ class AthletePageBloc extends Bloc<AthletePageEvent, AthletePageState> {
         super(
           // setting the apt corresponding to the default aptType which is long
           AthletePageState(
-            longApt: tokensRepository.aptPair(athlete.id).longApt,
+            longApt: tokensRepository.currentAptPair(athlete.id).longApt,
           ),
         ) {
     on<WatchAptPairStarted>(_onWatchAptPairStarted);

@@ -142,7 +142,7 @@ class GetScoutAthletesDataUseCase {
   }) {
     final mappedAthletes = <AthleteScoutModel>[];
     for (final athlete in athletes) {
-      final aptPair = _tokensRepository.aptPair(athlete.id);
+      final aptPair = _tokensRepository.currentAptPair(athlete.id);
       final longAptAddress = aptPair.longApt.address;
       final shortAptAddress = aptPair.shortApt.address;
       final longToken =
