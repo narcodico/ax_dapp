@@ -14,7 +14,11 @@ class ConfigApiClient {
   final http.Client _httpClient;
 
   final _web3ClientController = BehaviorSubject<Web3Client>();
+
   final _lspController = BehaviorSubject<LongShortPair>();
+
+  /// Returns the current [LongShortPair] address synchronously.
+  String get currentLspAddress => _lspController.value.self.address.hex;
 
   /// Creates and returns the initial [AppConfig] which is used to pass down
   /// reactive dependencies.
@@ -32,15 +36,7 @@ class ConfigApiClient {
     _web3ClientController.add(web3Client);
     previousWeb3Client?.dispose();
 
-    // When chain changes, we recreate an existing [LongShortPair] at the same
-    // address but with the latest [Web3Client].
-    final previousLspClient = _lspController.valueOrNull;
-    if (previousLspClient != null) {
-      final previousLspAddress = previousLspClient.self.address;
-      final lspClient =
-          LongShortPair(address: previousLspAddress, client: web3Client);
-      _lspController.add(lspClient);
-    }
+    // TODO(Rolly): switch apt router and dex
   }
 
   /// Switches the [LongShortPair] client.
