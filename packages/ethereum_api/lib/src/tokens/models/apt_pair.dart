@@ -30,6 +30,10 @@ extension AptPairX on AptPair {
   /// compromised pair.
   bool get isEmpty => longApt.isEmpty || shortApt.isEmpty;
 
+  /// Returns `true` when both [AptPair.longApt] and [AptPair.shortApt] are not
+  /// empty.
+  bool get isNotEmpty => !isEmpty;
+
   /// Represents [AptPair] address for an [Apt.long] and [Apt.short] pair of
   /// tokens.
   ///
