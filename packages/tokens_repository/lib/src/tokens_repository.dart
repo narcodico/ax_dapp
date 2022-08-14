@@ -59,30 +59,13 @@ class TokensRepository {
   /// athlete identified by [athleteId].
   Stream<AptPair> aptPairChanges(int athleteId) =>
       tokensChanges.map((tokens) => tokens.whereType<Apt>()).map(
-            (apts) => AptPair(
-              longApt: apts.singleWhere(
-                (apt) => apt.athleteId == athleteId && apt.type.isLong,
-                orElse: () => const Apt.empty(),
-              ),
-              shortApt: apts.singleWhere(
-                (apt) => apt.athleteId == athleteId && apt.type.isShort,
-                orElse: () => const Apt.empty(),
-              ),
-            ),
+            (apts) => apts.findPairByAthleteId(athleteId),
           );
 
   /// Returns the current [AptPair] for the given [athleteId] synchronously.
   /// The returned [AptPair] is based on the current [EthereumChain].
-  AptPair currentAptPair(int athleteId) => AptPair(
-        longApt: currentApts.singleWhere(
-          (apt) => apt.athleteId == athleteId && apt.type.isLong,
-          orElse: () => const Apt.empty(),
-        ),
-        shortApt: currentApts.singleWhere(
-          (apt) => apt.athleteId == athleteId && apt.type.isShort,
-          orElse: () => const Apt.empty(),
-        ),
-      );
+  AptPair currentAptPair(int athleteId) =>
+      currentApts.findPairByAthleteId(athleteId);
 
   /// Allows listening to changes to the [Token.ax] associated with the current
   /// [EthereumChain].
