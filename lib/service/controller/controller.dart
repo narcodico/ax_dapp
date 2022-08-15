@@ -1,7 +1,5 @@
 // ignore_for_file: only_throw_errors
 
-import 'dart:developer';
-
 import 'package:get/get.dart';
 import 'package:http/http.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -36,21 +34,6 @@ class Controller extends GetxController {
   // ignore: avoid_setters_without_getters
   set axTokenAddress(EthereumAddress tokenAddress) {
     axTokenAddress = EthereumAddress.fromHex(tokenAddress.hex);
-  }
-
-  //Comment this for Android
-  // Connect the dapp to metamask and update relevant values
-
-  // Connect the client + set credentials
-
-  Future<void> getCurrentGas() async {
-    final rawGasPrice = await client.value.getGasPrice();
-    final gasPriceinGwei =
-        rawGasPrice.getValueInUnit(EtherUnit.gwei).toStringAsFixed(2);
-
-    gasString.value = gasPriceinGwei;
-    log('Latest gas: $gasString');
-    update();
   }
 
   // ignore: use_setters_to_change_properties

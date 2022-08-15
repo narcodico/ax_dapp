@@ -346,7 +346,7 @@ class _V1AppState extends State<V1App> {
               ],
             ),
           ),
-          WalletView(controller: controller),
+          const WalletView(),
         ],
       ),
     );
@@ -372,9 +372,9 @@ class _V1AppState extends State<V1App> {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              WalletView(controller: controller),
-              const DropdownMenuMobile(),
+            children: const [
+              WalletView(),
+              DropdownMenuMobile(),
             ],
           ),
         ],

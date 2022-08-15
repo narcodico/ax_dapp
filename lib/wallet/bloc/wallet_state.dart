@@ -26,6 +26,7 @@ class WalletState extends Equatable {
     required this.chain,
     this.walletAddress = kEmptyAddress,
     this.axData = AxData.empty,
+    this.gasPrice = 0,
     this.failure = WalletFailure.none,
   });
 
@@ -33,16 +34,18 @@ class WalletState extends Equatable {
   final EthereumChain chain;
   final String walletAddress;
   final AxData axData;
+  final double gasPrice;
   final WalletFailure failure;
 
   @override
-  List<Object> get props => [status, chain, walletAddress, failure];
+  List<Object> get props => [status, chain, walletAddress, gasPrice, failure];
 
   WalletState copyWith({
     WalletStatus? status,
     EthereumChain? chain,
     String? walletAddress,
     AxData? axData,
+    double? gasPrice,
     WalletFailure? failure,
   }) {
     return WalletState(
@@ -50,6 +53,7 @@ class WalletState extends Equatable {
       chain: chain ?? this.chain,
       walletAddress: walletAddress ?? this.walletAddress,
       axData: axData ?? this.axData,
+      gasPrice: gasPrice ?? this.gasPrice,
       failure: failure ?? this.failure,
     );
   }

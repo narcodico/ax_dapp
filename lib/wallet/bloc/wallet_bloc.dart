@@ -28,6 +28,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     on<SwitchChainRequested>(_onSwitchChainRequested);
     on<WatchAxtChangesStarted>(_onWatchAxtChangesStarted);
     on<UpdateAxDataRequested>(_onUpdateAxDataRequested);
+    on<GetGasPriceRequested>(_onGetGasPriceRequested);
     on<WalletFailed>(_onWalletFailed);
 
     add(const WatchChainChangesStarted());
@@ -107,6 +108,14 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
         await _walletRepository.getTokenBalance(currentAxtAddress);
     final axData = AxData.fromAxMarketData(axMarketData);
     emit(state.copyWith(axData: axData.copyWith(balance: axBalance)));
+  }
+
+  Future<void> _onGetGasPriceRequested(
+    GetGasPriceRequested event,
+    Emitter<WalletState> emit,
+  ) async {
+    final gasPrice = await _walletRepository.getGasPrice();
+    emit(state.copyWith(gasPrice: gasPrice));
   }
 
   void _onWalletFailed(

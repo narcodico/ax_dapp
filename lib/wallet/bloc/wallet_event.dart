@@ -36,6 +36,10 @@ class UpdateAxDataRequested extends WalletEvent {
   const UpdateAxDataRequested();
 }
 
+class GetGasPriceRequested extends WalletEvent {
+  const GetGasPriceRequested();
+}
+
 class WalletFailed extends WalletEvent {
   const WalletFailed(this.failure);
 
