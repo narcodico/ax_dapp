@@ -18,9 +18,6 @@ class Controller extends GetxController {
   bool walletConnected = false;
   Rx<EtherAmount> gas = EtherAmount.zero().obs;
   RxString gasString = '0'.obs;
-  static const mainnetChainId = 137;
-  static const testnetChainId = 80001;
-  static const mainnetSXChainId = 416;
   static const supportedChains = {
     137: 'https://polygon-rpc.com',
     80001: 'https://matic-mumbai.chainstacklabs.com'
