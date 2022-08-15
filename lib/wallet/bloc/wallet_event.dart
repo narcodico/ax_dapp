@@ -15,8 +15,8 @@ class DisconnectWalletRequested extends WalletEvent {
   const DisconnectWalletRequested();
 }
 
-class WatchChainChangesStarted extends WalletEvent {
-  const WatchChainChangesStarted();
+class WatchWalletChangesStarted extends WalletEvent {
+  const WatchWalletChangesStarted();
 }
 
 class SwitchChainRequested extends WalletEvent {

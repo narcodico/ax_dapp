@@ -11,7 +11,7 @@ class WalletView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<WalletBloc, WalletState>(
       listenWhen: (previous, current) =>
-          previous.status != current.status ||
+          previous.walletStatus != current.walletStatus ||
           previous.failure != current.failure,
       listener: (_, state) {
         if (state.isWalletUnavailable) {
@@ -33,7 +33,8 @@ class WalletView extends StatelessWidget {
               );
         }
       },
-      buildWhen: (previous, current) => previous.status != current.status,
+      buildWhen: (previous, current) =>
+          previous.walletStatus != current.walletStatus,
       builder: (_, state) {
         if (state.isWalletConnected) {
           return const WalletProfile();
