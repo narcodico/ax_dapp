@@ -37,6 +37,9 @@ class ConfigApiClient {
 
   /// Switches dependencies and then disposes of the old ones.
   void switchDependencies(EthereumChain chain) {
+    if (!chain.isSupported) {
+      return;
+    }
     final previousWeb3Client = _web3ClientController.valueOrNull;
     final web3Client = chain.createWeb3Client(_httpClient);
     _web3ClientController.add(web3Client);
