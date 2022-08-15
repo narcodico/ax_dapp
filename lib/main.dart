@@ -17,6 +17,7 @@ import 'package:ax_dapp/service/api/mlb_athlete_api.dart';
 import 'package:ax_dapp/service/api/nfl_athlete_api.dart';
 import 'package:ax_dapp/service/graphql/graphql_client_helper.dart';
 import 'package:ax_dapp/service/graphql/graphql_configuration.dart';
+import 'package:cache/cache.dart';
 import 'package:config_repository/config_repository.dart';
 import 'package:ethereum_api/config_api.dart';
 import 'package:ethereum_api/tokens_api.dart';
@@ -42,6 +43,8 @@ void main() async {
   final _getSwapInfoUseCase = GetSwapInfoUseCase(_getPairInfoUseCase);
 
   log('GraphQL Client initialized}');
+
+  final cache = CacheClient();
 
   final httpClient = http.Client();
 
@@ -69,6 +72,7 @@ void main() async {
             RepositoryProvider(
               create: (_) => WalletRepository(
                 walletApiClient: walletApiClient,
+                cache: cache,
                 defaultChain: EthereumChain.polygonMainnet,
               ),
             ),
