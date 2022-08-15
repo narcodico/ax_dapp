@@ -23,7 +23,8 @@ class BuyDialogBloc extends Bloc<BuyDialogEvent, BuyDialogState> {
         super(
           // setting the apt corresponding to the default aptType which is long
           BuyDialogState(
-              longApt: tokensRepository.currentAptPair(athleteId).longApt),
+            longApt: tokensRepository.currentAptPair(athleteId).longApt,
+          ),
         ) {
     on<WatchAptPairStarted>(_onWatchAptPairStarted);
     on<AptTypeSelectionChanged>(_onAptTypeSelectionChanged);
