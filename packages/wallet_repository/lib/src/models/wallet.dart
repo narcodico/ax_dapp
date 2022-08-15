@@ -33,3 +33,9 @@ class Wallet extends Equatable {
   @override
   List<Object?> get props => [status, address, chain];
 }
+
+/// [Wallet] extensions.
+extension WalletX on Wallet {
+  /// Returns `true` when this [Wallet] is connected.
+  bool get isConnected => status.isConnected;
+}
