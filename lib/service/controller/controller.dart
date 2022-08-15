@@ -2,10 +2,6 @@
 
 import 'dart:developer';
 
-import 'package:ax_dapp/service/controller/create_wallet/abstract_wallet.dart';
-import 'package:ax_dapp/service/controller/create_wallet/create_wallet.dart'
-    if (dart.library.io) './create_wallet/mobile.dart'
-    if (dart.library.js) './create_wallet/web.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -15,9 +11,7 @@ import 'package:web3dart/web3dart.dart';
 const kEmptyWalletId = '0x0000000000000000000000000000000000000000';
 
 class Controller extends GetxController {
-  Controller() {
-    initState();
-  }
+  Controller();
 
   /// VARIABLES
   late Credentials credentials;
@@ -44,51 +38,6 @@ class Controller extends GetxController {
     axTokenAddress = EthereumAddress.fromHex(tokenAddress.hex);
   }
 
-  Future<void> initState() async {
-    //getCurrentGas();
-  }
-
-  Future<int> connect() async {
-    //Setting up Client & Credentials for connecting to dApp from a client
-    final web3 = newWallet();
-    try {
-      //Connect and setup credentials
-      await web3.connect();
-      final publicAddress = web3.publicAddress as EthereumAddress?;
-      log('Connected wallet: $publicAddress');
-      if (publicAddress == null) {
-        throw const MetaMaskUnavailableFailure();
-      }
-      this.publicAddress.value = publicAddress;
-    } catch (_) {
-      return -1;
-    }
-
-    try {
-      networkID.value = web3.networkID as int;
-      log('Connected network: ${networkID.value}');
-    } catch (e) {
-      throw 'NetworkId value is breaking $e';
-    }
-
-    try {
-      client.value = web3.client as Web3Client;
-    } catch (e) {
-      throw 'Client value is breaking: $e';
-    }
-
-    try {
-      credentials = web3.credentials as Credentials;
-    } catch (e) {
-      throw 'credentials are breaking $e';
-    }
-
-    if (web3.networkID != null) {
-      walletConnected = true;
-    }
-
-    return 1;
-  }
   //Comment this for Android
   // Connect the dapp to metamask and update relevant values
 
@@ -111,12 +60,6 @@ class Controller extends GetxController {
 
   void changeAddress() {
     throw UnsupportedError('MetaMask is the only currently supported wallet!');
-  }
-
-  Future<void> disconnect() async {
-    walletConnected = false;
-    await client.value.dispose();
-    update();
   }
 
   static Future<void> viewTx() async {
