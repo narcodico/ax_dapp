@@ -58,10 +58,6 @@ class Controller extends GetxController {
     latestTx = tx;
   }
 
-  void changeAddress() {
-    throw UnsupportedError('MetaMask is the only currently supported wallet!');
-  }
-
   static Future<void> viewTx() async {
     var urlString = Uri.parse('');
     latestTx == ''
