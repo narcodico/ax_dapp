@@ -1381,8 +1381,6 @@ class _AthletePageState extends State<AthletePage> {
     String longBookValuePercent,
     String shortBookValuePercent,
   ) {
-    const longBookValuePercent = '+4%';
-    const shortBookValuePercent = '+2%';
     final longCurrentBookValueRatio =
         (athlete.longTokenPrice! / athlete.longTokenBookPrice!) * 100;
     final shortCurrentBookValueRatio =
@@ -1585,14 +1583,29 @@ class _AthletePageState extends State<AthletePage> {
                             ),
                             Text(
                               aptTypeSelection.isLong
-                                  ? longBookValuePercent
-                                  : shortBookValuePercent,
-                              style: textStyle(
-                                Colors.green,
-                                12,
-                                false,
-                                false,
-                              ),
+                                  ? getPercentageDesc(
+                                      athlete.longTokenBookPricePercent!,
+                                    )
+                                  : getPercentageDesc(
+                                      athlete.shortTokenBookPricePercent!,
+                                    ),
+                              style: aptTypeSelection.isLong
+                                  ? textStyle(
+                                      getPercentageColor(
+                                        athlete.longTokenBookPricePercent!,
+                                      ),
+                                      12,
+                                      false,
+                                      false,
+                                    )
+                                  : textStyle(
+                                      getPercentageColor(
+                                        athlete.shortTokenBookPricePercent!,
+                                      ),
+                                      12,
+                                      false,
+                                      false,
+                                    ),
                             ),
                             // TODO(anyone): get the all time high book value
                             // and market value prices
