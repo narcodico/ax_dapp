@@ -56,6 +56,19 @@ class WalletState extends Equatable {
         walletAddress: wallet.address,
         chain: wallet.chain,
       );
+
+  @override
+  String toString() {
+    final stringifyProps = [
+      walletStatus,
+      walletAddress,
+      chain,
+      if (hasFailure) failure
+    ];
+    final stringifiedProps =
+        stringifyProps.map((prop) => prop.toString()).join(', ');
+    return 'WalletState($stringifiedProps)';
+  }
 }
 
 extension WalletStateX on WalletState {
