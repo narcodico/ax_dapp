@@ -1,8 +1,10 @@
 import 'package:ethereum_api/src/apt_router/apt_router.dart';
 import 'package:ethereum_api/src/config/models/apt_config.dart';
 import 'package:ethereum_api/src/config/models/ethereum_address_config.dart';
+import 'package:ethereum_api/src/config/models/ethereum_url_config.dart';
 import 'package:ethereum_api/src/dex/dex.dart';
 import 'package:ethereum_api/src/tokens/tokens.dart';
+import 'package:graphql/client.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared/shared.dart';
 
@@ -155,4 +157,39 @@ extension ChainConfigX on EthereumChain {
         ),
         client: client,
       );
+
+  /// Creates a dex [GraphQLClient] based on this [EthereumChain] configuration.
+  GraphQLClient createDexGraphQLClient() {
+    final policy = Policies(
+      cacheReread: CacheRereadPolicy.ignoreAll,
+      fetch: FetchPolicy.networkOnly,
+      error: ErrorPolicy.ignore,
+    );
+    return GraphQLClient(
+      link: HttpLink(const EthereumUrlConfig.dex().url(this)),
+      cache: GraphQLCache(store: HiveStore()),
+      defaultPolicies: DefaultPolicies(
+        query: policy,
+        watchMutation: policy,
+        watchQuery: policy,
+        mutate: policy,
+        subscribe: policy,
+      ),
+    );
+  }
+
+  /// Creates a gysr [GraphQLClient] based on this [EthereumChain]
+  /// configuration.
+  GraphQLClient createGysrGraphQLClient() {
+    final policy = Policies(fetch: FetchPolicy.networkOnly);
+    return GraphQLClient(
+      link: HttpLink(const EthereumUrlConfig.gysr().url(this)),
+      cache: GraphQLCache(store: HiveStore()),
+      defaultPolicies: DefaultPolicies(
+        watchQuery: policy,
+        query: policy,
+        mutate: policy,
+      ),
+    );
+  }
 }
