@@ -68,18 +68,16 @@ dependencies:
   webfeed: ^0.7.0
 
 dependency_overrides:
+  async: 2.8.0
   firebase_analytics_web:
     git:
       url: https://github.com/durduman/flutterfire.git
       path: packages/firebase_analytics/firebase_analytics_web
       ref: firebase_analytics_web-0.4.0+16-fix-for-web
-
   web3dart:
     git:
       url: https://github.com/narcodico/web3dart.git
       ref: fix/build-runner
-
-  async: 2.8.0
 
 dev_dependencies:
   analyzer: 4.3.1
