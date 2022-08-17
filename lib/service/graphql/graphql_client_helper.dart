@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 class GraphQLClientHelper {
@@ -8,24 +7,22 @@ class GraphQLClientHelper {
   // final AuthLink _authLink = AuthLink(getToken: () async =>
   // "QmSUtWsFg4rY3UAz9NNiiUPdBazd5RG6SHMBymBTpxj9zp");
 
-  Future<ValueNotifier<GraphQLClient>> initializeClient() async {
+  Future<GraphQLClient> initializeClient() async {
     await initHiveForFlutter();
     final networkOnlyPolicy = Policies(
       cacheReread: CacheRereadPolicy.ignoreAll,
       fetch: FetchPolicy.networkOnly,
       error: ErrorPolicy.ignore,
     );
-    return ValueNotifier(
-      GraphQLClient(
-        link: _httpLink,
-        cache: GraphQLCache(store: HiveStore()),
-        defaultPolicies: DefaultPolicies(
-          query: networkOnlyPolicy,
-          watchMutation: networkOnlyPolicy,
-          watchQuery: networkOnlyPolicy,
-          mutate: networkOnlyPolicy,
-          subscribe: networkOnlyPolicy,
-        ),
+    return GraphQLClient(
+      link: _httpLink,
+      cache: GraphQLCache(store: HiveStore()),
+      defaultPolicies: DefaultPolicies(
+        query: networkOnlyPolicy,
+        watchMutation: networkOnlyPolicy,
+        watchQuery: networkOnlyPolicy,
+        mutate: networkOnlyPolicy,
+        subscribe: networkOnlyPolicy,
       ),
     );
   }

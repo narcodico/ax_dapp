@@ -24,7 +24,6 @@ import 'package:ethereum_api/tokens_api.dart';
 import 'package:ethereum_api/wallet_api.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';
@@ -38,7 +37,7 @@ void main() async {
   final _graphQLClientHelper =
       GraphQLClientHelper(GraphQLConfiguration.athleteDexApiLink);
   final _gQLClient = await _graphQLClientHelper.initializeClient();
-  final _subGraphRepo = SubGraphRepo(_gQLClient.value);
+  final _subGraphRepo = SubGraphRepo(_gQLClient);
   final _getPairInfoUseCase = GetPairInfoUseCase(_subGraphRepo);
   final _getSwapInfoUseCase = GetSwapInfoUseCase(_getPairInfoUseCase);
 
@@ -65,56 +64,53 @@ void main() async {
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
       );
-      return GraphQLProvider(
-        client: _gQLClient,
-        child: MultiRepositoryProvider(
-          providers: [
-            RepositoryProvider(
-              create: (_) => WalletRepository(
-                walletApiClient: walletApiClient,
-                cache: cache,
-                defaultChain: EthereumChain.polygonMainnet,
-              ),
+      return MultiRepositoryProvider(
+        providers: [
+          RepositoryProvider(
+            create: (_) => WalletRepository(
+              walletApiClient: walletApiClient,
+              cache: cache,
+              defaultChain: EthereumChain.polygonMainnet,
             ),
-            RepositoryProvider(
-              create: (_) => TokensRepository(
-                tokensApiClient: tokensApiClient,
-                reactiveLspClient: reactiveLspClient,
-              ),
+          ),
+          RepositoryProvider(
+            create: (_) => TokensRepository(
+              tokensApiClient: tokensApiClient,
+              reactiveLspClient: reactiveLspClient,
             ),
-            RepositoryProvider(create: (context) => _subGraphRepo),
-            RepositoryProvider(
-              create: (context) => MLBRepo(_mlbApi),
+          ),
+          RepositoryProvider(create: (context) => _subGraphRepo),
+          RepositoryProvider(
+            create: (context) => MLBRepo(_mlbApi),
+          ),
+          RepositoryProvider(
+            create: (context) => NFLRepo(_nflApi),
+          ),
+          RepositoryProvider(create: (context) => _getPairInfoUseCase),
+          RepositoryProvider(create: (context) => _getSwapInfoUseCase),
+          RepositoryProvider(
+            create: (context) => GetBuyInfoUseCase(
+              tokensRepository: context.read<TokensRepository>(),
+              repo: _getSwapInfoUseCase,
             ),
-            RepositoryProvider(
-              create: (context) => NFLRepo(_nflApi),
+          ),
+          RepositoryProvider(
+            create: (context) => GetSellInfoUseCase(
+              tokensRepository: context.read<TokensRepository>(),
+              repo: _getSwapInfoUseCase,
             ),
-            RepositoryProvider(create: (context) => _getPairInfoUseCase),
-            RepositoryProvider(create: (context) => _getSwapInfoUseCase),
-            RepositoryProvider(
-              create: (context) => GetBuyInfoUseCase(
-                tokensRepository: context.read<TokensRepository>(),
-                repo: _getSwapInfoUseCase,
-              ),
-            ),
-            RepositoryProvider(
-              create: (context) => GetSellInfoUseCase(
-                tokensRepository: context.read<TokensRepository>(),
-                repo: _getSwapInfoUseCase,
-              ),
-            ),
-            RepositoryProvider(
-              create: (context) => GetPoolInfoUseCase(_getPairInfoUseCase),
-            ),
-            RepositoryProvider(
-              create: (context) => GetAllLiquidityInfoUseCase(_subGraphRepo),
-            ),
-            RepositoryProvider(
-              create: (context) => TrackingRepository(),
-            ),
-          ],
-          child: App(configRepository: configRepository),
-        ),
+          ),
+          RepositoryProvider(
+            create: (context) => GetPoolInfoUseCase(_getPairInfoUseCase),
+          ),
+          RepositoryProvider(
+            create: (context) => GetAllLiquidityInfoUseCase(_subGraphRepo),
+          ),
+          RepositoryProvider(
+            create: (context) => TrackingRepository(),
+          ),
+        ],
+        child: App(configRepository: configRepository),
       );
     }),
   );
