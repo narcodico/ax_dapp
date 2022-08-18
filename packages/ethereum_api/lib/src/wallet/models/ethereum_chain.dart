@@ -4,7 +4,6 @@ import 'package:ethereum_api/src/config/models/ethereum_address_config.dart';
 import 'package:ethereum_api/src/config/models/ethereum_url_config.dart';
 import 'package:ethereum_api/src/dex/dex.dart';
 import 'package:ethereum_api/src/tokens/tokens.dart';
-import 'package:graphql/client.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared/shared.dart';
 
