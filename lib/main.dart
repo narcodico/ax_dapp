@@ -40,6 +40,8 @@ void main() async {
 
   final httpClient = http.Client();
 
+  await initHiveForFlutter();
+
   final configApiClient = ConfigApiClient(
     defaultChain: defaultChain,
     httpClient: httpClient,
@@ -55,7 +57,6 @@ void main() async {
 
   final reactiveLspClient = appConfig.reactiveLspClient;
 
-  await initHiveForFlutter();
   final gysrApiClient =
       GysrApiClient(reactiveGysrClient: appConfig.reactiveGysrGqlClient);
   final _subGraphRepo =
