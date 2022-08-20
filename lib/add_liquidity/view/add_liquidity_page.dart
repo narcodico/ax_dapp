@@ -1,7 +1,7 @@
 // ignore_for_file: avoid_positional_boolean_parameters
 
-import 'package:ax_dapp/pages/pool/add_liquidity/bloc/pool_bloc.dart';
-import 'package:ax_dapp/pages/pool/add_liquidity/components/pool_approve_button.dart';
+import 'package:ax_dapp/add_liquidity/bloc/add_liquidity_bloc.dart';
+import 'package:ax_dapp/add_liquidity/widgets/widgets.dart';
 import 'package:ax_dapp/service/athlete_token_list.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
@@ -17,17 +17,17 @@ import 'package:get/get_instance/get_instance.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 
 // ignore: must_be_immutable
-class AddLiquidity extends StatefulWidget {
-  AddLiquidity({super.key, this.token0, this.token1});
+class AddLiquidityPage extends StatefulWidget {
+  AddLiquidityPage({super.key, this.token0, this.token1});
 
   Token? token0;
   Token? token1;
 
   @override
-  State<AddLiquidity> createState() => _AddLiquidityState();
+  State<AddLiquidityPage> createState() => _AddLiquidityPageState();
 }
 
-class _AddLiquidityState extends State<AddLiquidity> {
+class _AddLiquidityPageState extends State<AddLiquidityPage> {
   final TextEditingController _tokenAmountOneController =
       TextEditingController();
   final TextEditingController _tokenAmountTwoController =
@@ -55,10 +55,10 @@ class _AddLiquidityState extends State<AddLiquidity> {
     final layoutHgt = _height * 0.8;
     final layoutWdt = isWeb ? _width * 0.8 : _width * 0.9;
 
-    return BlocBuilder<PoolBloc, PoolState>(
+    return BlocBuilder<AddLiquidityBloc, AddLiquidityState>(
       buildWhen: (previous, current) => current != previous,
       builder: (context, state) {
-        final bloc = context.read<PoolBloc>();
+        final bloc = context.read<AddLiquidityBloc>();
         final poolInfo = state.poolPairInfo;
         final balance0 = state.balance0;
         final balance1 = state.balance1;

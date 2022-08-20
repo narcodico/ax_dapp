@@ -1,8 +1,8 @@
 // ignore_for_file: avoid_positional_boolean_parameters
 
+import 'package:ax_dapp/add_liquidity/add_liquidity.dart';
 import 'package:ax_dapp/pages/farm/desktop_farm.dart';
 import 'package:ax_dapp/pages/footer/simple_tool_tip.dart';
-import 'package:ax_dapp/pages/pool/add_liquidity/bloc/pool_bloc.dart';
 import 'package:ax_dapp/pages/pool/desktop_pool.dart';
 import 'package:ax_dapp/pages/trade/bloc/trade_page_bloc.dart';
 import 'package:ax_dapp/pages/trade/desktop_trade.dart';
@@ -196,7 +196,7 @@ class _V1AppState extends State<V1App> {
             child: const DesktopTrade(),
           ),
           BlocProvider(
-            create: (BuildContext context) => PoolBloc(
+            create: (BuildContext context) => AddLiquidityBloc(
               walletRepository: context.read<WalletRepository>(),
               tokensRepository: context.read<TokensRepository>(),
               repo: RepositoryProvider.of<GetPoolInfoUseCase>(context),
