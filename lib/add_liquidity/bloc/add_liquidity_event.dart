@@ -25,10 +25,6 @@ class Token1SelectionChanged extends AddLiquidityEvent {
   List<Object?> get props => [token1];
 }
 
-class MaxToken0InputButtonClicked extends AddLiquidityEvent {}
-
-class MaxToken1InputButtonClicked extends AddLiquidityEvent {}
-
 class Token0InputChanged extends AddLiquidityEvent {
   Token0InputChanged(this.token0Input);
 
