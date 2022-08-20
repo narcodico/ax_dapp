@@ -9,11 +9,11 @@ class SubGraphRepo {
       : _reactiveDexClient = reactiveDexClient;
 
   final ValueStream<GraphQLClient> _reactiveDexClient;
-  GraphQLClient get _client => _reactiveDexClient.value;
+  GraphQLClient get _dexGqlClient => _reactiveDexClient.value;
 
   Future<Either<Map<String, dynamic>?, OperationException>>
       queryPairDataForTokenAddress(String token0, String token1) async {
-    final result = await _client.query(
+    final result = await _dexGqlClient.query(
       QueryOptions(document: gql(_getPairInfoForTokenId(token0, token1))),
     );
     if (result.hasException) {
@@ -25,7 +25,7 @@ class SubGraphRepo {
 
   Future<Either<Map<String, dynamic>?, OperationException>>
       queryAllPairs() async {
-    final result = await _client.query(
+    final result = await _dexGqlClient.query(
       QueryOptions(document: parseString(_getAllPairs())),
     );
     if (result.hasException) {
@@ -45,7 +45,7 @@ class SubGraphRepo {
             1000)
         .round();
 
-    final result = await _client.query(
+    final result = await _dexGqlClient.query(
       QueryOptions(document: parseString(_getSpecificPairs(token, startTime))),
     );
     if (result.hasException) {
@@ -57,7 +57,7 @@ class SubGraphRepo {
 
   Future<Either<Map<String, dynamic>?, OperationException>>
       queryAllPairsForWalletId(String walletId) async {
-    final result = await _client.query(
+    final result = await _dexGqlClient.query(
       QueryOptions(
         document: parseString(_getAllLiquidityPositionsForWalletId(walletId)),
       ),
