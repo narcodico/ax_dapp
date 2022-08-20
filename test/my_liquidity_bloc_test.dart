@@ -57,7 +57,7 @@ void main() {
 
   test('Should update MyLiquidity State successfully ', () async {
     when(mockWalletRepository.currentWallet).thenReturn(testWallet);
-    myLiquidityBloc.add(LoadEvent());
+    myLiquidityBloc.add(const FetchAllLiquidityPositionsRequested());
     await expectLater(
       myLiquidityBloc.stream,
       emitsInOrder([

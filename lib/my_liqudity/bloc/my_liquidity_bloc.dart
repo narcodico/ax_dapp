@@ -14,14 +14,19 @@ class MyLiquidityBloc extends Bloc<MyLiquidityEvent, MyLiquidityState> {
     required this.repo,
   })  : _walletRepository = walletRepository,
         super(MyLiquidityState.initial()) {
-    on<LoadEvent>(_mapLoadEventToState);
-    on<SearchBarInputEvent>(_mapSearchBarInputEventToState);
+    on<FetchAllLiquidityPositionsRequested>(
+      _onFetchAllLiquidityPositionsRequested,
+    );
+    on<SearchTermChanged>(_onSearchTermChanged);
+
+    add(const FetchAllLiquidityPositionsRequested());
   }
+
   final WalletRepository _walletRepository;
   final GetAllLiquidityInfoUseCase repo;
 
-  Future<void> _mapLoadEventToState(
-    LoadEvent event,
+  Future<void> _onFetchAllLiquidityPositionsRequested(
+    FetchAllLiquidityPositionsRequested event,
     Emitter<MyLiquidityState> emit,
   ) async {
     emit(state.copyWith(status: BlocStatus.loading));
@@ -57,12 +62,12 @@ class MyLiquidityBloc extends Bloc<MyLiquidityEvent, MyLiquidityState> {
     }
   }
 
-  Future<void> _mapSearchBarInputEventToState(
-    SearchBarInputEvent event,
+  Future<void> _onSearchTermChanged(
+    SearchTermChanged event,
     Emitter<MyLiquidityState> emit,
   ) async {
     emit(state.copyWith(status: BlocStatus.loading));
-    final parsedInput = event.searchBarInput.trim().toLowerCase();
+    final parsedInput = event.searchTerm.trim().toLowerCase();
     final filteredList = state.cards
         .where(
           (liquidityPosition) =>
