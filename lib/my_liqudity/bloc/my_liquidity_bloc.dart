@@ -18,7 +18,7 @@ class MyLiquidityBloc extends Bloc<MyLiquidityEvent, MyLiquidityState> {
     required this.repo,
   })  : _walletRepository = walletRepository,
         _configRepository = configRepository,
-        super(MyLiquidityState.initial()) {
+        super(const MyLiquidityState()) {
     on<WatchDependenciesChangesStarted>(_onWatchDependenciesChangesStarted);
     on<FetchAllLiquidityPositionsRequested>(
       _onFetchAllLiquidityPositionsRequested,
@@ -69,6 +69,7 @@ class MyLiquidityBloc extends Bloc<MyLiquidityEvent, MyLiquidityState> {
           } else {
             emit(state.copyWith(status: BlocStatus.noData));
           }
+          add(SearchTermChanged(searchTerm: state.searchTerm));
         } else {
           // TODO(anyone): Create User facing error messages
           emit(state.copyWith(status: BlocStatus.error));
@@ -85,23 +86,32 @@ class MyLiquidityBloc extends Bloc<MyLiquidityEvent, MyLiquidityState> {
     SearchTermChanged event,
     Emitter<MyLiquidityState> emit,
   ) async {
-    emit(state.copyWith(status: BlocStatus.loading));
-    final parsedInput = event.searchTerm.trim().toLowerCase();
+    final searchTerm = event.searchTerm;
+    if (searchTerm.isEmpty && state.filteredCards.isEmpty) {
+      return;
+    }
+    final formattedSearchTerm = searchTerm.trim().toLowerCase();
+    emit(
+      state.copyWith(
+        status: BlocStatus.loading,
+        searchTerm: formattedSearchTerm,
+      ),
+    );
     final filteredList = state.cards
         .where(
           (liquidityPosition) =>
               liquidityPosition.token0Name
                   .toLowerCase()
-                  .contains(parsedInput) ||
+                  .contains(formattedSearchTerm) ||
               liquidityPosition.token1Name
                   .toLowerCase()
-                  .contains(parsedInput) ||
+                  .contains(formattedSearchTerm) ||
               liquidityPosition.token0Symbol
                   .toLowerCase()
-                  .contains(parsedInput) ||
+                  .contains(formattedSearchTerm) ||
               liquidityPosition.token1Symbol
                   .toLowerCase()
-                  .contains(parsedInput),
+                  .contains(formattedSearchTerm),
         )
         .toList();
     emit(
