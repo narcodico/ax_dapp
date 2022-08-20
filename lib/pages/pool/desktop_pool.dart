@@ -1,5 +1,4 @@
-import 'package:ax_dapp/pages/pool/add_liquidity/add_liquidity.dart';
-import 'package:ax_dapp/pages/pool/add_liquidity/bloc/pool_bloc.dart';
+import 'package:ax_dapp/add_liquidity/add_liquidity.dart';
 import 'package:ax_dapp/pages/pool/my_liqudity/bloc/my_liquidity_bloc.dart';
 import 'package:ax_dapp/pages/pool/my_liqudity/my_liquidity.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_pair_info_use_case.dart';
@@ -142,7 +141,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                 SizedBox(
                   height: layoutHgt,
                   child: BlocProvider(
-                    create: (BuildContext context) => PoolBloc(
+                    create: (BuildContext context) => AddLiquidityBloc(
                       walletRepository: context.read<WalletRepository>(),
                       tokensRepository: context.read<TokensRepository>(),
                       repo: GetPoolInfoUseCase(
@@ -152,12 +151,10 @@ class _DesktopPoolState extends State<DesktopPool> {
                       ),
                       poolController: Get.find(),
                     ),
-                    child: (token0 != null && token1 != null)
-                        ? AddLiquidity(
-                            token0: token0,
-                            token1: token1,
-                          )
-                        : AddLiquidity(),
+                    child: AddLiquidityPage(
+                      token0: token0,
+                      token1: token1,
+                    ),
                   ),
                 ),
                 BlocProvider(

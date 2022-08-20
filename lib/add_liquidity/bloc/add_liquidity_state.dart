@@ -1,7 +1,7 @@
-part of 'pool_bloc.dart';
+part of 'add_liquidity_bloc.dart';
 
-class PoolState extends Equatable {
-  const PoolState({
+class AddLiquidityState extends Equatable {
+  const AddLiquidityState({
     this.shareOfPool = '0.0',
     this.apy = '0.0',
     this.balance0 = 0.0,
@@ -39,12 +39,7 @@ class PoolState extends Equatable {
         poolPairInfo,
       ];
 
-  @override
-  String toString() {
-    return '''PoolState(shareOfPool: $shareOfPool, apy: $apy, balance0: $balance0, balance1: $balance1, token0AmountInput: $token0AmountInput, token1AmountInput: $token1AmountInput, token0: $token0, token1: $token1, status: $status, poolPairInfo: $poolPairInfo)''';
-  }
-
-  PoolState copyWith({
+  AddLiquidityState copyWith({
     String? shareOfPool,
     String? apy,
     double? balance0,
@@ -56,7 +51,7 @@ class PoolState extends Equatable {
     BlocStatus? status,
     PoolPairInfo? poolPairInfo,
   }) {
-    return PoolState(
+    return AddLiquidityState(
       shareOfPool: shareOfPool ?? this.shareOfPool,
       apy: apy ?? this.apy,
       balance0: balance0 ?? this.balance0,

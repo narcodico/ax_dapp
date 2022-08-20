@@ -1,4 +1,4 @@
-import 'package:ax_dapp/pages/pool/add_liquidity/models/pool_pair_info.dart';
+import 'package:ax_dapp/add_liquidity/models/models.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_pool_info_use_case.dart';
 import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
@@ -7,18 +7,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
-part 'pool_event.dart';
-part 'pool_state.dart';
+part 'add_liquidity_event.dart';
+part 'add_liquidity_state.dart';
 
-class PoolBloc extends Bloc<PoolEvent, PoolState> {
-  PoolBloc({
+class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
+  AddLiquidityBloc({
     required WalletRepository walletRepository,
     required TokensRepository tokensRepository,
     required this.repo,
     required this.poolController,
   })  : _walletRepository = walletRepository,
         super(
-          PoolState(
+          AddLiquidityState(
             token0: tokensRepository.currentTokens.first,
             token1: tokensRepository.currentTokens[1],
           ),
@@ -44,7 +44,7 @@ class PoolBloc extends Bloc<PoolEvent, PoolState> {
 
   Future<void> _mapRefreshEventToState(
     PageRefreshEvent event,
-    Emitter<PoolState> emit,
+    Emitter<AddLiquidityState> emit,
   ) async {
     emit(state.copyWith(status: BlocStatus.loading));
     poolController
@@ -91,7 +91,7 @@ class PoolBloc extends Bloc<PoolEvent, PoolState> {
 
   Future<void> _mapToken0SelectionChangedEventToState(
     Token0SelectionChanged event,
-    Emitter<PoolState> emit,
+    Emitter<AddLiquidityState> emit,
   ) async {
     emit(state.copyWith(status: BlocStatus.loading));
     final token0 = event.token0;
@@ -125,7 +125,7 @@ class PoolBloc extends Bloc<PoolEvent, PoolState> {
 
   Future<void> _mapToken1SelectionChangedEventToState(
     Token1SelectionChanged event,
-    Emitter<PoolState> emit,
+    Emitter<AddLiquidityState> emit,
   ) async {
     emit(state.copyWith(status: BlocStatus.loading));
     final token1 = event.token1;
@@ -159,17 +159,17 @@ class PoolBloc extends Bloc<PoolEvent, PoolState> {
 
   void _mapMaxToken0InputButtonClickedEventToState(
     MaxToken0InputButtonClicked event,
-    Emitter<PoolState> emit,
+    Emitter<AddLiquidityState> emit,
   ) {}
 
   void _mapMaxToken1InputButtonClickedEventToState(
     MaxToken1InputButtonClicked event,
-    Emitter<PoolState> emit,
+    Emitter<AddLiquidityState> emit,
   ) {}
 
   Future<void> _mapToken0InputChangedEventToState(
     Token0InputChanged event,
-    Emitter<PoolState> emit,
+    Emitter<AddLiquidityState> emit,
   ) async {
     final token0InputAmount = double.parse(event.token0Input);
     if (poolController.amount1.value != token0InputAmount) {
@@ -205,7 +205,7 @@ class PoolBloc extends Bloc<PoolEvent, PoolState> {
 
   Future<void> _mapToken1InputChangedEventToState(
     Token1InputChanged event,
-    Emitter<PoolState> emit,
+    Emitter<AddLiquidityState> emit,
   ) async {
     final token1InputAmount = double.parse(event.token1Input);
     if (poolController.amount2.value != token1InputAmount) {
@@ -240,10 +240,13 @@ class PoolBloc extends Bloc<PoolEvent, PoolState> {
 
   void _mapAddLiquidityButtonClickedEventToState(
     AddLiquidityButtonClicked event,
-    Emitter<PoolState> emit,
+    Emitter<AddLiquidityState> emit,
   ) {}
 
-  void _mapSwapTokensEventToState(SwapTokens event, Emitter<PoolState> emit) {
+  void _mapSwapTokensEventToState(
+    SwapTokens event,
+    Emitter<AddLiquidityState> emit,
+  ) {
     final token0 = state.token1;
     final token1 = state.token0;
     final token0AmountInput = state.token1AmountInput;
