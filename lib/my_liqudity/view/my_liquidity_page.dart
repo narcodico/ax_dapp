@@ -1,8 +1,8 @@
 // ignore_for_file: avoid_dynamic_calls
 
-import 'package:ax_dapp/pages/pool/my_liqudity/bloc/my_liquidity_bloc.dart';
-import 'package:ax_dapp/pages/pool/my_liqudity/components/pool_remove_approve_button.dart';
-import 'package:ax_dapp/pages/pool/my_liqudity/models/my_liquidity_item_info.dart';
+import 'package:ax_dapp/my_liqudity/bloc/my_liquidity_bloc.dart';
+import 'package:ax_dapp/my_liqudity/models/models.dart';
+import 'package:ax_dapp/my_liqudity/widgets/widgets.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
@@ -16,13 +16,13 @@ import 'package:get/get.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
-class MyLiquidity extends StatefulWidget {
-  const MyLiquidity({super.key, required this.togglePool});
+class MyLiquidityPage extends StatefulWidget {
+  const MyLiquidityPage({super.key, required this.togglePool});
 
   final Function togglePool;
 
   @override
-  State<MyLiquidity> createState() => _MyLiquidityState();
+  State<MyLiquidityPage> createState() => _MyLiquidityPageState();
 }
 
 class BadgeToken extends StatelessWidget {
@@ -88,7 +88,7 @@ class SportToken extends StatelessWidget {
   }
 }
 
-class _MyLiquidityState extends State<MyLiquidity> {
+class _MyLiquidityPageState extends State<MyLiquidityPage> {
   bool _isWeb = true;
   double _width = 0;
   double _layoutHgt = 0;

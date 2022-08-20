@@ -1,4 +1,4 @@
-import 'package:ax_dapp/pages/pool/my_liqudity/models/my_liquidity_item_info.dart';
+import 'package:ax_dapp/my_liqudity/models/models.dart';
 import 'package:ax_dapp/repositories/usecases/get_all_liquidity_info_use_case.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:equatable/equatable.dart';
