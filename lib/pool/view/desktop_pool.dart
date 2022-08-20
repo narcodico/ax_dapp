@@ -21,7 +21,6 @@ class DesktopPool extends StatefulWidget {
 }
 
 class _DesktopPoolState extends State<DesktopPool> {
-  bool isAllLiquidity = true;
   bool isMylLiquidity = true;
   bool isRemoveLiquidity = true;
   bool isWeb = true;
@@ -93,9 +92,6 @@ class _DesktopPoolState extends State<DesktopPool> {
                           setState(() {
                             currentTabIndex = 0;
                           });
-                          if (!isAllLiquidity) {
-                            togglePool();
-                          }
                         },
                         child: Text(
                           'Add Liquidity',
