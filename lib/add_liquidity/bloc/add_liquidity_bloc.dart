@@ -30,6 +30,8 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
     on<Token1InputChanged>(_mapToken1InputChangedEventToState);
     on<AddLiquidityButtonClicked>(_mapAddLiquidityButtonClickedEventToState);
     on<SwapTokens>(_mapSwapTokensEventToState);
+
+    add(PageRefreshEvent());
   }
 
   final WalletRepository _walletRepository;
