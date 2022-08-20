@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:ax_dapp/my_liqudity/models/models.dart';
 import 'package:ax_dapp/repositories/usecases/get_all_liquidity_info_use_case.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
+import 'package:config_repository/config_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wallet_repository/wallet_repository.dart';
@@ -11,9 +14,12 @@ part 'my_liquidity_state.dart';
 class MyLiquidityBloc extends Bloc<MyLiquidityEvent, MyLiquidityState> {
   MyLiquidityBloc({
     required WalletRepository walletRepository,
+    required ConfigRepository configRepository,
     required this.repo,
   })  : _walletRepository = walletRepository,
+        _configRepository = configRepository,
         super(MyLiquidityState.initial()) {
+    on<WatchDependenciesChangesStarted>(_onWatchDependenciesChangesStarted);
     on<FetchAllLiquidityPositionsRequested>(
       _onFetchAllLiquidityPositionsRequested,
     );
@@ -23,7 +29,18 @@ class MyLiquidityBloc extends Bloc<MyLiquidityEvent, MyLiquidityState> {
   }
 
   final WalletRepository _walletRepository;
+  final ConfigRepository _configRepository;
   final GetAllLiquidityInfoUseCase repo;
+
+  FutureOr<void> _onWatchDependenciesChangesStarted(
+    WatchDependenciesChangesStarted event,
+    Emitter<MyLiquidityState> emit,
+  ) async {
+    await emit.onEach<void>(
+      _configRepository.dependenciesChanges,
+      onData: (_) => add(const FetchAllLiquidityPositionsRequested()),
+    );
+  }
 
   Future<void> _onFetchAllLiquidityPositionsRequested(
     FetchAllLiquidityPositionsRequested event,
