@@ -30,11 +30,13 @@ class MyLiquidityBloc extends Bloc<MyLiquidityEvent, MyLiquidityState> {
     Emitter<MyLiquidityState> emit,
   ) async {
     emit(state.copyWith(status: BlocStatus.loading));
-    final walletAddress = _walletRepository.currentWallet.address;
+    final currentWallet = _walletRepository.currentWallet;
+    final isWalletConnected = _walletRepository.currentWallet.isConnected;
     try {
-      if (walletAddress.isNotEmpty) {
-        final response =
-            await repo.fetchAllLiquidityPositions(walletAddress: walletAddress);
+      if (isWalletConnected) {
+        final response = await repo.fetchAllLiquidityPositions(
+          walletAddress: currentWallet.address,
+        );
         final isSuccess = response.isLeft();
         if (isSuccess) {
           final liquidityPositionsList =
