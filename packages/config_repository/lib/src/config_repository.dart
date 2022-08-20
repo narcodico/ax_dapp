@@ -12,6 +12,10 @@ class ConfigRepository {
 
   final ConfigApiClient _configApiClient;
 
+  /// Allows listening to when dependencies change. Used to refetch data that
+  /// is based on reactive dependencies.
+  Stream<void> get dependenciesChanges => _configApiClient.dependenciesChanges;
+
   /// Returns the current [LongShortPair] address synchronously.
   String get currentLspAddress => _configApiClient.currentLspAddress;
 
