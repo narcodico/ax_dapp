@@ -65,6 +65,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
         final token0 = state.token0;
         final token1 = state.token1;
 
+        // TODO(Rolly): remove
         if (widget.token0 != null && widget.token1 != null) {
           bloc
             ..add(Token0SelectionChanged(token0: widget.token0!))
@@ -132,18 +133,18 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
                   : () {
                       if (tknNum == 1) {
                         if (token == token1) {
-                          bloc.add(SwapTokens());
+                          bloc.add(const SwapTokensRequested());
                         } else {
                           bloc.add(Token0SelectionChanged(token0: token));
                         }
                       } else {
                         if (token == token0) {
-                          bloc.add(SwapTokens());
+                          bloc.add(const SwapTokensRequested());
                         } else {
                           bloc.add(Token1SelectionChanged(token1: token));
                         }
                       }
-                      bloc.add(PageRefreshEvent());
+                      bloc.add(const FetchPairInfoRequested());
                       _tokenAmountOneController.clear();
                       _tokenAmountTwoController.clear();
                       setState(() {
@@ -220,7 +221,7 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
           _debouncer.run(() {
             if (hasData) {
               if (tokenNumber == 1) {
-                bloc.add(Token0InputChanged(_tokenInput));
+                bloc.add(Token0AmountChanged(_tokenInput));
                 final tokenTwoAmount =
                     double.parse(_tokenInput) / poolInfo.ratio;
                 _tokenAmountTwoController.text =
@@ -228,9 +229,9 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
               }
             } else {
               if (tokenNumber == 1) {
-                bloc.add(Token0InputChanged(_tokenInput));
+                bloc.add(Token0AmountChanged(_tokenInput));
               } else {
-                bloc.add(Token1InputChanged(_tokenInput));
+                bloc.add(Token1AmountChanged(_tokenInput));
               }
             }
           });
