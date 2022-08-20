@@ -3,21 +3,22 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i7;
+import 'dart:async' as _i8;
 
-import 'package:ax_dapp/pages/pool/my_liqudity/models/my_liquidity_item_info.dart'
-    as _i3;
+import 'package:ax_dapp/my_liqudity/models/models.dart' as _i3;
 import 'package:ax_dapp/repositories/subgraph/usecases/subgraph_error.dart'
-    as _i8;
-import 'package:ax_dapp/repositories/usecases/get_all_liquidity_info_use_case.dart'
-    as _i6;
-import 'package:ax_dapp/service/blockchain_models/liquidity_position.dart'
     as _i9;
+import 'package:ax_dapp/repositories/usecases/get_all_liquidity_info_use_case.dart'
+    as _i7;
+import 'package:ax_dapp/service/blockchain_models/liquidity_position.dart'
+    as _i10;
+import 'package:config_repository/src/config_repository.dart' as _i12;
+import 'package:ethereum_api/config_api.dart' as _i6;
 import 'package:ethereum_api/wallet_api.dart' as _i5;
 import 'package:fpdart/fpdart.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:wallet_repository/src/models/models.dart' as _i4;
-import 'package:wallet_repository/src/wallet_repository.dart' as _i10;
+import 'package:wallet_repository/src/wallet_repository.dart' as _i11;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -57,28 +58,33 @@ class _FakeBigInt_4 extends _i1.SmartFake implements BigInt {
       : super(parent, parentInvocation);
 }
 
+class _FakeAppConfig_5 extends _i1.SmartFake implements _i6.AppConfig {
+  _FakeAppConfig_5(Object parent, Invocation parentInvocation)
+      : super(parent, parentInvocation);
+}
+
 /// A class which mocks [GetAllLiquidityInfoUseCase].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockGetAllLiquidityInfoUseCase extends _i1.Mock
-    implements _i6.GetAllLiquidityInfoUseCase {
+    implements _i7.GetAllLiquidityInfoUseCase {
   MockGetAllLiquidityInfoUseCase() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i7.Future<_i2.Either<_i6.Success, _i8.SubgraphError>> fetchAllLiquidityPositions(
+  _i8.Future<_i2.Either<_i7.Success, _i9.SubgraphError>> fetchAllLiquidityPositions(
           {String? walletAddress}) =>
       (super.noSuchMethod(
               Invocation.method(
                   #fetchAllLiquidityPositions, [], {#walletAddress: walletAddress}),
-              returnValue: _i7.Future<_i2.Either<_i6.Success, _i8.SubgraphError>>.value(
-                  _FakeEither_0<_i6.Success, _i8.SubgraphError>(
+              returnValue: _i8.Future<_i2.Either<_i7.Success, _i9.SubgraphError>>.value(
+                  _FakeEither_0<_i7.Success, _i9.SubgraphError>(
                       this, Invocation.method(#fetchAllLiquidityPositions, [], {#walletAddress: walletAddress}))))
-          as _i7.Future<_i2.Either<_i6.Success, _i8.SubgraphError>>);
+          as _i8.Future<_i2.Either<_i7.Success, _i9.SubgraphError>>);
   @override
   _i3.LiquidityPositionInfo getMyLiquidityItemInfoFromLiquidityPosition(
-          _i9.LiquidityPosition? liquidityPosition) =>
+          _i10.LiquidityPosition? liquidityPosition) =>
       (super.noSuchMethod(
           Invocation.method(#getMyLiquidityItemInfoFromLiquidityPosition,
               [liquidityPosition]),
@@ -91,24 +97,24 @@ class MockGetAllLiquidityInfoUseCase extends _i1.Mock
 /// A class which mocks [WalletRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockWalletRepository extends _i1.Mock implements _i10.WalletRepository {
+class MockWalletRepository extends _i1.Mock implements _i11.WalletRepository {
   MockWalletRepository() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i7.Stream<_i5.EthereumChain> get chainChanges =>
+  _i8.Stream<_i5.EthereumChain> get chainChanges =>
       (super.noSuchMethod(Invocation.getter(#chainChanges),
-              returnValue: _i7.Stream<_i5.EthereumChain>.empty())
-          as _i7.Stream<_i5.EthereumChain>);
+              returnValue: _i8.Stream<_i5.EthereumChain>.empty())
+          as _i8.Stream<_i5.EthereumChain>);
   @override
   _i5.EthereumChain get currentChain =>
       (super.noSuchMethod(Invocation.getter(#currentChain),
           returnValue: _i5.EthereumChain.none) as _i5.EthereumChain);
   @override
-  _i7.Stream<_i4.Wallet> get walletChanges => (super.noSuchMethod(
+  _i8.Stream<_i4.Wallet> get walletChanges => (super.noSuchMethod(
       Invocation.getter(#walletChanges),
-      returnValue: _i7.Stream<_i4.Wallet>.empty()) as _i7.Stream<_i4.Wallet>);
+      returnValue: _i8.Stream<_i4.Wallet>.empty()) as _i8.Stream<_i4.Wallet>);
   @override
   _i4.Wallet get currentWallet => (super.noSuchMethod(
           Invocation.getter(#currentWallet),
@@ -121,38 +127,69 @@ class MockWalletRepository extends _i1.Mock implements _i10.WalletRepository {
               _FakeWalletCredentials_3(this, Invocation.getter(#credentials)))
       as _i5.WalletCredentials);
   @override
-  _i7.Future<String> connectWallet() =>
+  _i8.Future<String> connectWallet() =>
       (super.noSuchMethod(Invocation.method(#connectWallet, []),
-          returnValue: _i7.Future<String>.value('')) as _i7.Future<String>);
+          returnValue: _i8.Future<String>.value('')) as _i8.Future<String>);
   @override
-  _i7.Future<void> switchChain(_i5.EthereumChain? chain) => (super.noSuchMethod(
+  _i8.Future<void> switchChain(_i5.EthereumChain? chain) => (super.noSuchMethod(
       Invocation.method(#switchChain, [chain]),
-      returnValue: _i7.Future<void>.value(),
-      returnValueForMissingStub: _i7.Future<void>.value()) as _i7.Future<void>);
+      returnValue: _i8.Future<void>.value(),
+      returnValueForMissingStub: _i8.Future<void>.value()) as _i8.Future<void>);
   @override
   void disconnectWallet() =>
       super.noSuchMethod(Invocation.method(#disconnectWallet, []),
           returnValueForMissingStub: null);
   @override
-  _i7.Future<void> addToken({String? tokenAddress, String? tokenImageUrl}) =>
+  _i8.Future<void> addToken({String? tokenAddress, String? tokenImageUrl}) =>
       (super.noSuchMethod(
               Invocation.method(#addToken, [],
                   {#tokenAddress: tokenAddress, #tokenImageUrl: tokenImageUrl}),
-              returnValue: _i7.Future<void>.value(),
-              returnValueForMissingStub: _i7.Future<void>.value())
-          as _i7.Future<void>);
+              returnValue: _i8.Future<void>.value(),
+              returnValueForMissingStub: _i8.Future<void>.value())
+          as _i8.Future<void>);
   @override
-  _i7.Future<BigInt> getRawTokenBalance(String? tokenAddress) => (super
+  _i8.Future<BigInt> getRawTokenBalance(String? tokenAddress) => (super
           .noSuchMethod(Invocation.method(#getRawTokenBalance, [tokenAddress]),
-              returnValue: _i7.Future<BigInt>.value(_FakeBigInt_4(this,
+              returnValue: _i8.Future<BigInt>.value(_FakeBigInt_4(this,
                   Invocation.method(#getRawTokenBalance, [tokenAddress]))))
-      as _i7.Future<BigInt>);
+      as _i8.Future<BigInt>);
   @override
-  _i7.Future<double?> getTokenBalance(String? tokenAddress) =>
+  _i8.Future<double?> getTokenBalance(String? tokenAddress) =>
       (super.noSuchMethod(Invocation.method(#getTokenBalance, [tokenAddress]),
-          returnValue: _i7.Future<double?>.value()) as _i7.Future<double?>);
+          returnValue: _i8.Future<double?>.value()) as _i8.Future<double?>);
   @override
-  _i7.Future<double> getGasPrice() =>
+  _i8.Future<double> getGasPrice() =>
       (super.noSuchMethod(Invocation.method(#getGasPrice, []),
-          returnValue: _i7.Future<double>.value(0.0)) as _i7.Future<double>);
+          returnValue: _i8.Future<double>.value(0.0)) as _i8.Future<double>);
+}
+
+/// A class which mocks [ConfigRepository].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockConfigRepository extends _i1.Mock implements _i12.ConfigRepository {
+  MockConfigRepository() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i8.Stream<void> get dependenciesChanges =>
+      (super.noSuchMethod(Invocation.getter(#dependenciesChanges),
+          returnValue: _i8.Stream<void>.empty()) as _i8.Stream<void>);
+  @override
+  String get currentLspAddress => (super
+          .noSuchMethod(Invocation.getter(#currentLspAddress), returnValue: '')
+      as String);
+  @override
+  _i6.AppConfig initializeAppConfig() => (super.noSuchMethod(
+      Invocation.method(#initializeAppConfig, []),
+      returnValue: _FakeAppConfig_5(
+          this, Invocation.method(#initializeAppConfig, []))) as _i6.AppConfig);
+  @override
+  void switchDependencies(_i5.EthereumChain? chain) =>
+      super.noSuchMethod(Invocation.method(#switchDependencies, [chain]),
+          returnValueForMissingStub: null);
+  @override
+  void switchLspClient(String? pairAddress) =>
+      super.noSuchMethod(Invocation.method(#switchLspClient, [pairAddress]),
+          returnValueForMissingStub: null);
 }
