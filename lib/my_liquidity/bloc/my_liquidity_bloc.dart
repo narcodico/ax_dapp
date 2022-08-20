@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:ax_dapp/my_liquidity/models/models.dart';
 import 'package:ax_dapp/repositories/usecases/get_all_liquidity_info_use_case.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
@@ -32,7 +30,7 @@ class MyLiquidityBloc extends Bloc<MyLiquidityEvent, MyLiquidityState> {
   final ConfigRepository _configRepository;
   final GetAllLiquidityInfoUseCase repo;
 
-  FutureOr<void> _onWatchDependenciesChangesStarted(
+  Future<void> _onWatchDependenciesChangesStarted(
     WatchDependenciesChangesStarted event,
     Emitter<MyLiquidityState> emit,
   ) async {
