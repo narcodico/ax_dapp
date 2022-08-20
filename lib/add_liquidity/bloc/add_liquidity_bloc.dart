@@ -26,12 +26,6 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
     on<PageRefreshEvent>(_mapRefreshEventToState);
     on<Token0SelectionChanged>(_mapToken0SelectionChangedEventToState);
     on<Token1SelectionChanged>(_mapToken1SelectionChangedEventToState);
-    on<MaxToken0InputButtonClicked>(
-      _mapMaxToken0InputButtonClickedEventToState,
-    );
-    on<MaxToken1InputButtonClicked>(
-      _mapMaxToken1InputButtonClickedEventToState,
-    );
     on<Token0InputChanged>(_mapToken0InputChangedEventToState);
     on<Token1InputChanged>(_mapToken1InputChangedEventToState);
     on<AddLiquidityButtonClicked>(_mapAddLiquidityButtonClickedEventToState);
@@ -156,16 +150,6 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
       emit(state.copyWith(status: BlocStatus.error));
     }
   }
-
-  void _mapMaxToken0InputButtonClickedEventToState(
-    MaxToken0InputButtonClicked event,
-    Emitter<AddLiquidityState> emit,
-  ) {}
-
-  void _mapMaxToken1InputButtonClickedEventToState(
-    MaxToken1InputButtonClicked event,
-    Emitter<AddLiquidityState> emit,
-  ) {}
 
   Future<void> _mapToken0InputChangedEventToState(
     Token0InputChanged event,
