@@ -1,5 +1,5 @@
 @TestOn('browser')
-import 'package:ax_dapp/my_liqudity/my_liquidity.dart';
+import 'package:ax_dapp/my_liquidity/my_liquidity.dart';
 import 'package:ax_dapp/repositories/usecases/get_all_liquidity_info_use_case.dart';
 import 'package:config_repository/config_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
