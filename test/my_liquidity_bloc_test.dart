@@ -1,6 +1,7 @@
 @TestOn('browser')
 import 'package:ax_dapp/my_liqudity/my_liquidity.dart';
 import 'package:ax_dapp/repositories/usecases/get_all_liquidity_info_use_case.dart';
+import 'package:config_repository/config_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:mockito/annotations.dart';
@@ -9,14 +10,14 @@ import 'package:wallet_repository/wallet_repository.dart';
 
 import 'my_liquidity_bloc_test.mocks.dart';
 
-@GenerateMocks([GetAllLiquidityInfoUseCase, WalletRepository])
+@GenerateMocks([GetAllLiquidityInfoUseCase, WalletRepository, ConfigRepository])
 void main() {
-  var mockRepoUseCase = MockGetAllLiquidityInfoUseCase();
-  var mockWalletRepository = MockWalletRepository();
-  var myLiquidityBloc = MyLiquidityBloc(
-    walletRepository: mockWalletRepository,
-    repo: mockRepoUseCase,
-  );
+  late GetAllLiquidityInfoUseCase mockRepoUseCase;
+  late WalletRepository mockWalletRepository;
+  late ConfigRepository mockConfigRepository;
+
+  late MyLiquidityBloc subject;
+
   const testWalletAddress = 'testWalletAddress';
   const testWallet = Wallet(
     status: WalletStatus.connected,
@@ -40,32 +41,39 @@ void main() {
     )
   ];
 
-  setUp(() {
-    mockRepoUseCase = MockGetAllLiquidityInfoUseCase();
-    mockWalletRepository = MockWalletRepository();
-    myLiquidityBloc = MyLiquidityBloc(
-      walletRepository: mockWalletRepository,
-      repo: mockRepoUseCase,
-    );
+  MyLiquidityBloc createSubject() => MyLiquidityBloc(
+        walletRepository: mockWalletRepository,
+        configRepository: mockConfigRepository,
+        repo: mockRepoUseCase,
+      );
 
-    when(
-      mockRepoUseCase.fetchAllLiquidityPositions(
-        walletAddress: testWalletAddress,
-      ),
-    ).thenAnswer((_) async => Either.left(Success(testMyLiquidityItemInfo)));
-  });
+  group('MyLiquidityBloc', () {
+    setUp(() {
+      mockRepoUseCase = MockGetAllLiquidityInfoUseCase();
+      mockWalletRepository = MockWalletRepository();
+      mockConfigRepository = MockConfigRepository();
 
-  test('Should update MyLiquidity State successfully ', () async {
-    when(mockWalletRepository.currentWallet).thenReturn(testWallet);
-    myLiquidityBloc.add(const FetchAllLiquidityPositionsRequested());
-    await expectLater(
-      myLiquidityBloc.stream,
-      emitsInOrder([
-        isA<MyLiquidityState>(),
-        predicate<MyLiquidityState>(
-          (state) => state.cards == testMyLiquidityItemInfo,
-        )
-      ]),
-    );
+      when(mockWalletRepository.currentWallet).thenReturn(testWallet);
+      when(
+        mockRepoUseCase.fetchAllLiquidityPositions(
+          walletAddress: testWalletAddress,
+        ),
+      ).thenAnswer((_) async => Either.left(Success(testMyLiquidityItemInfo)));
+
+      subject = createSubject();
+    });
+
+    test('Should update MyLiquidity State successfully ', () async {
+      subject.add(const FetchAllLiquidityPositionsRequested());
+      await expectLater(
+        subject.stream,
+        emitsInOrder([
+          isA<MyLiquidityState>(),
+          predicate<MyLiquidityState>(
+            (state) => state.cards == testMyLiquidityItemInfo,
+          )
+        ]),
+      );
+    });
   });
 }
