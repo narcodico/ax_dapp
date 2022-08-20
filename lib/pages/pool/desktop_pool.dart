@@ -1,6 +1,5 @@
 import 'package:ax_dapp/add_liquidity/add_liquidity.dart';
-import 'package:ax_dapp/pages/pool/my_liqudity/bloc/my_liquidity_bloc.dart';
-import 'package:ax_dapp/pages/pool/my_liqudity/my_liquidity.dart';
+import 'package:ax_dapp/my_liqudity/my_liquidity.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_pair_info_use_case.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_pool_info_use_case.dart';
 import 'package:ax_dapp/repositories/usecases/get_all_liquidity_info_use_case.dart';
@@ -164,7 +163,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                       context,
                     ),
                   ),
-                  child: MyLiquidity(
+                  child: MyLiquidityPage(
                     togglePool: togglePool,
                   ),
                 ),
