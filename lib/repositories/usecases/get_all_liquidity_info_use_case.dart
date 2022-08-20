@@ -15,9 +15,9 @@ class GetAllLiquidityInfoUseCase {
   Future<Either<Success, SubgraphError>> fetchAllLiquidityPositions({
     required String walletAddress,
   }) async {
-    final walletId = walletAddress.toLowerCase();
     try {
-      final tokenPairData = await _graphRepo.queryAllPairsForWalletId(walletId);
+      final tokenPairData =
+          await _graphRepo.queryAllPairsForWalletId(walletAddress);
 
       if (tokenPairData.isLeft()) {
         final data = tokenPairData.getLeft().toNullable();
