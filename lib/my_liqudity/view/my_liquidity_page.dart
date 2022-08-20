@@ -6,8 +6,8 @@ import 'package:ax_dapp/my_liqudity/widgets/widgets.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
-import 'package:ax_dapp/util/assets/assets.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
+import 'package:ax_dapp/util/util.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
@@ -348,18 +348,6 @@ class _MyLiquidityPageState extends State<MyLiquidityPage> {
       );
     }
 
-    Widget loading() {
-      return const Center(
-        child: SizedBox(
-          height: 50,
-          width: 50,
-          child: CircularProgressIndicator(
-            color: Colors.amber,
-          ),
-        ),
-      );
-    }
-
     Widget createMyLiquiditySearchBar(
       double layoutHgt,
       double layoutWdt,
@@ -401,7 +389,7 @@ class _MyLiquidityPageState extends State<MyLiquidityPage> {
         final bloc = context.read<MyLiquidityBloc>();
         final filteredCards = state.filteredCards;
         if (state.status == BlocStatus.loading) {
-          return loading();
+          return const Loader();
         }
         if (state.status == BlocStatus.noData ||
             (state.status == BlocStatus.success && state.cards.isEmpty)) {
