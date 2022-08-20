@@ -1,8 +1,8 @@
 // ignore_for_file: avoid_dynamic_calls
 
-import 'package:ax_dapp/my_liqudity/bloc/my_liquidity_bloc.dart';
-import 'package:ax_dapp/my_liqudity/models/models.dart';
-import 'package:ax_dapp/my_liqudity/widgets/widgets.dart';
+import 'package:ax_dapp/my_liquidity/bloc/my_liquidity_bloc.dart';
+import 'package:ax_dapp/my_liquidity/models/models.dart';
+import 'package:ax_dapp/my_liquidity/widgets/widgets.dart';
 import 'package:ax_dapp/service/controller/controller.dart';
 import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
 import 'package:ax_dapp/service/dialog.dart';
