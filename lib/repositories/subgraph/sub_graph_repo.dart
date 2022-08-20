@@ -13,9 +13,8 @@ class SubGraphRepo {
 
   Future<Either<Map<String, dynamic>?, OperationException>>
       queryPairDataForTokenAddress(String token0, String token1) async {
-    final result = await _dexGqlClient.query(
-      QueryOptions(document: gql(_getPairInfoForTokenId(token0, token1))),
-    );
+    final result = await _dexGqlClient
+        .performQuery(_getPairInfoForTokenId(token0, token1));
     if (result.hasException) {
       return Either.right(result.exception!);
     } else {
