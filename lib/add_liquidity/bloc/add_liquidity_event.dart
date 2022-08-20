@@ -1,14 +1,18 @@
 part of 'add_liquidity_bloc.dart';
 
 abstract class AddLiquidityEvent extends Equatable {
+  const AddLiquidityEvent();
+
   @override
   List<Object?> get props => [];
 }
 
-class PageRefreshEvent extends AddLiquidityEvent {}
+class FetchPairInfoRequested extends AddLiquidityEvent {
+  const FetchPairInfoRequested();
+}
 
 class Token0SelectionChanged extends AddLiquidityEvent {
-  Token0SelectionChanged({required this.token0});
+  const Token0SelectionChanged({required this.token0});
 
   final Token token0;
 
@@ -17,7 +21,7 @@ class Token0SelectionChanged extends AddLiquidityEvent {
 }
 
 class Token1SelectionChanged extends AddLiquidityEvent {
-  Token1SelectionChanged({required this.token1});
+  const Token1SelectionChanged({required this.token1});
 
   final Token token1;
 
@@ -25,24 +29,28 @@ class Token1SelectionChanged extends AddLiquidityEvent {
   List<Object?> get props => [token1];
 }
 
-class Token0InputChanged extends AddLiquidityEvent {
-  Token0InputChanged(this.token0Input);
+class Token0AmountChanged extends AddLiquidityEvent {
+  const Token0AmountChanged(this.amount);
 
-  final String token0Input;
-
-  @override
-  List<Object?> get props => [token0Input];
-}
-
-class Token1InputChanged extends AddLiquidityEvent {
-  Token1InputChanged(this.token1Input);
-
-  final String token1Input;
+  final String amount;
 
   @override
-  List<Object?> get props => [token1Input];
+  List<Object?> get props => [amount];
 }
 
-class AddLiquidityButtonClicked extends AddLiquidityEvent {}
+class Token1AmountChanged extends AddLiquidityEvent {
+  const Token1AmountChanged(this.amount);
 
-class SwapTokens extends AddLiquidityEvent {}
+  final String amount;
+
+  @override
+  List<Object?> get props => [amount];
+}
+
+class ApproveLiquidityInitiated extends AddLiquidityEvent {
+  const ApproveLiquidityInitiated();
+}
+
+class SwapTokensRequested extends AddLiquidityEvent {
+  const SwapTokensRequested();
+}

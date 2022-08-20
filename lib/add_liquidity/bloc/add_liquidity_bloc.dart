@@ -23,23 +23,26 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
             token1: tokensRepository.currentTokens[1],
           ),
         ) {
-    on<PageRefreshEvent>(_mapRefreshEventToState);
+    on<FetchPairInfoRequested>(_onFetchPairInfoRequested);
     on<Token0SelectionChanged>(_mapToken0SelectionChangedEventToState);
     on<Token1SelectionChanged>(_mapToken1SelectionChangedEventToState);
-    on<Token0InputChanged>(_mapToken0InputChangedEventToState);
-    on<Token1InputChanged>(_mapToken1InputChangedEventToState);
-    on<AddLiquidityButtonClicked>(_mapAddLiquidityButtonClickedEventToState);
-    on<SwapTokens>(_mapSwapTokensEventToState);
+    on<Token0AmountChanged>(_onToken0AmountChanged);
+    on<Token1AmountChanged>(_onToken1AmountChanged);
+    on<ApproveLiquidityInitiated>(_onApproveLiquidityInitiated);
+    on<SwapTokensRequested>(_onSwapTokensRequested);
 
-    add(PageRefreshEvent());
+    add(const FetchPairInfoRequested());
   }
 
   final WalletRepository _walletRepository;
   final GetPoolInfoUseCase repo;
   final PoolController poolController;
 
-  Future<void> _mapRefreshEventToState(
-    PageRefreshEvent event,
+// todo -- tokenchanges should drive setting up token0 an 1 on state, to reset
+//their position basically if they're swapped
+
+  Future<void> _onFetchPairInfoRequested(
+    FetchPairInfoRequested event,
     Emitter<AddLiquidityState> emit,
   ) async {
     emit(state.copyWith(status: BlocStatus.loading));
@@ -153,33 +156,33 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
     }
   }
 
-  Future<void> _mapToken0InputChangedEventToState(
-    Token0InputChanged event,
+  Future<void> _onToken0AmountChanged(
+    Token0AmountChanged event,
     Emitter<AddLiquidityState> emit,
   ) async {
-    final token0InputAmount = double.parse(event.token0Input);
-    if (poolController.amount1.value != token0InputAmount) {
-      poolController.updateTopAmount(token0InputAmount);
+    final token0Amount = double.parse(event.amount);
+    if (poolController.amount1.value != token0Amount) {
+      poolController.updateTopAmount(token0Amount);
     }
     try {
       final response = await repo.fetchPairInfo(
         tokenA: state.token0.address,
         tokenB: state.token1.address,
-        tokenAInput: token0InputAmount,
+        tokenAInput: token0Amount,
         tokenBInput: state.token1AmountInput,
       );
       final isSuccess = response.isLeft();
       if (isSuccess) {
         final poolInfo = response.getLeft().toNullable()!.pairInfo;
-        final token1InputAmount = token0InputAmount / poolInfo.ratio;
+        final token1Amount = token0Amount / poolInfo.ratio;
         emit(
           state.copyWith(
             status: BlocStatus.success,
-            token0AmountInput: token0InputAmount,
+            token0AmountInput: token0Amount,
             poolPairInfo: poolInfo,
           ),
         );
-        add(Token1InputChanged(token1InputAmount.toString()));
+        add(Token1AmountChanged(token1Amount.toString()));
       } else {
         // TODO(anyone): Create User facing error messages https://athletex.atlassian.net/browse/AX-466
         emit(state.copyWith(status: BlocStatus.noData));
@@ -189,20 +192,20 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
     }
   }
 
-  Future<void> _mapToken1InputChangedEventToState(
-    Token1InputChanged event,
+  Future<void> _onToken1AmountChanged(
+    Token1AmountChanged event,
     Emitter<AddLiquidityState> emit,
   ) async {
-    final token1InputAmount = double.parse(event.token1Input);
-    if (poolController.amount2.value != token1InputAmount) {
-      poolController.updateBottomAmount(token1InputAmount);
+    final token1Amount = double.parse(event.amount);
+    if (poolController.amount2.value != token1Amount) {
+      poolController.updateBottomAmount(token1Amount);
     }
     try {
       final response = await repo.fetchPairInfo(
         tokenA: state.token0.address,
         tokenB: state.token1.address,
         tokenAInput: state.token0AmountInput,
-        tokenBInput: token1InputAmount,
+        tokenBInput: token1Amount,
       );
       final isSuccess = response.isLeft();
 
@@ -212,7 +215,7 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
           state.copyWith(
             status: BlocStatus.success,
             poolPairInfo: poolInfo,
-            token1AmountInput: token1InputAmount,
+            token1AmountInput: token1Amount,
           ),
         );
       } else {
@@ -224,13 +227,13 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
     }
   }
 
-  void _mapAddLiquidityButtonClickedEventToState(
-    AddLiquidityButtonClicked event,
+  void _onApproveLiquidityInitiated(
+    ApproveLiquidityInitiated event,
     Emitter<AddLiquidityState> emit,
   ) {}
 
-  void _mapSwapTokensEventToState(
-    SwapTokens event,
+  void _onSwapTokensRequested(
+    SwapTokensRequested event,
     Emitter<AddLiquidityState> emit,
   ) {
     final token0 = state.token1;
