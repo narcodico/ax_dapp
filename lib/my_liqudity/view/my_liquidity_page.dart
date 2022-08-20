@@ -380,7 +380,7 @@ class _MyLiquidityPageState extends State<MyLiquidityPage> {
             Expanded(
               child: TextFormField(
                 onChanged: (value) {
-                  bloc.add(SearchBarInputEvent(searchBarInput: value));
+                  bloc.add(SearchTermChanged(searchTerm: value));
                 },
                 decoration: const InputDecoration(
                   border: InputBorder.none,
@@ -400,9 +400,6 @@ class _MyLiquidityPageState extends State<MyLiquidityPage> {
       builder: (context, state) {
         final bloc = context.read<MyLiquidityBloc>();
         final filteredCards = state.filteredCards;
-        if (state.status == BlocStatus.initial) {
-          bloc.add(LoadEvent());
-        }
         if (state.status == BlocStatus.loading) {
           return loading();
         }
