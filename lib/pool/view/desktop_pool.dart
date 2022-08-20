@@ -5,6 +5,7 @@ import 'package:ax_dapp/repositories/subgraph/usecases/get_pool_info_use_case.da
 import 'package:ax_dapp/repositories/usecases/get_all_liquidity_info_use_case.dart';
 import 'package:ax_dapp/service/athlete.dart';
 import 'package:ax_dapp/service/dialog.dart';
+import 'package:config_repository/config_repository.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -159,6 +160,7 @@ class _DesktopPoolState extends State<DesktopPool> {
                 BlocProvider(
                   create: (BuildContext context) => MyLiquidityBloc(
                     walletRepository: context.read<WalletRepository>(),
+                    configRepository: context.read<ConfigRepository>(),
                     repo: RepositoryProvider.of<GetAllLiquidityInfoUseCase>(
                       context,
                     ),
