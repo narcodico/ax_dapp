@@ -65,10 +65,6 @@ class _AddLiquidityPageState extends State<AddLiquidityPage> {
         final token0 = state.token0;
         final token1 = state.token1;
 
-        if (state.status == BlocStatus.initial) {
-          bloc.add(PageRefreshEvent());
-        }
-
         if (widget.token0 != null && widget.token1 != null) {
           bloc
             ..add(Token0SelectionChanged(token0: widget.token0!))
