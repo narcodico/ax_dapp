@@ -7,6 +7,10 @@ abstract class AddLiquidityEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+class WatchAppDataChangesStarted extends AddLiquidityEvent {
+  const WatchAppDataChangesStarted();
+}
+
 class FetchPairInfoRequested extends AddLiquidityEvent {
   const FetchPairInfoRequested();
 }

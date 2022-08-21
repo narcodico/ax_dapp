@@ -6,8 +6,8 @@ class AddLiquidityState extends Equatable {
     this.apy = '0.0',
     this.balance0 = 0.0,
     this.balance1 = 0.0,
-    this.token0AmountInput = 0,
-    this.token1AmountInput = 0,
+    this.amount0 = 0,
+    this.amount1 = 0,
     required this.token0,
     required this.token1,
     this.status = BlocStatus.initial,
@@ -18,8 +18,8 @@ class AddLiquidityState extends Equatable {
   final String apy;
   final double balance0;
   final double balance1;
-  final double token0AmountInput;
-  final double token1AmountInput;
+  final double amount0;
+  final double amount1;
   final Token token0;
   final Token token1;
   final BlocStatus status;
@@ -31,8 +31,8 @@ class AddLiquidityState extends Equatable {
         apy,
         balance0,
         balance1,
-        token0AmountInput,
-        token1AmountInput,
+        amount0,
+        amount1,
         token0,
         token1,
         status,
@@ -56,8 +56,8 @@ class AddLiquidityState extends Equatable {
       apy: apy ?? this.apy,
       balance0: balance0 ?? this.balance0,
       balance1: balance1 ?? this.balance1,
-      token0AmountInput: token0AmountInput ?? this.token0AmountInput,
-      token1AmountInput: token1AmountInput ?? this.token1AmountInput,
+      amount0: token0AmountInput ?? amount0,
+      amount1: token1AmountInput ?? amount1,
       token0: token0 ?? this.token0,
       token1: token1 ?? this.token1,
       status: status ?? this.status,
