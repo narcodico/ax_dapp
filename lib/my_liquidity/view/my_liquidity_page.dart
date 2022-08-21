@@ -384,7 +384,6 @@ class _MyLiquidityPageState extends State<MyLiquidityPage> {
     }
 
     return BlocBuilder<MyLiquidityBloc, MyLiquidityState>(
-      buildWhen: (previous, current) => previous != current,
       builder: (context, state) {
         final bloc = context.read<MyLiquidityBloc>();
         final filteredCards = state.filteredCards;
