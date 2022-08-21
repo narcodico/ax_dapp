@@ -57,8 +57,10 @@ void main() async {
   final reactiveWeb3Client = appConfig.reactiveWeb3Client;
   final walletApiClient =
       EthereumWalletApiClient(reactiveWeb3Client: reactiveWeb3Client);
-  final tokensApiClient =
-      TokensApiClient(reactiveWeb3Client: reactiveWeb3Client);
+  final tokensApiClient = TokensApiClient(
+    defaultChain: defaultChain,
+    reactiveWeb3Client: reactiveWeb3Client,
+  );
 
   final reactiveLspClient = appConfig.reactiveLspClient;
 
