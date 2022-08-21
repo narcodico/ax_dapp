@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:ax_dapp/add_liquidity/models/models.dart';
 import 'package:ax_dapp/repositories/subgraph/usecases/get_pool_info_use_case.dart';
 import 'package:ax_dapp/service/controller/pool/pool_controller.dart';
@@ -5,6 +7,7 @@ import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tokens_repository/tokens_repository.dart';
+import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
 part 'add_liquidity_event.dart';
@@ -14,15 +17,19 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
   AddLiquidityBloc({
     required WalletRepository walletRepository,
     required TokensRepository tokensRepository,
+    required StreamAppDataChangesUseCase streamAppDataChanges,
     required this.repo,
     required this.poolController,
   })  : _walletRepository = walletRepository,
+        _streamAppDataChanges = streamAppDataChanges,
         super(
           AddLiquidityState(
             token0: tokensRepository.currentTokens.first,
             token1: tokensRepository.currentTokens[1],
           ),
         ) {
+    // todo -- change to dataChanges
+    on<WatchAppDataChangesStarted>(_onWatchAppDataChangesStarted);
     on<FetchPairInfoRequested>(_onFetchPairInfoRequested);
     on<Token0SelectionChanged>(_mapToken0SelectionChangedEventToState);
     on<Token1SelectionChanged>(_mapToken1SelectionChangedEventToState);
@@ -35,11 +42,28 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
   }
 
   final WalletRepository _walletRepository;
+  final StreamAppDataChangesUseCase _streamAppDataChanges;
   final GetPoolInfoUseCase repo;
   final PoolController poolController;
 
-// todo -- tokenchanges should drive setting up token0 an 1 on state, to reset
-//their position basically if they're swapped
+  Future<void> _onWatchAppDataChangesStarted(
+    WatchAppDataChangesStarted _,
+    Emitter<AddLiquidityState> emit,
+  ) async {
+    await emit.onEach<AppData>(
+      _streamAppDataChanges.appDataChanges,
+      onData: (appData) {
+        final tokens = appData.tokens;
+        emit(
+          state.copyWith(
+            token0: tokens.first,
+            token1: tokens[1],
+          ),
+        );
+        add(const FetchPairInfoRequested());
+      },
+    );
+  }
 
   Future<void> _onFetchPairInfoRequested(
     FetchPairInfoRequested event,
@@ -169,7 +193,7 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
         tokenA: state.token0.address,
         tokenB: state.token1.address,
         tokenAInput: token0Amount,
-        tokenBInput: state.token1AmountInput,
+        tokenBInput: state.amount1,
       );
       final isSuccess = response.isLeft();
       if (isSuccess) {
@@ -204,7 +228,7 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
       final response = await repo.fetchPairInfo(
         tokenA: state.token0.address,
         tokenB: state.token1.address,
-        tokenAInput: state.token0AmountInput,
+        tokenAInput: state.amount0,
         tokenBInput: token1Amount,
       );
       final isSuccess = response.isLeft();
@@ -238,8 +262,8 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
   ) {
     final token0 = state.token1;
     final token1 = state.token0;
-    final token0AmountInput = state.token1AmountInput;
-    final token1AmountInput = state.token0AmountInput;
+    final token0AmountInput = state.amount1;
+    final token1AmountInput = state.amount0;
     emit(
       state.copyWith(
         token0: token0,
