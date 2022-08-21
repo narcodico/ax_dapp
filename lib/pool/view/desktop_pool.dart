@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:tokens_repository/tokens_repository.dart';
+import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
 class DesktopPool extends StatefulWidget {
@@ -140,6 +141,8 @@ class _DesktopPoolState extends State<DesktopPool> {
                     create: (BuildContext context) => AddLiquidityBloc(
                       walletRepository: context.read<WalletRepository>(),
                       tokensRepository: context.read<TokensRepository>(),
+                      streamAppDataChanges:
+                          context.read<StreamAppDataChangesUseCase>(),
                       repo: GetPoolInfoUseCase(
                         RepositoryProvider.of<GetPairInfoUseCase>(
                           context,
