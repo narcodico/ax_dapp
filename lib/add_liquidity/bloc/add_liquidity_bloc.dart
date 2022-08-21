@@ -28,7 +28,6 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
             token1: tokensRepository.currentTokens[1],
           ),
         ) {
-    // todo -- change to dataChanges
     on<WatchAppDataChangesStarted>(_onWatchAppDataChangesStarted);
     on<FetchPairInfoRequested>(_onFetchPairInfoRequested);
     on<Token0SelectionChanged>(_mapToken0SelectionChangedEventToState);
