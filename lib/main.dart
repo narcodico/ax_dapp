@@ -30,6 +30,7 @@ import 'package:logging/logging.dart';
 import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:tracking_repository/tracking_repository.dart';
+import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
 void main() async {
@@ -95,6 +96,13 @@ void main() async {
           ),
           RepositoryProvider(
             create: (context) => NFLRepo(nflApi),
+          ),
+          RepositoryProvider(
+            create: (context) => StreamAppDataChangesUseCase(
+              walletRepository: context.read<WalletRepository>(),
+              tokensRepository: context.read<TokensRepository>(),
+              configRepository: configRepository,
+            ),
           ),
           RepositoryProvider.value(value: getPairInfoUseCase),
           RepositoryProvider.value(value: getSwapInfoUseCase),

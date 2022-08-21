@@ -26,6 +26,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:use_cases/stream_app_data_changes_use_case.dart';
 import 'package:wallet_repository/wallet_repository.dart';
 
 enum Pages { scout, trade, pool, farm }
@@ -199,6 +200,7 @@ class _V1AppState extends State<V1App> {
             create: (BuildContext context) => AddLiquidityBloc(
               walletRepository: context.read<WalletRepository>(),
               tokensRepository: context.read<TokensRepository>(),
+              streamAppDataChanges: context.read<StreamAppDataChangesUseCase>(),
               repo: RepositoryProvider.of<GetPoolInfoUseCase>(context),
               poolController: Get.find(),
             ),
