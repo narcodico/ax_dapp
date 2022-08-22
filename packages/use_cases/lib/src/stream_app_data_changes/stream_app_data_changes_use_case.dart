@@ -26,10 +26,13 @@ class StreamAppDataChangesUseCase {
   ///
   /// This is particularly useful when we need to make sure the wallet, tokens
   /// and dependencies have finished changing before refetching information.
+  ///
+  /// **Note:** the default seeded tokens are skipped to keep wallet, tokens
+  /// and dependencies emissions in sync.
   Stream<AppData> get appDataChanges =>
       ZipStream.zip3<Wallet, List<Token>, void, AppData>(
         _walletRepository.walletChanges,
-        _tokensRepository.tokensChanges,
+        _tokensRepository.tokensChanges.skip(1),
         _configRepository.dependenciesChanges,
         (wallet, tokens, _) => AppData(
           chain: wallet.chain,
