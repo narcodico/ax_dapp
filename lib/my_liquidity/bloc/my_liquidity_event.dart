@@ -7,8 +7,8 @@ abstract class MyLiquidityEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class WatchDependenciesChangesStarted extends MyLiquidityEvent {
-  const WatchDependenciesChangesStarted();
+class WatchAppDataChangesStarted extends MyLiquidityEvent {
+  const WatchAppDataChangesStarted();
 }
 
 class FetchAllLiquidityPositionsRequested extends MyLiquidityEvent {
