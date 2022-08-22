@@ -30,8 +30,8 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
         ) {
     on<WatchAppDataChangesStarted>(_onWatchAppDataChangesStarted);
     on<FetchPairInfoRequested>(_onFetchPairInfoRequested);
-    on<Token0SelectionChanged>(_mapToken0SelectionChangedEventToState);
-    on<Token1SelectionChanged>(_mapToken1SelectionChangedEventToState);
+    on<Token0SelectionChanged>(_onToken0SelectionChanged);
+    on<Token1SelectionChanged>(_onToken1SelectionChanged);
     on<Token0AmountChanged>(_onToken0AmountChanged);
     on<Token1AmountChanged>(_onToken1AmountChanged);
     on<ApproveLiquidityInitiated>(_onApproveLiquidityInitiated);
@@ -111,7 +111,7 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
     }
   }
 
-  Future<void> _mapToken0SelectionChangedEventToState(
+  Future<void> _onToken0SelectionChanged(
     Token0SelectionChanged event,
     Emitter<AddLiquidityState> emit,
   ) async {
@@ -145,7 +145,7 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
     }
   }
 
-  Future<void> _mapToken1SelectionChangedEventToState(
+  Future<void> _onToken1SelectionChanged(
     Token1SelectionChanged event,
     Emitter<AddLiquidityState> emit,
   ) async {
