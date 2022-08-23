@@ -34,7 +34,7 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
     on<Token1SelectionChanged>(_onToken1SelectionChanged);
     on<Token0AmountChanged>(_onToken0AmountChanged);
     on<Token1AmountChanged>(_onToken1AmountChanged);
-    on<ApproveLiquidityInitiated>(_onApproveLiquidityInitiated);
+    on<ApproveAddLiquidityInitiated>(_onApproveAddLiquidityInitiated);
     on<SwapTokensRequested>(_onSwapTokensRequested);
 
     add(const FetchPairInfoRequested());
@@ -250,8 +250,8 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
     }
   }
 
-  void _onApproveLiquidityInitiated(
-    ApproveLiquidityInitiated event,
+  void _onApproveAddLiquidityInitiated(
+    ApproveAddLiquidityInitiated event,
     Emitter<AddLiquidityState> emit,
   ) {}
 

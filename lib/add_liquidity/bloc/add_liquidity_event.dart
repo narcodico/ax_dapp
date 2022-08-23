@@ -51,8 +51,8 @@ class Token1AmountChanged extends AddLiquidityEvent {
   List<Object?> get props => [amount];
 }
 
-class ApproveLiquidityInitiated extends AddLiquidityEvent {
-  const ApproveLiquidityInitiated();
+class ApproveAddLiquidityInitiated extends AddLiquidityEvent {
+  const ApproveAddLiquidityInitiated();
 }
 
 class SwapTokensRequested extends AddLiquidityEvent {
