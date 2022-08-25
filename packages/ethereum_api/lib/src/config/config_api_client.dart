@@ -15,12 +15,20 @@ class ConfigApiClient {
     required EthereumChain defaultChain,
     required http.Client httpClient,
   })  : _httpClient = httpClient,
+        _web3ClientController = BehaviorSubject<Web3Client>.seeded(
+          defaultChain.createWeb3Client(httpClient),
+        ),
         _dexGqlClientController = BehaviorSubject<GraphQLClient>.seeded(
           defaultChain.createDexGraphQLClient(),
         ),
         _gysrGqlClientController = BehaviorSubject<GraphQLClient>.seeded(
           defaultChain.createGysrGraphQLClient(),
-        );
+        ) {
+    _aptRouterClientController
+        .add(defaultChain.createAptRouterClient(_web3ClientController.value));
+    _dexClientController
+        .add(defaultChain.createDexClient(_web3ClientController.value));
+  }
 
   final http.Client _httpClient;
 
@@ -30,14 +38,15 @@ class ConfigApiClient {
   /// is based on reactive dependencies.
   Stream<AppConfig> get dependenciesChanges => _dependenciesController.stream;
 
-  final _web3ClientController = BehaviorSubject<Web3Client>();
+  final BehaviorSubject<Web3Client> _web3ClientController;
   final _aptRouterClientController = BehaviorSubject<APTRouter>();
   final _dexClientController = BehaviorSubject<Dex>();
 
   final _lspClientController = BehaviorSubject<LongShortPair>();
 
   /// Returns the current [LongShortPair] address synchronously.
-  String get currentLspAddress => _lspClientController.value.self.address.hex;
+  String? get currentLspAddress =>
+      _lspClientController.valueOrNull?.self.address.hex;
 
   final BehaviorSubject<GraphQLClient> _dexGqlClientController;
   final BehaviorSubject<GraphQLClient> _gysrGqlClientController;

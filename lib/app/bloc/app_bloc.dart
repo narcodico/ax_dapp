@@ -52,6 +52,9 @@ class AppBloc extends Bloc<AppEvent, AppState> {
           return;
         }
         final currentLspAddress = _configRepository.currentLspAddress;
+        if (currentLspAddress == null) {
+          return;
+        }
         final previousAptPair =
             previousApts.findPairByAddress(currentLspAddress);
         if (previousAptPair.isEmpty) {

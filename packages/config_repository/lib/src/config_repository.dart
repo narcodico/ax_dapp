@@ -20,7 +20,7 @@ class ConfigRepository {
       _configApiClient.dependenciesChanges;
 
   /// Returns the current [LongShortPair] address synchronously.
-  String get currentLspAddress => _configApiClient.currentLspAddress;
+  String? get currentLspAddress => _configApiClient.currentLspAddress;
 
   /// Creates and returns the initial [AppConfig] which is used to pass down
   /// reactive dependencies.
