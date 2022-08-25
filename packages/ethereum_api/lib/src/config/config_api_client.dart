@@ -24,11 +24,11 @@ class ConfigApiClient {
 
   final http.Client _httpClient;
 
-  final _dependenciesController = BehaviorSubject<void>();
+  final _dependenciesController = BehaviorSubject<AppConfig>();
 
   /// Allows listening to when dependencies change. Used to refetch data that
   /// is based on reactive dependencies.
-  Stream<void> get dependenciesChanges => _dependenciesController.stream;
+  Stream<AppConfig> get dependenciesChanges => _dependenciesController.stream;
 
   final _web3ClientController = BehaviorSubject<Web3Client>();
   final _aptRouterClientController = BehaviorSubject<APTRouter>();
@@ -77,7 +77,7 @@ class ConfigApiClient {
     final gysrGqlClient = chain.createGysrGraphQLClient();
     _gysrGqlClientController.add(gysrGqlClient);
 
-    _dependenciesController.add(null);
+    _dependenciesController.add(initializeAppConfig());
   }
 
   /// Switches the [LongShortPair] client.

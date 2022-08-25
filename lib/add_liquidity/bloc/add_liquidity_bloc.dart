@@ -34,7 +34,6 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
     on<Token1SelectionChanged>(_onToken1SelectionChanged);
     on<Token0AmountChanged>(_onToken0AmountChanged);
     on<Token1AmountChanged>(_onToken1AmountChanged);
-    on<ApproveAddLiquidityInitiated>(_onApproveAddLiquidityInitiated);
     on<SwapTokensRequested>(_onSwapTokensRequested);
 
     add(const FetchPairInfoRequested());
@@ -59,6 +58,14 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
             token1: tokens[1],
           ),
         );
+        final appConfig = appData.appConfig;
+        poolController.controller.client.value =
+            appConfig.reactiveWeb3Client.value;
+        poolController.controller.credentials =
+            _walletRepository.credentials.value;
+        poolController
+          ..dex = appConfig.reactiveDexClient.value
+          ..aptRouter = appConfig.reactiveAptRouterClient.value;
         add(const FetchPairInfoRequested());
       },
     );
@@ -249,11 +256,6 @@ class AddLiquidityBloc extends Bloc<AddLiquidityEvent, AddLiquidityState> {
       emit(state.copyWith(status: BlocStatus.error));
     }
   }
-
-  void _onApproveAddLiquidityInitiated(
-    ApproveAddLiquidityInitiated event,
-    Emitter<AddLiquidityState> emit,
-  ) {}
 
   void _onSwapTokensRequested(
     SwapTokensRequested event,

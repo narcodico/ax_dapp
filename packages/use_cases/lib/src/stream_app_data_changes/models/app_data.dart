@@ -1,3 +1,4 @@
+import 'package:config_repository/config_repository.dart';
 import 'package:shared/shared.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:wallet_repository/wallet_repository.dart';
@@ -13,6 +14,7 @@ class AppData extends Equatable {
     required this.walletStatus,
     required this.walletAddress,
     required this.tokens,
+    required this.appConfig,
   });
 
   /// Current [EthereumChain].
@@ -27,6 +29,15 @@ class AppData extends Equatable {
   /// Current [Token]s.
   final List<Token> tokens;
 
+  /// Current [AppConfig].
+  final AppConfig appConfig;
+
   @override
-  List<Object?> get props => [chain, walletStatus, walletAddress, tokens];
+  List<Object?> get props => [
+        chain,
+        walletStatus,
+        walletAddress,
+        tokens,
+        appConfig,
+      ];
 }

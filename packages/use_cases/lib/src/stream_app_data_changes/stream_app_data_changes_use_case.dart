@@ -30,15 +30,16 @@ class StreamAppDataChangesUseCase {
   /// **Note:** the default seeded tokens are skipped to keep wallet, tokens
   /// and dependencies emissions in sync.
   Stream<AppData> get appDataChanges =>
-      ZipStream.zip3<Wallet, List<Token>, void, AppData>(
+      ZipStream.zip3<Wallet, List<Token>, AppConfig, AppData>(
         _walletRepository.walletChanges,
         _tokensRepository.tokensChanges.skip(1),
         _configRepository.dependenciesChanges,
-        (wallet, tokens, _) => AppData(
+        (wallet, tokens, appConfig) => AppData(
           chain: wallet.chain,
           walletStatus: wallet.status,
           walletAddress: wallet.address,
           tokens: tokens,
+          appConfig: appConfig,
         ),
       );
 }
