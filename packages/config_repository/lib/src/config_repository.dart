@@ -30,7 +30,7 @@ class ConfigRepository {
   void switchDependencies(EthereumChain chain) =>
       _configApiClient.switchDependencies(chain);
 
-  /// Switches the [LongShortPair] client.
-  void switchLspClient(String pairAddress) =>
-      _configApiClient.switchLspClient(pairAddress);
+  // /// Switches the [LongShortPair] client.
+  // void switchLspClient(String pairAddress) =>
+  //     _configApiClient.switchLspClient(pairAddress);
 }

@@ -1,19 +1,24 @@
 import 'package:ax_dapp/scout/models/models.dart';
 import 'package:ax_dapp/scout/usecases/usecases.dart';
+import 'package:ax_dapp/service/controller/scout/lsp_controller.dart';
 import 'package:ax_dapp/util/bloc_status.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:tokens_repository/tokens_repository.dart';
 import 'package:use_cases/stream_app_data_changes_use_case.dart';
+import 'package:wallet_repository/wallet_repository.dart';
 
 part 'scout_page_event.dart';
 part 'scout_page_state.dart';
 
 class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
   ScoutPageBloc({
+    required WalletRepository walletRepository,
     required StreamAppDataChangesUseCase streamAppDataChanges,
     required this.repo,
-  })  : _streamAppDataChanges = streamAppDataChanges,
+  })  : _walletRepository = walletRepository,
+        _streamAppDataChanges = streamAppDataChanges,
         super(const ScoutPageState()) {
     on<WatchAppDataChangesStarted>(_onWatchAppDataChangesStarted);
     on<FetchScoutInfoRequested>(_onFetchScoutInfoRequested);
@@ -24,6 +29,7 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
     add(FetchScoutInfoRequested());
   }
 
+  final WalletRepository _walletRepository;
   final StreamAppDataChangesUseCase _streamAppDataChanges;
   final GetScoutAthletesDataUseCase repo;
 
@@ -33,7 +39,14 @@ class ScoutPageBloc extends Bloc<ScoutPageEvent, ScoutPageState> {
   ) async {
     await emit.onEach<AppData>(
       _streamAppDataChanges.appDataChanges,
-      onData: (_) => add(FetchScoutInfoRequested()),
+      onData: (appData) {
+        final appConfig = appData.appConfig;
+        final lspController = Get.find<LSPController>()
+          ..tokenClient = appConfig.reactiveWeb3Client.value;
+        lspController.controller.credentials =
+            _walletRepository.credentials.value;
+        add(FetchScoutInfoRequested());
+      },
     );
   }
 
